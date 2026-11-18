@@ -37,10 +37,193 @@
 
     <nav class="module-nav" aria-label="Modules on this page">
       <div><strong>1 · What is a rate?</strong><span class="tag">coming soon</span></div>
-      <div><strong>2 · The rate law</strong><span class="tag">coming soon</span></div>
+      <a href="#rate-law"><strong>2 · The rate law</strong><span class="tag live">open</span></a>
       <a href="#orders"><strong>3 · Orders over time</strong><span class="tag live">open</span></a>
       <div><strong>4 · Under the hood: the ODE</strong><span class="tag">coming soon</span></div>
     </nav>
+
+    <!-- =============================================================== -->
+    <section id="rate-law">
+      <h2>2 · The rate law: how does the rate depend on concentration?</h2>
+      <p>
+        For a reaction \(a\mathrm{A} + b\mathrm{B} \rightarrow \text{products}\), the rate usually depends on the
+        concentrations of the reactants like this:
+      </p>
+      \[ \text{rate} = k[\mathrm{A}]^m[\mathrm{B}]^n \]
+      <ul>
+        <li>\(m\) is the <strong>order in A</strong> and \(n\) the <strong>order in B</strong>. Their sum \(m + n\) is the
+          <strong>overall order</strong>.</li>
+        <li>\(k\) is the <strong>rate constant</strong>. It depends on temperature, but not on concentration.</li>
+        <li>The orders are <strong>measured</strong>. In general they are <em>not</em> the coefficients \(a\) and \(b\) of the
+          balanced equation.</li>
+      </ul>
+
+      <h3>What does an order mean?</h3>
+      <p>The order tells you how strongly the rate reacts when you change one concentration. Pick a rate law, then change
+        the concentrations and see what happens to the rate.</p>
+
+      <div class="lab" id="explorer">
+        <div class="explorer-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Order in A, <em>m</em></span>
+              <div class="seg" role="group" aria-label="Order in A" data-key="m">
+                <button type="button" data-v="0" aria-pressed="false">0</button>
+                <button type="button" data-v="1" aria-pressed="true">1</button>
+                <button type="button" data-v="2" aria-pressed="false">2</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="ctl-label">Order in B, <em>n</em></span>
+              <div class="seg" role="group" aria-label="Order in B" data-key="n">
+                <button type="button" data-v="0" aria-pressed="false">0</button>
+                <button type="button" data-v="1" aria-pressed="false">1</button>
+                <button type="button" data-v="2" aria-pressed="true">2</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="ctl-label">Multiply [A] by</span>
+              <div class="seg" role="group" aria-label="Factor for the concentration of A" data-key="fA">
+                <button type="button" data-v="0.5" aria-pressed="false">½</button>
+                <button type="button" data-v="1" aria-pressed="false">1</button>
+                <button type="button" data-v="2" aria-pressed="true">2</button>
+                <button type="button" data-v="3" aria-pressed="false">3</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="ctl-label">Multiply [B] by</span>
+              <div class="seg" role="group" aria-label="Factor for the concentration of B" data-key="fB">
+                <button type="button" data-v="0.5" aria-pressed="false">½</button>
+                <button type="button" data-v="1" aria-pressed="true">1</button>
+                <button type="button" data-v="2" aria-pressed="false">2</button>
+                <button type="button" data-v="3" aria-pressed="false">3</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="explorer-out" aria-live="polite">
+            <p class="ratelaw" id="ex-law"></p>
+            <p class="ratio"><span class="muted small">the rate is multiplied by</span><br><strong id="ex-ratio"></strong></p>
+            <p class="ratio-how" id="ex-how"></p>
+            <div class="flasks" id="ex-flasks"></div>
+            <p class="small muted" id="ex-units"></p>
+          </div>
+        </div>
+      </div>
+
+      <p class="small muted">The rule to remember: multiplying a concentration by \(x\) multiplies the rate by \(x^{\text{order}}\).
+        Order 0: no effect. Order 1: the rate changes in proportion. Order 2: doubling the concentration makes the
+        reaction four times faster.</p>
+
+      <h3>Virtual lab: find the rate law yourself (method of initial rates)</h3>
+      <p>
+        Here is a mystery reaction \(\mathrm{A} + \mathrm{B} \rightarrow \mathrm{C}\). Its rate law is
+        \(\text{rate} = k[\mathrm{A}]^m[\mathrm{B}]^n\), but \(m\), \(n\) and \(k\) are hidden. Choose the starting
+        concentrations, run the experiment, and the lab measures the <strong>initial rate</strong>: the slope of
+        [A] against time at \(t = 0\), before the concentrations have changed much.
+      </p>
+
+      <div class="lab" id="iratelab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="ir-A"><span>[A]<sub>0</sub></span> <output id="ir-A-out"></output></label>
+              <input id="ir-A" type="range" min="0.010" max="0.200" step="0.005" value="0.100">
+            </div>
+            <div class="control">
+              <label for="ir-B"><span>[B]<sub>0</sub></span> <output id="ir-B-out"></output></label>
+              <input id="ir-B" type="range" min="0.010" max="0.200" step="0.005" value="0.100">
+            </div>
+            <div class="btn-row">
+              <button class="btn primary" id="ir-run" type="button">Run experiment</button>
+            </div>
+            <div class="btn-row">
+              <button class="btn" id="ir-clear" type="button">Clear table</button>
+              <button class="btn" id="ir-new" type="button">New mystery</button>
+            </div>
+            <p class="small muted" style="margin:0">Tip: change only one concentration at a time. Compare two runs where
+              [B]<sub>0</sub> is the same and only [A]<sub>0</sub> changes, then do the same for B.</p>
+          </div>
+
+          <div>
+            <canvas class="plot" id="ir-plot" role="img" aria-label="Concentration of A against time in the last experiment, with the initial slope"></canvas>
+            <div class="legend">
+              <span><i style="border-color:var(--c1)"></i>[A] measured</span>
+              <span><i style="border-color:var(--text);border-top-style:dashed"></i>slope at t = 0 (−initial rate)</span>
+            </div>
+            <p class="small muted" id="ir-plot-note" style="margin:6px 0 0"></p>
+
+            <div class="table-wrap">
+              <table id="ir-table">
+                <thead><tr><th>Run</th><th>[A]<sub>0</sub> (M)</th><th>[B]<sub>0</sub> (M)</th><th>Initial rate (M s⁻¹)</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="answer-box">
+          <p style="margin:0 0 8px"><strong>Your rate law</strong></p>
+          <div class="answer-grid">
+            <div class="control">
+              <span class="ctl-label">Order in A, <em>m</em></span>
+              <div class="seg" role="group" aria-label="Your order in A" id="ir-m">
+                <button type="button" data-v="0" aria-pressed="false">0</button>
+                <button type="button" data-v="1" aria-pressed="false">1</button>
+                <button type="button" data-v="2" aria-pressed="false">2</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="ctl-label">Order in B, <em>n</em></span>
+              <div class="seg" role="group" aria-label="Your order in B" id="ir-n">
+                <button type="button" data-v="0" aria-pressed="false">0</button>
+                <button type="button" data-v="1" aria-pressed="false">1</button>
+                <button type="button" data-v="2" aria-pressed="false">2</button>
+              </div>
+            </div>
+            <div class="control">
+              <label for="ir-k" class="ctl-label">k =</label>
+              <div class="answer-row" style="margin:0">
+                <input id="ir-k" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g. 0.25">
+                <select id="ir-unit" aria-label="Units of k">
+                  <option value="">units…</option>
+                  <option>M s⁻¹</option>
+                  <option>s⁻¹</option>
+                  <option>M⁻¹ s⁻¹</option>
+                  <option>M⁻² s⁻¹</option>
+                  <option>M⁻³ s⁻¹</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:12px">
+            <button class="btn primary" id="ir-check" type="button">Check</button>
+            <button class="btn" id="ir-show" type="button">Show answer</button>
+          </div>
+          <div class="feedback" id="ir-fb" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <h3>Order is not stoichiometry</h3>
+      <p>You cannot read a rate law off the balanced equation. Some real examples (gas-phase reactions, from Brown, Ch. 14):</p>
+      <div class="table-wrap">
+        <table class="stoich-table">
+          <thead><tr><th>Reaction</th><th>Measured rate law</th><th>What it shows</th></tr></thead>
+          <tbody>
+            <tr><td>\(2\,\mathrm{N_2O_5} \rightarrow 4\,\mathrm{NO_2} + \mathrm{O_2}\)</td><td>\(\text{rate} = k[\mathrm{N_2O_5}]\)</td>
+              <td>Coefficient 2, but first order.</td></tr>
+            <tr><td>\(\mathrm{CHCl_3} + \mathrm{Cl_2} \rightarrow \mathrm{CCl_4} + \mathrm{HCl}\)</td><td>\(\text{rate} = k[\mathrm{CHCl_3}][\mathrm{Cl_2}]^{1/2}\)</td>
+              <td>Orders can be fractions.</td></tr>
+            <tr><td>\(\mathrm{NO_2} + \mathrm{CO} \rightarrow \mathrm{NO} + \mathrm{CO_2}\)</td><td>\(\text{rate} = k[\mathrm{NO_2}]^2\) <span class="small muted">(below 225 °C)</span></td>
+              <td>CO is a reactant but has order 0.</td></tr>
+            <tr><td>\(\mathrm{H_2} + \mathrm{I_2} \rightarrow 2\,\mathrm{HI}\)</td><td>\(\text{rate} = k[\mathrm{H_2}][\mathrm{I_2}]\)</td>
+              <td>Here the orders happen to match the coefficients.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Why the orders come out like this is a question about the reaction <em>mechanism</em>,
+        the individual steps the reaction goes through. That comes later in the kinetics chapter.</p>
+    </section>
 
     <!-- =============================================================== -->
     <section id="orders">
@@ -317,6 +500,7 @@
     </div>
   </footer>
 
+  <script type="module" src="ratelaw.js"></script>
   <script type="module" src="orders.js"></script>
   <script type="module" src="detective.js"></script>
   <script type="module" src="../assets/quiz.js"></script>

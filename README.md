@@ -11,8 +11,10 @@ index.html            landing page, one row per syllabus topic
 assets/style.css      shared styles (light and dark mode)
 assets/plot.js        small canvas plotting helper (no dependencies)
 assets/quiz.js        self-check questions
+assets/format.js      number and unit formatting
 kinetics-1/           topic 10, Chemical kinetics I
   index.html          page text, equations (KaTeX), controls
+  ratelaw.js          module 2: order explorer and initial-rates lab
   orders.js           module 3: zero/first/second order over time
   detective.js        "what order is it?" exercise
 ```

@@ -2,7 +2,8 @@
 // Data are generated in the browser; answers are never sent anywhere.
 
 import { Plot } from '../assets/plot.js';
-import { conc, sig } from './orders.js';
+import { conc } from './orders.js';
+import { sig, parseNumber } from '../assets/format.js';
 
 const $ = id => document.getElementById(id);
 const TIMES = [0, 20, 40, 60, 80, 100, 120]; // s
@@ -113,10 +114,6 @@ document.querySelectorAll('#det-order button').forEach(btn => btn.addEventListen
     fb.textContent = `Not ${NAMES[n]} order. If it were, which plot would be straight? Check that plot.`;
   }
 }));
-
-function parseNumber(s) {
-  return parseFloat(String(s).trim().replace(',', '.').replace('−', '-').replace(/[×x]\s*10\^?/, 'e'));
-}
 
 $('det-check').addEventListener('click', () => {
   if (!solvedOrder) return;

@@ -5,6 +5,7 @@
 //   n = 2:  1/[A]t = k t + 1/[A]0
 
 import { Plot, cssColor } from '../assets/plot.js';
+import { sig } from '../assets/format.js';
 
 const ORDERS = [
   { n: 0, name: 'Zero', color: '--c0', dash: [], kUnit: 'M s⁻¹' },
@@ -43,15 +44,6 @@ const transform = {
 };
 
 // ---------- formatting ----------
-export function sig(x, digits = 3) {
-  if (!Number.isFinite(x)) return '—';
-  if (x === 0) return '0';
-  if (Math.abs(x) >= 1000 && Math.abs(x) < 1e4) return String(Math.round(x)).replace('-', '−');
-  const s = Math.abs(x) >= 1e4 || Math.abs(x) < 1e-3 ? x.toExponential(digits - 1) : x.toPrecision(digits);
-  // drop exponent form "e-4" → "×10⁻⁴"
-  return s.replace(/e([+-])(\d+)/, (_, sgn, d) => '×10' + (sgn === '-' ? '⁻' : '') + [...String(+d)].map(c => '⁰¹²³⁴⁵⁶⁷⁸⁹'[c]).join(''))
-    .replace('-', '−');
-}
 const fmtTime = t => (Number.isFinite(t) ? sig(t, 3) + ' s' : '—');
 
 // ---------- plot ----------
