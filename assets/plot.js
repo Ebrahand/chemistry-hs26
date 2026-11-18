@@ -53,6 +53,17 @@ export class Plot {
 
   draw(spec) { this.spec = spec; this.render(); }
 
+  // CSS-pixel position inside the canvas -> data coordinates (null outside the plot area)
+  invert(px, py) {
+    const s = this.spec;
+    if (!s || !this.w) return null;
+    if (px < this.pad.l || px > this.pad.l + this.w || py < this.pad.t || py > this.pad.t + this.h) return null;
+    return {
+      x: s.x.min + ((px - this.pad.l) / this.w) * (s.x.max - s.x.min),
+      y: s.y.min + (1 - (py - this.pad.t) / this.h) * (s.y.max - s.y.min),
+    };
+  }
+
   // data -> pixel (CSS px)
   X(x) { const { x: ax } = this.spec; return this.pad.l + (x - ax.min) / (ax.max - ax.min) * this.w; }
   Y(y) { const { y: ay } = this.spec; return this.pad.t + (1 - (y - ay.min) / (ay.max - ay.min)) * this.h; }
@@ -139,6 +150,28 @@ export class Plot {
       ctx.setLineDash(vl.dash || []); ctx.lineWidth = vl.width || 1;
       ctx.beginPath(); ctx.moveTo(px, this.pad.t); ctx.lineTo(px, this.pad.t + this.h); ctx.stroke();
       ctx.setLineDash([]);
+    }
+
+    // slope field: short segments of constant on-screen length with slope fn(x, y)
+    if (s.field) {
+      const { fn, nx = 16, ny = 11, color = '--plot-axis', len = 14 } = s.field;
+      const sx = this.w / (s.x.max - s.x.min), sy = this.h / (s.y.max - s.y.min);
+      ctx.strokeStyle = cssColor(color); ctx.lineWidth = 1.3; ctx.lineCap = 'round';
+      ctx.beginPath();
+      for (let i = 0; i < nx; i++) {
+        for (let j = 0; j < ny; j++) {
+          const x = s.x.min + ((i + 0.5) / nx) * (s.x.max - s.x.min);
+          const y = s.y.min + ((j + 0.5) / ny) * (s.y.max - s.y.min);
+          const m = fn(x, y);
+          if (!Number.isFinite(m)) continue;
+          // direction in pixels: (sx, −m·sy) normalised
+          const dx = sx, dy = -m * sy, L = Math.hypot(dx, dy);
+          const ux = (dx / L) * len / 2, uy = (dy / L) * len / 2;
+          const px = this.X(x), py = this.Y(y);
+          ctx.moveTo(px - ux, py - uy); ctx.lineTo(px + ux, py + uy);
+        }
+      }
+      ctx.stroke();
     }
 
     for (const sr of s.series || []) {

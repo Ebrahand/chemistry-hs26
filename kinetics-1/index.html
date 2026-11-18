@@ -36,11 +36,127 @@
     </div>
 
     <nav class="module-nav" aria-label="Modules on this page">
-      <div><strong>1 · What is a rate?</strong><span class="tag">coming soon</span></div>
+      <a href="#rate"><strong>1 · What is a rate?</strong><span class="tag live">open</span></a>
       <a href="#rate-law"><strong>2 · The rate law</strong><span class="tag live">open</span></a>
       <a href="#orders"><strong>3 · Orders over time</strong><span class="tag live">open</span></a>
-      <div><strong>4 · Under the hood: the ODE</strong><span class="tag">coming soon</span></div>
+      <a href="#ode"><strong>4 · Under the hood: the ODE</strong><span class="tag live">open</span></a>
     </nav>
+
+    <!-- =============================================================== -->
+    <section id="rate">
+      <h2>1 · What is a reaction rate?</h2>
+      <p>
+        <strong>Chemical kinetics</strong> asks how <em>fast</em> a reaction goes. Thermodynamics (weeks 4 and 5) tells you
+        whether a reaction is spontaneous; kinetics tells you whether it takes a microsecond or a million years.
+        The <strong>reaction rate</strong> is the change in concentration per unit time, in \(\mathrm{M\,s^{-1}}\).
+      </p>
+
+      <h3>Watch a reaction happen</h3>
+      <p>Each blue circle is a molecule of A. Every so often one of them turns into B (green square). Watch the counts and
+        how fast A disappears early on compared with later.</p>
+
+      <div class="lab" id="sim-lab">
+        <div class="sim-grid">
+          <div>
+            <canvas id="sim-box" class="sim-box" role="img" aria-label="Box of molecules: A turns into B over time"></canvas>
+            <div class="btn-row" style="margin-top:10px">
+              <button class="btn primary" id="sim-play" type="button">▶ Start</button>
+              <button class="btn" id="sim-reset" type="button">Reset</button>
+            </div>
+          </div>
+          <div>
+            <canvas class="plot" id="sim-plot" role="img" aria-label="Number of A and B molecules against time"></canvas>
+            <div class="legend">
+              <span><i style="border-color:var(--c1)"></i>molecules of A</span>
+              <span><i style="border-color:var(--c2);border-top-style:dashed"></i>molecules of B</span>
+            </div>
+            <div class="callout" id="sim-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">In a box of fixed volume, the number of molecules is proportional to the concentration, so this
+        plot has the same shape as [A] against time.</p>
+
+      <h3>Average rate and instantaneous rate</h3>
+      <p>
+        The <strong>average rate</strong> over a time interval is the slope of the straight line (secant) between two points
+        of the curve:
+      </p>
+      \[ \text{average rate} = -\frac{\Delta[\mathrm{A}]}{\Delta t} = -\frac{[\mathrm{A}]_{t+\Delta t} - [\mathrm{A}]_t}{\Delta t} \]
+      <p>
+        The minus sign makes the rate positive, because [A] decreases. Make \(\Delta t\) smaller and smaller and the secant
+        turns into the tangent: the <strong>instantaneous rate</strong> \(-d[\mathrm{A}]/dt\). The instantaneous rate at
+        \(t = 0\) is the <strong>initial rate</strong>.
+      </p>
+
+      <div class="lab" id="secant-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="sec-t"><span>Start of interval, t</span> <output id="sec-t-out"></output></label>
+              <input id="sec-t" type="range" min="0" max="600" step="5" value="100">
+            </div>
+            <div class="control">
+              <label for="sec-dt"><span>Interval length, Δt</span> <output id="sec-dt-out"></output></label>
+              <input id="sec-dt" type="range" min="0" max="100" step="1" value="80">
+            </div>
+            <label class="chip" style="align-self:flex-start"><input type="checkbox" id="sec-tan" checked>Tangent at t</label>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table">
+                <tbody id="sec-readout"></tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <canvas class="plot" id="sec-plot" role="img" aria-label="Concentration of A against time with a secant and a tangent"></canvas>
+            <div class="legend">
+              <span><i style="border-color:var(--c1)"></i>[A]</span>
+              <span><i style="border-color:var(--c0)"></i>secant: average rate</span>
+              <span><i style="border-color:var(--text);border-top-style:dashed"></i>tangent: instantaneous rate</span>
+            </div>
+            <div class="callout" id="sec-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Rate and stoichiometry: one reaction, one rate</h3>
+      <p>
+        In \(2\,\mathrm{N_2O_5} \rightarrow 4\,\mathrm{NO_2} + \mathrm{O_2}\), NO<sub>2</sub> appears four times as fast as
+        O<sub>2</sub>, and N<sub>2</sub>O<sub>5</sub> disappears twice as fast as O<sub>2</sub> appears. To get <em>one</em>
+        rate for the reaction, divide each change by its coefficient:
+      </p>
+      \[ \text{rate} = -\frac{1}{2}\frac{d[\mathrm{N_2O_5}]}{dt} = \frac{1}{4}\frac{d[\mathrm{NO_2}]}{dt} = \frac{d[\mathrm{O_2}]}{dt}
+         \qquad\text{in general:}\quad
+         \text{rate} = -\frac{1}{a}\frac{d[\mathrm{A}]}{dt} = \frac{1}{c}\frac{d[\mathrm{C}]}{dt} \]
+
+      <div class="lab" id="stoich-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="st-t"><span>Time t</span> <output id="st-t-out"></output></label>
+              <input id="st-t" type="range" min="0" max="3000" step="10" value="600">
+            </div>
+            <p class="small muted" style="margin:0">The tangent on each curve shows how fast that substance changes at time t.
+              The numbers are illustrative.</p>
+          </div>
+          <div>
+            <canvas class="plot" id="st-plot" role="img" aria-label="Concentrations of N2O5, NO2 and O2 against time"></canvas>
+            <div class="legend">
+              <span><i style="border-color:var(--c1)"></i>[N₂O₅]</span>
+              <span><i style="border-color:var(--c0);border-top-style:dashed"></i>[NO₂]</span>
+              <span><i style="border-color:var(--c2);border-top-style:dotted"></i>[O₂]</span>
+            </div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Substance</th><th>Coefficient</th><th>Slope d[X]/dt at t</th><th>Divide by coefficient (minus for reactants)</th></tr></thead>
+            <tbody id="st-table"></tbody>
+          </table>
+        </div>
+        <p class="callout" id="st-note" style="margin-top:12px"></p>
+      </div>
+    </section>
 
     <!-- =============================================================== -->
     <section id="rate-law">
@@ -379,7 +495,7 @@
            t_{1/2} = \frac{\ln 2}{k} = \frac{0.693}{k}\ \ (n=1), \qquad
            t_{1/2} = \frac{1}{k[\mathrm{A}]_0}\ \ (n=2) \]
         <p class="small muted">Only the first-order half-life does not contain \([\mathrm{A}]_0\). That is why it stays constant
-          as the reaction goes on. Module 4 (coming soon) will let you watch a computer solve the ODE step by step.</p>
+          as the reaction goes on. In <a href="#ode">module 4</a> you can watch a computer solve the ODE step by step.</p>
       </details>
     </section>
 
@@ -439,8 +555,132 @@
     </section>
 
     <!-- =============================================================== -->
+    <section id="ode">
+      <h2>4 · Under the hood: the rate law is a differential equation</h2>
+      <p>
+        An <strong>ordinary differential equation</strong> (ODE) links a function to its own derivative. The rate law is one:
+      </p>
+      \[ \frac{d[\mathrm{A}]}{dt} = -k[\mathrm{A}]^n \]
+      <p>
+        Read it as an instruction: <em>“wherever you are, the slope of the curve is \(-k[\mathrm{A}]^n\).”</em> It does not
+        give you [A] directly. It tells you which way to go from any point. The starting value \([\mathrm{A}]_0\) then picks
+        out one particular curve.
+      </p>
+
+      <h3>The slope field: every point has a direction</h3>
+      <p>Each small line shows the slope the rate law demands at that point. <strong>Tap or click anywhere in the plot</strong>
+        to start a reaction from there: the solution follows the lines.</p>
+
+      <div class="lab" id="field-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Order n</span>
+              <div class="seg" role="group" aria-label="Reaction order" id="fl-n">
+                <button type="button" data-v="0" aria-pressed="false">0</button>
+                <button type="button" data-v="0.5" aria-pressed="false">½</button>
+                <button type="button" data-v="1" aria-pressed="true">1</button>
+                <button type="button" data-v="1.5" aria-pressed="false">1½</button>
+                <button type="button" data-v="2" aria-pressed="false">2</button>
+              </div>
+            </div>
+            <div class="control">
+              <label for="fl-k"><span>Rate constant k</span> <output id="fl-k-out"></output></label>
+              <input id="fl-k" type="range" min="0.02" max="0.30" step="0.01" value="0.10">
+            </div>
+            <div class="btn-row">
+              <button class="btn" id="fl-clear" type="button">Clear curves</button>
+            </div>
+            <p class="small muted" style="margin:0" id="fl-hint"></p>
+          </div>
+          <div>
+            <canvas class="plot" id="fl-plot" role="img" aria-label="Slope field of the rate law with solution curves" style="cursor:crosshair"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <h3>How a computer solves it: Euler's method</h3>
+      <p>
+        Most ODEs in engineering cannot be solved with pen and paper, so computers solve them step by step. The simplest way
+        is <strong>Euler's method</strong>: look at the slope where you are, walk a small time step \(\Delta t\) in that
+        direction, and repeat.
+      </p>
+      \[ [\mathrm{A}]_{i+1} = [\mathrm{A}]_i + \underbrace{\left(-k[\mathrm{A}]_i^{\,n}\right)}_{\text{slope now}} \cdot \Delta t \]
+
+      <div class="lab" id="euler-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Order n</span>
+              <div class="seg" role="group" aria-label="Reaction order" id="eu-n">
+                <button type="button" data-v="0" aria-pressed="false">0</button>
+                <button type="button" data-v="1" aria-pressed="true">1</button>
+                <button type="button" data-v="2" aria-pressed="false">2</button>
+              </div>
+            </div>
+            <div class="control">
+              <label for="eu-dt"><span>Step size Δt</span> <output id="eu-dt-out"></output></label>
+              <input id="eu-dt" type="range" min="0.5" max="25" step="0.5" value="5">
+            </div>
+            <div class="btn-row">
+              <button class="btn primary" id="eu-step" type="button">Take one step</button>
+              <button class="btn" id="eu-all" type="button">All steps</button>
+              <button class="btn" id="eu-reset" type="button">Restart</button>
+            </div>
+            <p class="small muted" style="margin:0">[A]<sub>0</sub> = 1.00 M and k = 0.10 (in the units that fit the order).</p>
+          </div>
+          <div>
+            <canvas class="plot" id="eu-plot" role="img" aria-label="Euler steps compared with the exact solution"></canvas>
+            <div class="legend">
+              <span><i style="border-color:var(--c1)"></i>exact solution</span>
+              <span><i style="border-color:var(--c0);border-top-style:dashed"></i>Euler steps</span>
+            </div>
+            <div class="callout" id="eu-note" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Step i</th><th>t (s)</th><th>[A]<sub>i</sub> (Euler)</th><th>slope −k[A]<sub>i</sub><sup>n</sup></th><th>[A] exact</th><th>error</th></tr></thead>
+            <tbody id="eu-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <h3>Things to try</h3>
+      <ol class="try">
+        <li>In the slope field, start several reactions at different times with the same [A]. For first order, they are the
+          same curve shifted in time. Why? (Hint: the slope only depends on [A], not on t.)</li>
+        <li>Switch to order ½ or 0. The curves hit [A] = 0 at a finite time. For order 1, 1½ and 2 they never quite reach zero.</li>
+        <li>In Euler's method, make Δt large for first order (Δt above 10 s means kΔt above 1). The steps overshoot and [A]
+          even becomes negative, which is chemically impossible. Then make Δt small.</li>
+        <li>Is Euler's [A] always above or always below the exact curve for a decay? Look at the shape of the curve.</li>
+      </ol>
+
+      <details>
+        <summary>The general solution for any order n ≠ 1</summary>
+        <p>Separation of variables works for any order:</p>
+        \[ \int_{[\mathrm{A}]_0}^{[\mathrm{A}]_t} [\mathrm{A}]^{-n}\, d[\mathrm{A}] = -k\int_0^t dt
+           \;\Rightarrow\;
+           \frac{1}{[\mathrm{A}]_t^{\,n-1}} = \frac{1}{[\mathrm{A}]_0^{\,n-1}} + (n-1)\,kt \qquad (n \neq 1) \]
+        <p>Put in \(n = 2\) and you get \(1/[\mathrm{A}]_t = 1/[\mathrm{A}]_0 + kt\). Put in \(n = 0\) and you get
+          \([\mathrm{A}]_t = [\mathrm{A}]_0 - kt\). For \(n = 1\) the integral of \(1/[\mathrm{A}]\) is a logarithm instead,
+          which gives the exponential decay.</p>
+      </details>
+    </section>
+
+    <!-- =============================================================== -->
     <section id="check">
       <h2>Quick self-check</h2>
+
+      <div class="card quiz">
+        <p class="q">For 2 HI → H₂ + I₂, [HI] drops by 0.010 M s⁻¹. How fast does [H₂] rise?</p>
+        <div class="opts">
+          <button type="button" data-fb="Two HI are used up for every H₂ formed, so H₂ appears more slowly.">0.020 M s⁻¹</button>
+          <button type="button" data-fb="The coefficients differ (2 and 1), so the speeds differ too.">0.010 M s⁻¹</button>
+          <button type="button" data-correct data-fb="rate = −½ Δ[HI]/Δt = ½ × 0.010 = 0.005 M s⁻¹ = Δ[H₂]/Δt.">0.005 M s⁻¹</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
 
       <div class="card quiz">
         <p class="q">A first-order reaction has a half-life of 10 min. What fraction of A is left after 30 min?</p>
@@ -472,6 +712,16 @@
         </div>
         <p class="feedback" aria-live="polite"></p>
       </div>
+
+      <div class="card quiz">
+        <p class="q">Euler's method on a first-order decay: compared with the exact curve, Euler's [A] values are…</p>
+        <div class="opts">
+          <button type="button" data-correct data-fb="The decay curve bends upwards (it gets flatter). Each Euler step uses the steepest slope of its interval, the one at the start, so it always drops a bit too far.">too low</button>
+          <button type="button" data-fb="Look at the shape: the slope at the start of each step is the steepest one in that step.">too high</button>
+          <button type="button" data-fb="Only for zero order, where the slope never changes, is Euler exact.">exactly right</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
     </section>
 
     <!-- =============================================================== -->
@@ -500,7 +750,9 @@
     </div>
   </footer>
 
+  <script type="module" src="rate.js"></script>
   <script type="module" src="ratelaw.js"></script>
+  <script type="module" src="ode.js"></script>
   <script type="module" src="orders.js"></script>
   <script type="module" src="detective.js"></script>
   <script type="module" src="../assets/quiz.js"></script>

@@ -286,6 +286,11 @@ details > *:last-child { margin-bottom: 16px; }
   border: 1px solid var(--border); background: var(--bg); color: var(--text);
 }
 
+/* module 1: particle simulation */
+.sim-grid { display: grid; grid-template-columns: minmax(220px, 1fr) 1.4fr; gap: 20px; align-items: start; }
+@media (max-width: 760px) { .sim-grid { grid-template-columns: 1fr; } }
+.sim-box { width: 100%; aspect-ratio: 1 / 1; display: block; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
+
 /* module 2: order explorer and initial-rates lab */
 .ctl-label { display: block; font-size: 15px; font-weight: 600; margin-bottom: 6px; }
 .explorer-grid { display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start; }

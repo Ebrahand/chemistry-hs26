@@ -14,9 +14,11 @@ assets/quiz.js        self-check questions
 assets/format.js      number and unit formatting
 kinetics-1/           topic 10, Chemical kinetics I
   index.html          page text, equations (KaTeX), controls
+  rate.js             module 1: particle simulation, average vs instantaneous rate, stoichiometry
   ratelaw.js          module 2: order explorer and initial-rates lab
   orders.js           module 3: zero/first/second order over time
   detective.js        "what order is it?" exercise
+  ode.js              module 4: slope field and Euler's method
 ```
 
 Equations are rendered with KaTeX 0.16.11, loaded from cdn.jsdelivr.net.
