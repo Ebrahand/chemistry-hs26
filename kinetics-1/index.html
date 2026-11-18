@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chemical Kinetics I</title>
+  <meta name="description" content="Interactive look at reaction orders: how zero-, first- and second-order reactions change in time, half-lives, and the rate-law ODE.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false})"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../">Chemistry HS26 <span>· interactive companion</span></a>
+      <nav class="crumbs"><a href="../">Topics</a> › 10 Chemical kinetics I</nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Chemical kinetics I</h1>
+    <p class="lede">How fast does a reaction go, and how does that speed change as the reactants are used up?
+      Brown, Chapter 14.</p>
+
+    <div class="card">
+      <strong>After this week you should be able to</strong>
+      <ul style="margin:8px 0 0">
+        <li>say what a reaction rate is and how it is linked to the stoichiometry</li>
+        <li>read a rate law and name the reaction order</li>
+        <li>work out the units of the rate constant \(k\)</li>
+        <li>write the differential equation (ODE) for zero-, first- and second-order reactions and solve it</li>
+        <li>calculate and interpret half-lives</li>
+      </ul>
+    </div>
+
+    <nav class="module-nav" aria-label="Modules on this page">
+      <div><strong>1 · What is a rate?</strong><span class="tag">coming soon</span></div>
+      <div><strong>2 · The rate law</strong><span class="tag">coming soon</span></div>
+      <a href="#orders"><strong>3 · Orders over time</strong><span class="tag live">open</span></a>
+      <div><strong>4 · Under the hood: the ODE</strong><span class="tag">coming soon</span></div>
+    </nav>
+
+    <!-- =============================================================== -->
+    <section id="orders">
+      <h2>3 · How do zero-, first- and second-order reactions change in time?</h2>
+      <p>
+        Take a reaction \(\mathrm{A} \rightarrow \text{products}\). The rate law tells you how fast A disappears
+        <em>right now</em>, given how much A is left:
+      </p>
+      \[ \text{rate} = -\frac{d[\mathrm{A}]}{dt} = k[\mathrm{A}]^n \]
+      <p>
+        This is a rule for the <strong>slope</strong> of the [A]-versus-time curve. If you follow that rule moment by moment,
+        you get the whole curve. The order \(n\) decides what the curve looks like:
+      </p>
+      <ul>
+        <li><strong>Zero order</strong> (\(n = 0\)): the slope never changes. The same <em>amount</em> of A disappears every second,
+          until none is left.</li>
+        <li><strong>First order</strong> (\(n = 1\)): the slope is proportional to [A]. The same <em>fraction</em> of A disappears every second.</li>
+        <li><strong>Second order</strong> (\(n = 2\)): the slope is proportional to [A]². When half of A is left, the reaction goes
+          four times slower, so it drags on for a long time.</li>
+      </ul>
+
+      <div class="lab" id="orders-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <fieldset class="control-group">
+              <legend>Start</legend>
+              <div class="control">
+                <label for="A0"><span>Initial concentration [A]<sub>0</sub></span> <output id="A0-out"></output></label>
+                <input id="A0" type="range" min="0.10" max="2.00" step="0.01" value="1.00">
+              </div>
+            </fieldset>
+
+            <fieldset class="control-group">
+              <legend>Rate constants</legend>
+              <div class="control o0">
+                <label for="k0"><span><span class="swatch o0"></span> k, zero order</span> <output id="k0-out"></output></label>
+                <input id="k0" type="range" min="0.005" max="0.200" step="0.001" value="0.050">
+              </div>
+              <div class="control o1">
+                <label for="k1"><span><span class="swatch o1"></span> k, first order</span> <output id="k1-out"></output></label>
+                <input id="k1" type="range" min="0.005" max="0.200" step="0.001" value="0.050">
+              </div>
+              <div class="control o2">
+                <label for="k2"><span><span class="swatch o2"></span> k, second order</span> <output id="k2-out"></output></label>
+                <input id="k2" type="range" min="0.005" max="0.200" step="0.001" value="0.050">
+              </div>
+              <div class="btn-row">
+                <button class="btn" id="match" type="button" title="Set the first- and second-order k so that all three reactions start at the same rate">Match initial rates</button>
+                <button class="btn" id="reset" type="button">Reset</button>
+              </div>
+              <p class="small muted" id="match-note" style="margin:0" aria-live="polite"></p>
+            </fieldset>
+
+            <fieldset class="control-group">
+              <legend>Show</legend>
+              <div class="chips">
+                <label class="chip"><input type="checkbox" id="show0" checked><span class="swatch o0"></span>Zero</label>
+                <label class="chip"><input type="checkbox" id="show1" checked><span class="swatch o1"></span>First</label>
+                <label class="chip"><input type="checkbox" id="show2" checked><span class="swatch o2"></span>Second</label>
+              </div>
+              <label class="chip" style="align-self:flex-start"><input type="checkbox" id="showHalf" checked>Half-lives</label>
+              <label class="chip" style="align-self:flex-start"><input type="checkbox" id="showTangent" checked>Slope at time t</label>
+              <div class="control">
+                <label for="tmax">Time window <output id="tmax-out"></output></label>
+                <input id="tmax" type="range" min="10" max="300" step="5" value="60">
+              </div>
+            </fieldset>
+          </div>
+
+          <div>
+            <div class="plot-head">
+              <div class="seg" role="group" aria-label="What to plot against time">
+                <button type="button" data-view="A" aria-pressed="true">[A]</button>
+                <button type="button" data-view="lnA" aria-pressed="false">ln [A]</button>
+                <button type="button" data-view="invA" aria-pressed="false">1 / [A]</button>
+              </div>
+              <span class="small muted">plotted against time</span>
+            </div>
+            <canvas class="plot" id="orders-plot" role="img" aria-label="Concentration of A against time for zero-, first- and second-order reactions"></canvas>
+            <div class="legend">
+              <span><i style="border-color:var(--c0)"></i>zero order</span>
+              <span><i style="border-color:var(--c1);border-top-style:dashed"></i>first order</span>
+              <span><i style="border-color:var(--c2);border-top-style:dotted"></i>second order</span>
+            </div>
+            <div class="callout" id="view-note" aria-live="polite"></div>
+
+            <div class="time-row">
+              <button class="btn primary" id="play" type="button">▶ Play</button>
+              <input id="t" type="range" min="0" max="60" step="0.1" value="10" aria-label="Time t">
+              <output id="t-out"></output>
+            </div>
+
+            <div class="boxes" aria-label="Molecules of A left in each flask">
+              <div class="box" id="box0"><h4><span class="swatch o0"></span>Zero order</h4><canvas></canvas><p></p></div>
+              <div class="box" id="box1"><h4><span class="swatch o1"></span>First order</h4><canvas></canvas><p></p></div>
+              <div class="box" id="box2"><h4><span class="swatch o2"></span>Second order</h4><canvas></canvas><p></p></div>
+            </div>
+            <p class="small muted" style="margin:6px 0 0">Each flask starts with 100 molecules of A (filled dots). Hollow dots have reacted.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table id="readout">
+            <thead>
+              <tr><th>Order</th><th>k</th><th>[A] at t</th><th>rate at t</th><th>1st half-life</th><th>2nd half-life</th><th>3rd half-life</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <h3>Things to try</h3>
+      <ol class="try">
+        <li>Press <strong>Match initial rates</strong>. All three reactions now start with the same slope. Which one is half
+          finished first? Which one is last?</li>
+        <li>Turn on <strong>half-lives</strong> and look at the table. For which order are the 1st, 2nd and 3rd half-lives equal?
+          For which do they get shorter, and for which longer?</li>
+        <li>Now double [A]<sub>0</sub>. Which half-life does not change at all?</li>
+        <li>Press <strong>Play</strong> and count the molecules. In the zero-order flask the same <em>number</em> reacts in each
+          second; in the first-order flask the same <em>fraction</em> reacts.</li>
+        <li>Switch the plot to <strong>ln [A]</strong> and then <strong>1 / [A]</strong>. In each view, which line is straight?</li>
+      </ol>
+
+      <details>
+        <summary>Why does k have different units for each order?</summary>
+        <p>A rate is always a concentration per time, \(\mathrm{M\,s^{-1}}\). In \(\text{rate} = k[\mathrm{A}]^n\) the factor
+          \([\mathrm{A}]^n\) carries \(\mathrm{M}^n\), so \(k\) has to make up the difference:</p>
+        \[ k \;:\; \mathrm{M}^{1-n}\,\mathrm{s}^{-1} \qquad\Rightarrow\qquad
+           n=0:\ \mathrm{M\,s^{-1}}, \quad n=1:\ \mathrm{s^{-1}}, \quad n=2:\ \mathrm{M^{-1}\,s^{-1}} \]
+        <p>That is why the three sliders can show the same number, 0.050, and still describe three very different reactions.
+          You cannot compare k values of different orders directly.</p>
+      </details>
+
+      <details>
+        <summary>Where do the integrated rate laws come from? A short look at the ODE</summary>
+        <p>The rate law is an <strong>ordinary differential equation</strong>: it links [A] to its own derivative.
+          We solve it by <em>separation of variables</em>: put everything with [A] on one side and everything with t on the
+          other, then integrate from the start (\(t = 0\), \([\mathrm{A}]_0\)) to time \(t\).</p>
+        <p><strong>First order.</strong></p>
+        \[ -\frac{d[\mathrm{A}]}{dt} = k[\mathrm{A}]
+           \;\Rightarrow\; \int_{[\mathrm{A}]_0}^{[\mathrm{A}]_t} \frac{d[\mathrm{A}]}{[\mathrm{A}]} = -k\int_0^t dt
+           \;\Rightarrow\; \ln[\mathrm{A}]_t - \ln[\mathrm{A}]_0 = -kt \]
+        <p><strong>Zero order.</strong></p>
+        \[ -\frac{d[\mathrm{A}]}{dt} = k
+           \;\Rightarrow\; \int_{[\mathrm{A}]_0}^{[\mathrm{A}]_t} d[\mathrm{A}] = -k\int_0^t dt
+           \;\Rightarrow\; [\mathrm{A}]_t = -kt + [\mathrm{A}]_0 \]
+        <p><strong>Second order.</strong></p>
+        \[ -\frac{d[\mathrm{A}]}{dt} = k[\mathrm{A}]^2
+           \;\Rightarrow\; \int_{[\mathrm{A}]_0}^{[\mathrm{A}]_t} \frac{d[\mathrm{A}]}{[\mathrm{A}]^2} = -k\int_0^t dt
+           \;\Rightarrow\; \frac{1}{[\mathrm{A}]_t} = kt + \frac{1}{[\mathrm{A}]_0} \]
+        <p><strong>Half-life.</strong> Put \([\mathrm{A}]_t = \tfrac12[\mathrm{A}]_0\) and solve for \(t\):</p>
+        \[ t_{1/2} = \frac{[\mathrm{A}]_0}{2k}\ \ (n=0), \qquad
+           t_{1/2} = \frac{\ln 2}{k} = \frac{0.693}{k}\ \ (n=1), \qquad
+           t_{1/2} = \frac{1}{k[\mathrm{A}]_0}\ \ (n=2) \]
+        <p class="small muted">Only the first-order half-life does not contain \([\mathrm{A}]_0\). That is why it stays constant
+          as the reaction goes on. Module 4 (coming soon) will let you watch a computer solve the ODE step by step.</p>
+      </details>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="detective">
+      <h2>Data detective: what order is it?</h2>
+      <p>Someone measured [A] over time for a reaction \(\mathrm{A} \rightarrow \text{products}\). Plot the data three ways.
+        The plot that gives a straight line tells you the order, and its slope gives you k.</p>
+
+      <div class="lab">
+        <div class="detective-grid">
+          <div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table" id="det-table">
+                <thead><tr><th>t (s)</th><th>[A] (M)</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div class="btn-row" style="margin-top:12px">
+              <button class="btn" id="det-new" type="button">New data set</button>
+            </div>
+          </div>
+          <div>
+            <div class="plot-head">
+              <div class="seg" role="group" aria-label="What to plot against time" id="det-views">
+                <button type="button" data-view="A" aria-pressed="true">[A]</button>
+                <button type="button" data-view="lnA" aria-pressed="false">ln [A]</button>
+                <button type="button" data-view="invA" aria-pressed="false">1 / [A]</button>
+              </div>
+              <label class="chip"><input type="checkbox" id="det-fit">Best straight line</label>
+            </div>
+            <canvas class="plot" id="det-plot" role="img" aria-label="Measured data plotted against time"></canvas>
+            <p class="small muted" id="det-fit-note" style="margin:6px 0 0" aria-live="polite"></p>
+
+            <p style="margin:14px 0 6px"><strong>1.</strong> What is the order?</p>
+            <div class="btn-row" id="det-order">
+              <button class="btn" type="button" data-n="0">Zero</button>
+              <button class="btn" type="button" data-n="1">First</button>
+              <button class="btn" type="button" data-n="2">Second</button>
+            </div>
+            <p class="feedback" id="det-order-fb" aria-live="polite"></p>
+
+            <div id="det-k-step" hidden>
+              <p style="margin:6px 0 6px"><strong>2.</strong> What is k? Read it from the slope of the straight plot.</p>
+              <div class="answer-row">
+                <label for="det-k" class="small">k =</label>
+                <input id="det-k" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g. 0.012">
+                <span id="det-k-unit" class="small"></span>
+                <button class="btn" id="det-check" type="button">Check</button>
+                <button class="btn" id="det-show" type="button">Show answer</button>
+              </div>
+              <p class="feedback" id="det-k-fb" aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="check">
+      <h2>Quick self-check</h2>
+
+      <div class="card quiz">
+        <p class="q">A first-order reaction has a half-life of 10 min. What fraction of A is left after 30 min?</p>
+        <div class="opts">
+          <button type="button" data-fb="30 min is not 3 × one third. Each half-life halves what is left.">1/3</button>
+          <button type="button" data-correct data-fb="30 min is three half-lives: 1/2 × 1/2 × 1/2 = 1/8.">1/8</button>
+          <button type="button" data-fb="That would be after 20 min (two half-lives).">1/4</button>
+          <button type="button" data-fb="A first-order reaction never quite reaches zero. It only halves again and again.">none</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">You double [A]<sub>0</sub> for a second-order reaction. What happens to the first half-life?</p>
+        <div class="opts">
+          <button type="button" data-fb="That is what happens for zero order, where t½ = [A]₀ / 2k.">It doubles</button>
+          <button type="button" data-fb="That is only true for first order.">It stays the same</button>
+          <button type="button" data-correct data-fb="t½ = 1 / (k[A]₀), so doubling [A]₀ halves t½. More A means more collisions between two A molecules.">It halves</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">A plot of ln[A] against t is a straight line with slope −0.020 s⁻¹. What is k?</p>
+        <div class="opts">
+          <button type="button" data-fb="Check the sign: ln[A]ₜ = −kt + ln[A]₀, so the slope is −k.">−0.020 s⁻¹</button>
+          <button type="button" data-correct data-fb="A straight ln[A] plot means first order, and the slope is −k.">0.020 s⁻¹</button>
+          <button type="button" data-fb="A straight ln[A] plot means first order, so k has units of s⁻¹, not M⁻¹ s⁻¹.">0.020 M⁻¹ s⁻¹</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="summary">
+      <h2>Summary</h2>
+      <p>For a reaction \(\mathrm{A} \rightarrow \text{products}\):</p>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <thead>
+            <tr><th>Order</th><th>Rate law</th><th>Integrated rate law</th><th>Straight-line plot</th><th>Slope</th><th>Half-life</th><th>Units of k</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="swatch o0"></span> 0</td><td>\(\text{rate} = k\)</td><td>\([\mathrm{A}]_t = -kt + [\mathrm{A}]_0\)</td><td>\([\mathrm{A}]\) vs \(t\)</td><td>\(-k\)</td><td>\([\mathrm{A}]_0 / 2k\)</td><td>\(\mathrm{M\,s^{-1}}\)</td></tr>
+            <tr><td><span class="swatch o1"></span> 1</td><td>\(\text{rate} = k[\mathrm{A}]\)</td><td>\(\ln[\mathrm{A}]_t = -kt + \ln[\mathrm{A}]_0\)</td><td>\(\ln[\mathrm{A}]\) vs \(t\)</td><td>\(-k\)</td><td>\(0.693 / k\)</td><td>\(\mathrm{s^{-1}}\)</td></tr>
+            <tr><td><span class="swatch o2"></span> 2</td><td>\(\text{rate} = k[\mathrm{A}]^2\)</td><td>\(1/[\mathrm{A}]_t = kt + 1/[\mathrm{A}]_0\)</td><td>\(1/[\mathrm{A}]\) vs \(t\)</td><td>\(+k\)</td><td>\(1 / k[\mathrm{A}]_0\)</td><td>\(\mathrm{M^{-1}\,s^{-1}}\)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Made by the course TA. Not official course material: if this page and the lecture disagree, the lecture wins.
+      Nothing you do on these pages is recorded.
+    </div>
+  </footer>
+
+  <script type="module" src="orders.js"></script>
+  <script type="module" src="detective.js"></script>
+  <script type="module" src="../assets/quiz.js"></script>
+</body>
+</html>
