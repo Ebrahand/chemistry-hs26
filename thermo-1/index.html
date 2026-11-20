@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thermodynamics I</title>
+  <meta name="description" content="Interactive look at the first law, heat and work, enthalpy, calorimetry, Hess's law and enthalpies of formation.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false})"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../">Chemistry HS26 <span>· interactive companion</span></a>
+      <nav class="crumbs"><a href="../">Topics</a> › 4 Thermodynamics I</nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Thermodynamics I: energy, heat and enthalpy</h1>
+    <p class="lede">Burn a mole of hydrogen: how much heat comes out, how much work can it do, and how can you work that
+      out without burning anything? This week is about bookkeeping energy. Brown, Chapter 5 (sections 5.1–5.7).</p>
+
+    <div class="card">
+      <strong>After this week you should be able to</strong>
+      <ul style="margin:8px 0 0">
+        <li>use \(\Delta E = q + w\) with Brown's sign convention, and say what is the system and what are the surroundings</li>
+        <li>explain what a state function is, and why \(\Delta E\) and \(\Delta H\) are state functions but \(q\) and \(w\) are not</li>
+        <li>calculate pressure–volume work, and say why \(\Delta H = q_p\) at constant pressure</li>
+        <li>use a thermochemical equation to find the heat of a given amount of reaction</li>
+        <li>do a calorimetry calculation with \(q = m\,c_s\,\Delta T\)</li>
+        <li>combine reactions with Hess's law, and calculate \(\Delta H^\circ_\text{rxn}\) from enthalpies of formation</li>
+      </ul>
+    </div>
+
+    <nav class="module-nav" aria-label="Modules on this page">
+      <a href="#firstlaw"><strong>1 · The first law</strong><span class="tag live">open</span></a>
+      <a href="#enthalpy"><strong>2 · Enthalpy and P–V work</strong><span class="tag live">open</span></a>
+      <a href="#reaction"><strong>3 · Enthalpies of reaction</strong><span class="tag live">open</span></a>
+      <a href="#calorimetry"><strong>4 · Calorimetry</strong><span class="tag live">open</span></a>
+      <a href="#hess"><strong>5 · Hess's law</strong><span class="tag live">open</span></a>
+      <a href="#formation"><strong>6 · Enthalpies of formation</strong><span class="tag live">open</span></a>
+    </nav>
+
+    <!-- =============================================================== -->
+    <section id="firstlaw">
+      <h2>1 · Energy is conserved: the first law</h2>
+      <p>
+        <strong>Thermodynamics</strong> is the study of energy and how it changes form. <strong>Thermochemistry</strong> is
+        the part of it that asks how much heat a chemical reaction gives off or takes up. Energy comes in two kinds:
+        <em>kinetic</em> energy (motion) and <em>potential</em> energy (stored, for example in chemical bonds).
+      </p>
+      <p>
+        First, draw a line around what you are interested in. That is the <strong>system</strong>, usually the reactants
+        and products. Everything else is the <strong>surroundings</strong>.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>System</th><th>Exchanges energy?</th><th>Exchanges matter?</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Open</strong></td><td>yes</td><td>yes</td><td>a pot of boiling water without a lid</td></tr>
+            <tr><td><strong>Closed</strong></td><td>yes</td><td>no</td><td>gas in a cylinder with a piston</td></tr>
+            <tr><td><strong>Isolated</strong></td><td>no</td><td>no</td><td>a sealed, thermally insulated flask (ideally)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        The <strong>internal energy</strong> \(E\) of a system is all of its kinetic and potential energy. We cannot measure
+        \(E\) itself, only how it changes: \(\Delta E = E_\text{final} - E_\text{initial}\). The <strong>first law of
+        thermodynamics</strong> says energy is neither created nor destroyed. So if the system's energy changes, the energy
+        must have crossed the boundary, as heat or as work:
+      </p>
+      \[ \Delta E = q + w \]
+      <p>Brown (and this course) look at everything <strong>from the system's point of view</strong>. Think of the system
+        as a bank vault: whatever goes in counts positive, whatever comes out counts negative.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>positive (+)</th><th>negative (−)</th></tr></thead>
+          <tbody>
+            <tr><td>\(q\), heat</td><td>heat added to the system (<strong>endothermic</strong>)</td><td>heat released by the system (<strong>exothermic</strong>)</td></tr>
+            <tr><td>\(w\), work</td><td>work done <em>on</em> the system</td><td>work done <em>by</em> the system</td></tr>
+            <tr><td>\(\Delta E\)</td><td>the system gained energy</td><td>the system lost energy</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Careful: many physics and engineering books write \(\Delta E = q - w\) with \(w\) the work done
+        <em>by</em> the system. Same physics, different sign. In this course we use Brown's convention.</p>
+
+      <div class="lab" id="fl-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="btn-row" id="fl-presets" role="group" aria-label="Examples"></div>
+            <div class="control o0">
+              <label for="fl-q"><span>Heat q</span> <output id="fl-q-out"></output></label>
+              <input id="fl-q" type="range" min="-100" max="100" step="1" value="40">
+            </div>
+            <div class="control o1">
+              <label for="fl-w"><span>Work w</span> <output id="fl-w-out"></output></label>
+              <input id="fl-w" type="range" min="-100" max="100" step="1" value="-15">
+            </div>
+            <p class="small muted" style="margin:0">Values in kJ.</p>
+          </div>
+          <div>
+            <div id="fl-diagram" class="dh-diagram" role="img" aria-label="The system as a box with heat and work arrows going in or out"></div>
+            <div class="callout" id="fl-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>State functions: only the start and the end count</h3>
+      <p>
+        A <strong>state function</strong> has a value that depends only on the present state of the system (its
+        temperature, pressure, amount, …), not on how it got there. Your altitude is a state function: walking from Zurich
+        to the top of the Uetliberg changes it by the same amount whichever path you take. The distance you walk is not.
+      </p>
+      <p>
+        \(E\) is a state function, so \(\Delta E\) depends only on the initial and final states. But <strong>\(q\) and \(w\)
+        are not state functions</strong>: how the energy change is split between heat and work depends on the path.
+        Brown's example is a battery. Short-circuit it with a wire, and all its energy comes out as heat. Let it drive a
+        motor, and part comes out as work. The battery ends up just as flat either way.
+      </p>
+      <div class="lab" id="path-lab">
+        <div class="btn-row" role="group" aria-label="Path" id="path-btns">
+          <button class="btn primary" type="button" data-p="0">Short-circuit (wire)</button>
+          <button class="btn" type="button" data-p="1">Run a motor</button>
+        </div>
+        <div id="path-diagram" class="dh-diagram" role="img" aria-label="Bars of q, w and ΔE for two paths" style="margin-top:12px;max-width:600px"></div>
+        <p class="small muted" style="margin:6px 0 0">Illustrative numbers: a battery that loses 100 kJ.</p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="enthalpy">
+      <h2>2 · Enthalpy and pressure–volume work</h2>
+      <p>
+        Most chemistry happens in open flasks, at the constant pressure of the atmosphere. If a reaction makes gas, the gas
+        has to push the atmosphere back to make room. That costs work. Picture a gas in a cylinder pushing a piston of area
+        \(A\) a distance \(\Delta h\) against a constant pressure \(P\):
+      </p>
+      \[ w = -F\,\Delta h = -P A\,\Delta h = -P\,\Delta V \]
+      <p>The minus sign: if the volume grows (\(\Delta V > 0\)), the system does work, so it loses energy and \(w &lt; 0\).</p>
+      <p>To keep the bookkeeping simple we define a new state function, the <strong>enthalpy</strong>:</p>
+      \[ H \equiv E + PV \]
+      <p>At constant pressure the change is \(\Delta H = \Delta E + P\Delta V = (q_p - P\Delta V) + P\Delta V\), so</p>
+      \[ \Delta H = q_p \qquad \text{(constant pressure, only } P\text{–}V \text{ work)} \]
+      <p>
+        The enthalpy change is simply the heat that flows at constant pressure, and heat is easy to measure (section 4).
+        \(\Delta H &gt; 0\): endothermic, heat flows in. \(\Delta H &lt; 0\): exothermic, heat flows out.
+        Wait: \(H\) is a state function but \(q\) is not? No contradiction. \(q_p\) is the heat for one particular kind of
+        path: constant pressure, no work other than \(P\)–\(V\) work. In a sealed rigid vessel (constant volume) no
+        \(P\)–\(V\) work is done, so there \(\Delta E = q_V\).
+      </p>
+
+      <div class="lab" id="pv-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="pv-rxn" class="ctl-label">Reaction (1 atm, 25 °C)</label>
+              <select id="pv-rxn"></select>
+            </div>
+            <div class="control">
+              <label for="pv-x"><span>How far the reaction has run</span> <output id="pv-x-out"></output></label>
+              <input id="pv-x" type="range" min="0" max="1" step="0.01" value="0">
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="pv-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <div id="pv-diagram" class="dh-diagram" role="img" aria-label="Cylinder with a piston; the gas volume changes as the reaction runs"></div>
+            <div class="callout" id="pv-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">The work comes only from the change in the amount of gas: for ideal gases at constant \(T\) and
+        \(P\), \(P\Delta V = \Delta n_\text{gas} RT\), about 2.48 kJ per mole of gas at 25 °C. Liquids and solids hardly
+        change volume. The reaction enthalpies are from Brown, Appendix C.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="reaction">
+      <h2>3 · Enthalpies of reaction</h2>
+      <p>
+        The enthalpy change of a reaction is \(\Delta H_\text{rxn} = H_\text{products} - H_\text{reactants}\). Written next
+        to a balanced equation, it makes a <strong>thermochemical equation</strong>:
+      </p>
+      \[ 2\,\mathrm{H_2(g)} + \mathrm{O_2(g)} \longrightarrow 2\,\mathrm{H_2O(g)} \qquad \Delta H = -483.6\ \mathrm{kJ} \]
+      <p>It reads: when 2 mol H₂ react with 1 mol O₂ to give 2 mol of water vapour, 483.6 kJ of heat are released. Three
+        rules follow from \(H\) being a state function:</p>
+      <ol>
+        <li><strong>Enthalpy is extensive.</strong> Double the amounts, double \(\Delta H\).</li>
+        <li><strong>Reverse the reaction, flip the sign:</strong> \(\Delta H_\text{reverse} = -\Delta H_\text{forward}\).</li>
+        <li><strong>States matter.</strong> Making liquid water instead of vapour releases more heat, because the vapour
+          also gives off its heat of condensation.</li>
+      </ol>
+
+      <div class="lab" id="rx-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="rx-m"><span>Mass of H₂ burned</span> <output id="rx-m-out"></output></label>
+              <input id="rx-m" type="range" min="0.1" max="20" step="0.1" value="4.0">
+            </div>
+            <div class="control">
+              <span class="ctl-label">Water formed as</span>
+              <div class="seg" role="group" aria-label="State of water" id="rx-state">
+                <button type="button" data-v="g" aria-pressed="true">vapour, H₂O(g)</button>
+                <button type="button" data-v="l" aria-pressed="false">liquid, H₂O(l)</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="ctl-label">Direction</span>
+              <div class="seg" role="group" aria-label="Direction" id="rx-dir">
+                <button type="button" data-v="f" aria-pressed="true">burn H₂</button>
+                <button type="button" data-v="r" aria-pressed="false">split water</button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div id="rx-diagram" class="dh-diagram" role="img" aria-label="Enthalpy diagram of the reaction"></div>
+            <div class="callout" id="rx-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">\(\Delta H\) for 2 mol H₂: −483.6 kJ to vapour and −571.7 kJ to liquid (from Brown, Appendix C).
+        The difference, 88.0 kJ, is the heat given off when 2 mol of water vapour condense at 25 °C.</p>
+      <p>Other named enthalpy changes work the same way, e.g. the heat of fusion \(\Delta H_\text{fus}\) (melting) and the
+        heat of vaporization \(\Delta H_\text{vap}\) (boiling). Both are positive: you must add heat to melt or boil
+        something. For water, \(\Delta H_\text{fus} = 6.01\) kJ/mol and \(\Delta H_\text{vap} = 40.7\) kJ/mol at 100 °C.
+        The <a href="../liquids/#phase-changes">heating curve on the week 8 page</a> puts them together.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="calorimetry">
+      <h2>4 · Calorimetry: measuring heat with a thermometer</h2>
+      <p>
+        Heat flowing into something raises its temperature. How much depends on its <strong>heat capacity</strong>: the
+        heat needed to warm it by 1 K (which is the same as 1 °C).
+      </p>
+      \[ q = m\,c_s\,\Delta T \qquad\text{or}\qquad q = n\,C_m\,\Delta T \]
+      <p>\(c_s\) is the <strong>specific heat capacity</strong> (J g⁻¹ K⁻¹), \(C_m\) the <strong>molar heat capacity</strong>
+        (J mol⁻¹ K⁻¹), and \(\Delta T = T_\text{final} - T_\text{initial}\). Check the sign: if the temperature rises,
+        \(\Delta T &gt; 0\) and \(q &gt; 0\): heat went in.</p>
+
+      <div class="two-col">
+        <div>
+          <p><strong>Water is unusual.</strong> At 4.18 J g⁻¹ K⁻¹ it has one of the largest specific heats of any common
+            substance, about 10 times that of iron. The same heat that warms a kilogram of water by 1 °C warms a kilogram
+            of iron by about 9 °C. The oceans store huge amounts of heat with little change in temperature, which keeps
+            coastal climates mild and slows down climate change.</p>
+        </div>
+        <div class="table-wrap" style="margin-top:0">
+          <table>
+            <thead><tr><th>Substance</th><th>\(c_s\) (J g⁻¹ K⁻¹)</th></tr></thead>
+            <tbody>
+              <tr><td>H₂O(l)</td><td class="num">4.18</td></tr>
+              <tr><td>CH₄(g)</td><td class="num">2.20</td></tr>
+              <tr><td>N₂(g)</td><td class="num">1.04</td></tr>
+              <tr><td>Al(s)</td><td class="num">0.90</td></tr>
+              <tr><td>CaCO₃(s)</td><td class="num">0.82</td></tr>
+              <tr><td>Fe(s)</td><td class="num">0.45</td></tr>
+              <tr><td>Hg(l)</td><td class="num">0.14</td></tr>
+            </tbody>
+          </table>
+          <p class="small muted" style="margin:4px 0 0">At 298 K, Brown Table 5.2.</p>
+        </div>
+      </div>
+
+      <h3>The coffee-cup calorimeter</h3>
+      <p>
+        Drop a hot piece of metal into water in an insulated cup. Heat flows from the metal to the water (and the cup) until
+        they are at the same temperature. No heat leaves the cup, so the heat lost by one is the heat gained by the other:
+      </p>
+      \[ q_\text{metal} + q_\text{water} + q_\text{cup} = 0 \]
+      <div class="lab" id="cal-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="cal-metal" class="ctl-label">Metal</label>
+              <select id="cal-metal"></select>
+            </div>
+            <div class="control">
+              <label for="cal-mm"><span>Mass of metal</span> <output id="cal-mm-out"></output></label>
+              <input id="cal-mm" type="range" min="10" max="500" step="1" value="150">
+            </div>
+            <div class="control o0">
+              <label for="cal-Tm"><span>Metal starts at</span> <output id="cal-Tm-out"></output></label>
+              <input id="cal-Tm" type="range" min="0" max="100" step="0.5" value="95">
+            </div>
+            <div class="control">
+              <label for="cal-mw"><span>Mass of water</span> <output id="cal-mw-out"></output></label>
+              <input id="cal-mw" type="range" min="20" max="500" step="1" value="100">
+            </div>
+            <div class="control o1">
+              <label for="cal-Tw"><span>Water starts at</span> <output id="cal-Tw-out"></output></label>
+              <input id="cal-Tw" type="range" min="0" max="100" step="0.5" value="22">
+            </div>
+            <div class="control">
+              <label for="cal-C"><span>Heat capacity of the cup</span> <output id="cal-C-out"></output></label>
+              <input id="cal-C" type="range" min="0" max="100" step="1" value="0">
+            </div>
+            <div class="btn-row"><button class="btn primary" type="button" id="cal-go">Drop it in</button></div>
+          </div>
+          <div>
+            <canvas class="plot" id="cal-plot" role="img" aria-label="Temperature of the metal and the water against time"></canvas>
+            <div class="legend"><span><i style="border-color:var(--c0)"></i>metal</span><span><i style="border-color:var(--c1)"></i>water and cup</span></div>
+            <div class="table-wrap"><table class="data-table"><tbody id="cal-readout"></tbody></table></div>
+            <div class="callout" id="cal-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <ol class="try">
+        <li>Use the same mass and temperatures for aluminium and gold. Which one warms the water more, and why?</li>
+        <li>Give the cup a heat capacity. The final temperature drops: part of the heat warms the cup instead of the water.</li>
+        <li>Swap the temperatures (cold metal, warm water). All the signs flip.</li>
+      </ol>
+
+      <h3>Measuring a reaction</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 style="margin:0 0 6px">Coffee cup: constant pressure</h4>
+          <p class="small" style="margin:0">Run the reaction in water in an open, insulated cup. The reaction is the system, the
+            water the surroundings. Heat released by the reaction warms the water: \(q_\text{rxn} = -q_\text{soln}
+            = -m\,c_s\,\Delta T\). Because the pressure is constant, \(q_\text{rxn} = \Delta H\). Exothermic reaction:
+            \(q_\text{rxn} &lt; 0\) and the water warms up.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 6px">Bomb calorimeter: constant volume</h4>
+          <p class="small" style="margin:0">Burn the sample with oxygen in a sealed steel "bomb" sitting in water. The volume
+            cannot change, so no \(P\)–\(V\) work is done and the heat measured is \(\Delta E\):
+            \(q_\text{rxn} = -C_\text{cal}\,\Delta T = \Delta E\). For most reactions \(\Delta E\) and \(\Delta H\)
+            differ only by a few kJ (section 2).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="hess">
+      <h2>5 · Hess's law: add up the steps</h2>
+      <p>
+        Because \(H\) is a state function, \(\Delta H\) does not care how you get from reactants to products. If a
+        reaction can be written as a sum of steps, its enthalpy change is the sum of theirs:
+      </p>
+      \[ \Delta H_\text{rxn} = \Delta H_1 + \Delta H_2 + \Delta H_3 + \cdots \]
+      <p>This lets you find \(\Delta H\) for reactions that are hard or impossible to measure, such as turning graphite into
+        diamond. Use the three rules from section 3: reverse a step and flip its sign; multiply a step and multiply its
+        \(\Delta H\).</p>
+
+      <div class="lab" id="hess-lab">
+        <div class="btn-row" id="hess-puzzles" role="group" aria-label="Choose a puzzle"></div>
+        <p style="margin:14px 0 4px"><strong>Target:</strong> <span id="hess-target"></span></p>
+        <p class="small muted" style="margin:0 0 10px">Choose a factor for each given reaction. A negative factor reverses it.</p>
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr><th>Given reaction</th><th>\(\Delta H\) (kJ)</th><th>Factor</th><th>Contributes (kJ)</th></tr></thead>
+            <tbody id="hess-rows"></tbody>
+          </table>
+        </div>
+        <div class="lab-grid" style="margin-top:14px">
+          <div>
+            <p style="margin:0"><strong>Sum of your steps</strong> (species on both sides cancel):</p>
+            <p id="hess-sum" style="margin:4px 0 0"></p>
+            <div class="callout" id="hess-note" aria-live="polite"></div>
+            <div class="btn-row" style="margin-top:10px"><button class="btn" type="button" id="hess-reveal">Show a solution</button></div>
+          </div>
+          <div id="hess-diagram" class="dh-diagram" role="img" aria-label="Enthalpy diagram of the steps you chose"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="formation">
+      <h2>6 · Enthalpies of formation</h2>
+      <p>
+        Instead of tabulating \(\Delta H\) for every possible reaction, chemists tabulate one number per substance. The
+        <strong>standard enthalpy of formation</strong> \(\Delta H_f^\circ\) is the enthalpy change for making
+        <strong>1 mol</strong> of a substance from its elements, everything in its <strong>standard state</strong> (the
+        pure substance at 1 atm and, usually, 25 °C):
+      </p>
+      \[ 3\,\mathrm{C(s,\ graphite)} + 4\,\mathrm{H_2(g)} \longrightarrow \mathrm{C_3H_8(g)} \qquad \Delta H_f^\circ = -103.85\ \mathrm{kJ/mol} \]
+      <p>An element in its most stable form (O₂(g), C(graphite), Fe(s), Br₂(l), …) has \(\Delta H_f^\circ = 0\): there is
+        nothing to form. Then any reaction can be done in two imaginary steps (Hess's law): take the reactants apart into
+        elements, then build the products from them:</p>
+      \[ \Delta H^\circ_\text{rxn} = \sum_\text{products} n\,\Delta H_f^\circ - \sum_\text{reactants} m\,\Delta H_f^\circ \]
+      <p class="small muted">\(n\) and \(m\) are the coefficients in the balanced equation. Look up \(\Delta H_f^\circ\) in
+        Brown, Appendix C.</p>
+
+      <div class="lab" id="hf-lab">
+        <div class="control" style="max-width:420px">
+          <label for="hf-rxn" class="ctl-label">Reaction</label>
+          <select id="hf-rxn"></select>
+        </div>
+        <p id="hf-eq" style="margin:12px 0 0;font-size:18px"></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Species</th><th>\(\Delta H_f^\circ\) (kJ/mol)</th><th>× coefficient (kJ)</th></tr></thead>
+            <tbody id="hf-table"></tbody>
+          </table>
+        </div>
+        <div class="two-col" style="margin-top:12px">
+          <div class="callout" id="hf-note" aria-live="polite"></div>
+          <div id="hf-diagram" class="dh-diagram" role="img" aria-label="Enthalpy diagram via the elements"></div>
+        </div>
+      </div>
+
+      <details>
+        <summary>Step by step: burning propane (the lecture example)</summary>
+        <p>\(\mathrm{C_3H_8(g)} + 5\,\mathrm{O_2(g)} \to 3\,\mathrm{CO_2(g)} + 4\,\mathrm{H_2O(l)}\)</p>
+        <ol>
+          <li><em>Un-form</em> propane into its elements: \(\mathrm{C_3H_8(g)} \to 3\,\mathrm{C(s)} + 4\,\mathrm{H_2(g)}\),
+            \(\Delta H_1 = -\Delta H_f^\circ(\mathrm{C_3H_8}) = +103.85\) kJ.</li>
+          <li>Form 3 CO₂: \(3\,\mathrm{C(s)} + 3\,\mathrm{O_2(g)} \to 3\,\mathrm{CO_2(g)}\),
+            \(\Delta H_2 = 3 \times (-393.5) = -1180.5\) kJ.</li>
+          <li>Form 4 H₂O(l): \(4\,\mathrm{H_2(g)} + 2\,\mathrm{O_2(g)} \to 4\,\mathrm{H_2O(l)}\),
+            \(\Delta H_3 = 4 \times (-285.83) = -1143.3\) kJ.</li>
+        </ol>
+        \[ \Delta H^\circ_\text{rxn} = 103.85 - 1180.5 - 1143.3 = -2220.0\ \mathrm{kJ} \]
+        <p class="small muted">O₂ is an element in its standard state, so it adds nothing. The units: kJ for the reaction as
+          written, often written kJ/mol meaning "per mole of reaction".</p>
+      </details>
+      <p class="small muted">Bond enthalpies (Brown 5.8) give a second, rougher way to estimate \(\Delta H_\text{rxn}\). They
+        came up with chemical bonding: see the <a href="../bonding/#bond-energy">week 7 page</a>.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="check">
+      <h2>Quick self-check</h2>
+
+      <div class="card quiz">
+        <p class="q">A gas is compressed by a piston (50 J of work) and gives off 80 J of heat. What is ΔE of the gas?</p>
+        <div class="opts">
+          <button type="button" data-fb="Work done on the system is positive (+50 J), but heat released is negative (−80 J).">+130 J</button>
+          <button type="button" data-correct data-fb="ΔE = q + w = (−80 J) + (+50 J) = −30 J. The gas lost energy overall.">−30 J</button>
+          <button type="button" data-fb="Check both signs: work done on the gas is +50 J, heat leaving it is −80 J.">+30 J</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Which of these is <em>not</em> a state function?</p>
+        <div class="opts">
+          <button type="button" data-fb="Enthalpy H = E + PV is built from state functions, so it is one too.">enthalpy, H</button>
+          <button type="button" data-fb="Temperature describes the present state of the system.">temperature</button>
+          <button type="button" data-correct data-fb="Work depends on the path. The battery example: same ΔE, but w = 0 through a wire and w &lt; 0 through a motor.">work, w</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">2 H₂(g) + O₂(g) → 2 H₂O(g) has ΔH = −483.6 kJ. What is ΔH for H₂O(g) → H₂(g) + ½ O₂(g)?</p>
+        <div class="opts">
+          <button type="button" data-fb="Halve it, yes, but the reaction is also reversed: flip the sign.">−241.8 kJ</button>
+          <button type="button" data-correct data-fb="Reversed (flip the sign) and halved: +483.6 / 2 = +241.8 kJ. That is −ΔH°f of water vapour.">+241.8 kJ</button>
+          <button type="button" data-fb="Only 1 mol of water is split here, not 2.">+483.6 kJ</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">The same amount of heat goes into 10 g of gold and 10 g of iron. Which gets hotter?</p>
+        <div class="opts">
+          <button type="button" data-correct data-fb="ΔT = q / (m c_s). Gold's specific heat (0.129 J g⁻¹ K⁻¹) is about a third of iron's (0.45), so its temperature rises about 3.5 times as much.">gold</button>
+          <button type="button" data-fb="Iron needs more heat per gram per kelvin, so the same heat warms it less.">iron</button>
+          <button type="button" data-fb="Same mass and same heat, but different specific heats.">both the same</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">What is ΔH°f of O₂(g)?</p>
+        <div class="opts">
+          <button type="button" data-correct data-fb="O₂(g) is oxygen's element in its standard state. Forming it from itself changes nothing.">0</button>
+          <button type="button" data-fb="Making O₂ from O atoms releases energy, but ΔH°f is defined from the element in its standard state, which is O₂ itself.">−498 kJ/mol</button>
+          <button type="button" data-fb="Ozone, O₃, has +142.3 kJ/mol. For O₂, the most stable form, it is 0.">+142.3 kJ/mol</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">At constant pressure, a reaction makes 1 mol of gas from a solid. Compared with ΔH, ΔE is…</p>
+        <div class="opts">
+          <button type="button" data-fb="The gas pushes the atmosphere back, so the system does work (w &lt; 0).">larger</button>
+          <button type="button" data-correct data-fb="ΔE = ΔH − PΔV = ΔH − Δn·RT. With Δn = +1, ΔE is about 2.5 kJ smaller than ΔH at 25 °C.">smaller, by about 2.5 kJ</button>
+          <button type="button" data-fb="They are equal only if no gas is made or used (Δn_gas = 0).">exactly the same</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="summary">
+      <h2>Summary</h2>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <tbody>
+            <tr><td>First law</td><td>\(\Delta E = q + w\)</td><td class="small">+ = into the system</td></tr>
+            <tr><td>Pressure–volume work</td><td>\(w = -P\,\Delta V\)</td><td class="small">\(P\Delta V = \Delta n_\text{gas} RT\) for ideal gases</td></tr>
+            <tr><td>Enthalpy</td><td>\(H = E + PV,\ \ \Delta H = q_p\)</td><td class="small">constant pressure</td></tr>
+            <tr><td>Constant volume</td><td>\(\Delta E = q_V\)</td><td class="small">bomb calorimeter</td></tr>
+            <tr><td>Heat capacity</td><td>\(q = m\,c_s\,\Delta T = n\,C_m\,\Delta T\)</td><td class="small">water: \(c_s\) = 4.18 J g⁻¹ K⁻¹</td></tr>
+            <tr><td>Hess's law</td><td>\(\Delta H = \Delta H_1 + \Delta H_2 + \cdots\)</td><td class="small">reverse → flip sign, ×n → ×n</td></tr>
+            <tr><td>From formation enthalpies</td><td>\(\Delta H^\circ_\text{rxn} = \sum n\,\Delta H_f^\circ(\text{prod}) - \sum m\,\Delta H_f^\circ(\text{react})\)</td><td class="small">elements: \(\Delta H_f^\circ = 0\)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Covered in Lecture 4: Brown 5.1–5.7. Next week, Thermodynamics II: why \(\Delta H\) alone does not
+        tell you whether a reaction happens (<a href="../thermo-2/">week 5 page</a>).</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Made by the course TA. Not official course material: if this page and the lecture disagree, the lecture wins.
+      Nothing you do on these pages is recorded.
+    </div>
+  </footer>
+
+  <script type="module" src="firstlaw.js"></script>
+  <script type="module" src="piston.js"></script>
+  <script type="module" src="reaction.js"></script>
+  <script type="module" src="calorimeter.js"></script>
+  <script type="module" src="hess.js"></script>
+  <script type="module" src="formation.js"></script>
+  <script type="module" src="../assets/quiz.js"></script>
+</body>
+</html>

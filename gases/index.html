@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gases</title>
+  <meta name="description" content="Interactive look at pressure, the gas laws, the ideal gas law, partial pressures, kinetic-molecular theory, molecular speeds, effusion and real gases.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false})"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../">Chemistry HS26 <span>· interactive companion</span></a>
+      <nav class="crumbs"><a href="../">Topics</a> › 2 Gases</nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Gases: billions of tiny billiard balls</h1>
+    <p class="lede">Helium and sulfur hexafluoride are chemically nothing alike, yet as gases they obey the same law,
+      \(PV = nRT\). Why? Because a gas is mostly empty space with molecules flying through it, and then only the
+      number of molecules matters. Brown, Chapter 10.</p>
+
+    <div class="card">
+      <strong>After this week you should be able to</strong>
+      <ul style="margin:8px 0 0">
+        <li>explain where gas pressure comes from, and convert between Pa, kPa, bar, atm and torr</li>
+        <li>use Boyle's, Charles's and Avogadro's laws, and the ideal gas law \(PV = nRT\), always with \(T\) in kelvin</li>
+        <li>find the density or molar mass of a gas, and the molar volume at STP</li>
+        <li>use partial pressures and mole fractions for gas mixtures (Dalton's law)</li>
+        <li>state the assumptions of the kinetic-molecular theory, and say what temperature means for molecules</li>
+        <li>read a speed distribution: \(u_\text{mp}\), \(u_\text{av}\), \(u_\text{rms}\), and how they depend on \(T\) and \(M\)</li>
+        <li>say when real gases deviate from ideal behaviour, and what \(a\) and \(b\) in the van der Waals equation correct</li>
+      </ul>
+    </div>
+
+    <nav class="module-nav" aria-label="Modules on this page">
+      <a href="#pressure"><strong>1 · Pressure</strong><span class="tag live">open</span></a>
+      <a href="#laws"><strong>2 · The gas laws</strong><span class="tag live">open</span></a>
+      <a href="#igl"><strong>3 · The ideal gas law</strong><span class="tag live">open</span></a>
+      <a href="#mixtures"><strong>4 · Mixtures and partial pressures</strong><span class="tag live">open</span></a>
+      <a href="#kmt"><strong>5 · Kinetic-molecular theory</strong><span class="tag live">open</span></a>
+      <a href="#real"><strong>6 · Real gases</strong><span class="tag live">open</span></a>
+    </nav>
+
+    <!-- =============================================================== -->
+    <section id="pressure">
+      <h2>1 · What gases have in common, and pressure</h2>
+      <p>Different gases have very different chemistry, but very similar physical properties:</p>
+      <ul>
+        <li>they expand to fill their container, and they can be compressed;</li>
+        <li>they always mix completely (form homogeneous mixtures);</li>
+        <li>the molecules take up only a tiny fraction of the volume: in air at 1 atm, about 0.1 %.</li>
+      </ul>
+      <p>
+        To describe a gas you need only four variables: pressure \(P\), volume \(V\), temperature \(T\) and amount \(n\)
+        (moles). \(V\) and \(n\) are <strong>extensive</strong> (they grow with the size of the sample), \(P\) and \(T\)
+        are <strong>intensive</strong> (they do not).
+      </p>
+      <p>
+        <strong>Pressure</strong> is force per area: \(P = F/A\), in pascal, \(1\ \mathrm{Pa} = 1\ \mathrm{N/m^2}\). In a
+        gas the force comes from molecules hitting the walls, billions of times per second. The atmosphere presses on
+        you because the air above you has weight: a column of air 1 m² across, up to the top of the atmosphere, has a
+        mass of about 10 000 kg, so \(F = mg \approx 1\times10^5\ \mathrm{N}\) and \(P \approx 100\ \mathrm{kPa}\).
+      </p>
+      <p>
+        <strong>Torricelli's barometer:</strong> fill a tube with mercury and turn it upside down in a dish. The column
+        falls until its weight per area equals the pressure of the atmosphere on the dish. For a column of height \(h\)
+        and density \(\rho\), the <em>hydrostatic pressure</em> is
+      </p>
+      \[ P = \frac{F}{A} = \frac{m g}{A} = \frac{\rho\,(A h)\,g}{A} = \rho\, g\, h \]
+      <div class="lab" id="bar-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Liquid in the tube</span>
+              <div class="seg" role="group" aria-label="Liquid" id="bar-liq"></div>
+            </div>
+            <div class="control o0">
+              <label for="bar-alt"><span>Altitude</span> <output id="bar-alt-out"></output></label>
+              <input id="bar-alt" type="range" min="0" max="8849" step="1" value="0">
+            </div>
+            <div class="btn-row" id="bar-places" role="group" aria-label="Places"></div>
+            <div class="table-wrap" style="margin:0"><table class="data-table"><tbody id="bar-units"></tbody></table></div>
+          </div>
+          <div>
+            <div id="bar-diagram" class="dh-diagram" role="img" aria-label="Barometer: a column of liquid held up by the atmosphere"></div>
+            <div class="callout" id="bar-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">Pressure at altitude from the standard atmosphere (ISA); real weather changes it by a few kPa.
+        Densities: mercury 13.595 g/cm³ (at 0 °C, the value that defines 760 mm Hg), glycerol 1.26 and water
+        1.00 g/cm³; \(g = 9.81\ \mathrm{m/s^2}\).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Unit</th><th>Definition</th></tr></thead>
+          <tbody>
+            <tr><td>standard atmosphere, atm</td><td>1 atm = 760 mm Hg = 760 torr = 101.325 kPa (exactly)</td></tr>
+            <tr><td>bar</td><td>1 bar = 10⁵ Pa = 100 kPa, so 1 atm = 1.01325 bar</td></tr>
+            <tr><td>torr, mm Hg</td><td>1 torr = 1/760 atm ≈ 133.3 Pa</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>A <strong>manometer</strong> measures a gas pressure relative to the atmosphere with a U-tube of liquid: if the
+        liquid stands \(h\) higher on the open side, \(P_\text{gas} = P_\text{atm} + \rho g h\). Blood pressure,
+        “120 over 80”, is given in mm Hg above atmospheric pressure.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="laws">
+      <h2>2 · The gas laws: change one thing, watch another</h2>
+      <p>
+        Robert Boyle was the first to change one variable on purpose, keep the others fixed, and measure how another one
+        responded. That idea is how science and engineering find laws. For gases it gives three:
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Law</th><th>Held constant</th><th>Relationship</th><th>Why, molecule by molecule</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Boyle</strong></td><td>\(n, T\)</td><td>\(PV = \text{const}\), \(P \propto 1/V\)</td><td>half the volume: each molecule hits the walls twice as often</td></tr>
+            <tr><td><strong>Charles</strong></td><td>\(n, P\)</td><td>\(V/T = \text{const}\), \(V \propto T\)</td><td>hotter molecules hit harder; the piston moves out until the pressure is back</td></tr>
+            <tr><td><strong>Avogadro</strong></td><td>\(P, T\)</td><td>\(V/n = \text{const}\), \(V \propto n\)</td><td>more molecules need more room for the same pressure</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="lab" id="gl-lab">
+        <div class="seg" role="group" aria-label="Which law" id="gl-mode" style="margin-bottom:14px">
+          <button type="button" data-m="boyle" aria-pressed="true">Boyle: change V</button>
+          <button type="button" data-m="charles" aria-pressed="false">Charles: change T</button>
+          <button type="button" data-m="avogadro" aria-pressed="false">Avogadro: change n</button>
+        </div>
+        <div class="sim-grid">
+          <div>
+            <canvas class="sim-box" id="gl-sim" style="aspect-ratio:3/4;max-width:320px" role="img" aria-label="Gas molecules in a cylinder with a piston"></canvas>
+            <div class="btn-row" style="margin-top:8px"><button class="btn" type="button" id="gl-play">⏸ Pause</button></div>
+          </div>
+          <div>
+            <div class="controls">
+              <div class="control o0" id="gl-V-c">
+                <label for="gl-V"><span>Volume V</span> <output id="gl-V-out"></output></label>
+                <input id="gl-V" type="range" min="5" max="60" step="0.5" value="25">
+              </div>
+              <div class="control o1" id="gl-T-c">
+                <label for="gl-T"><span>Temperature T</span> <output id="gl-T-out"></output></label>
+                <input id="gl-T" type="range" min="100" max="600" step="1" value="300">
+              </div>
+              <div class="control o2" id="gl-n-c">
+                <label for="gl-n"><span>Amount n</span> <output id="gl-n-out"></output></label>
+                <input id="gl-n" type="range" min="0.2" max="2" step="0.05" value="1">
+              </div>
+            </div>
+            <canvas class="plot" id="gl-plot" role="img" aria-label="The relationship for the chosen law, with the current state marked"></canvas>
+            <div class="callout" id="gl-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">Each dot stands for many molecules: the box shows 40 dots per mole. Speeds follow the
+        temperature (\(u \propto \sqrt{T}\)); the numbers come from \(PV = nRT\).</p>
+      <p>
+        Charles's law is only a straight line through the origin in <strong>kelvin</strong>. In °C the lines for all
+        gases point to the same temperature, −273.15 °C, where the volume would be zero. That is <strong>absolute
+        zero</strong>, 0 K. A change of 1 °C is the same as a change of 1 K. <strong>Avogadro's hypothesis:</strong> equal
+        volumes of different gases at the same \(T\) and \(P\) contain the same number of molecules, even though the
+        molecules have very different masses.
+      </p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="igl">
+      <h2>3 · The ideal gas law</h2>
+      <p>Put the three laws together: \(V \propto \dfrac{nT}{P}\). Call the constant of proportionality \(R\):</p>
+      \[ PV = nRT \]
+      <div class="two-col">
+        <div>
+          <p style="margin-top:0">The <strong>gas constant</strong> \(R\) is the same number in different units:</p>
+          <div class="table-wrap" style="margin:0">
+            <table class="data-table">
+              <tbody>
+                <tr><td class="num">8.314</td><td>J mol⁻¹ K⁻¹ = m³ Pa mol⁻¹ K⁻¹</td></tr>
+                <tr><td class="num">8.314</td><td>L kPa mol⁻¹ K⁻¹</td></tr>
+                <tr><td class="num">0.08206</td><td>L atm mol⁻¹ K⁻¹</td></tr>
+                <tr><td class="num">62.36</td><td>L torr mol⁻¹ K⁻¹</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card" style="margin-top:0">
+          <strong>An ideal gas</strong> is a model: the molecules take up no volume and do not attract or repel each other.
+          Then the gas only cares about <em>how many</em> molecules there are, not which. Real gases are close to ideal
+          at low pressure and high temperature (section 6). <strong>STP</strong> (standard temperature and pressure):
+          0 °C = 273.15 K and 1 atm. One mole of any ideal gas at STP fills <strong>22.41 L</strong>, the molar volume.
+        </div>
+      </div>
+      <p>The number of moles counts <em>gas particles</em>: a reaction A(g) → B(g) + C(g) in a closed, rigid flask doubles
+        the pressure at constant \(T\).</p>
+
+      <h3>Ideal gas calculator</h3>
+      <p>Lecture 2 sorted the problems into three types. <strong>Type 1:</strong> three variables given, find the
+        fourth: rearrange \(PV = nRT\). <strong>Types 2 and 3:</strong> some variables stay constant while others change:
+        keep the constant ones together, \(\dfrac{P_1V_1}{T_1} = \dfrac{P_2V_2}{T_2}\) at constant \(n\), and cancel
+        whatever does not change.</p>
+      <div class="lab" id="calc-lab">
+        <div class="control">
+          <span class="ctl-label">Find</span>
+          <div class="seg" role="group" aria-label="Unknown" id="gc-find">
+            <button type="button" data-v="P" aria-pressed="false">P</button>
+            <button type="button" data-v="V" aria-pressed="true">V</button>
+            <button type="button" data-v="n" aria-pressed="false">n</button>
+            <button type="button" data-v="T" aria-pressed="false">T</button>
+          </div>
+        </div>
+        <div class="answer-grid" style="margin-top:12px" id="gc-inputs"></div>
+        <div class="btn-row" style="margin-top:10px"><button class="btn" type="button" id="gc-stp">1 mol at STP</button></div>
+        <div class="callout" id="gc-note" aria-live="polite"></div>
+      </div>
+      <details>
+        <summary>Worked example from Lecture 2: the rising balloon (type 3)</summary>
+        <p>A balloon of 6.0 L at 101.3 kPa and 22 °C rises until the pressure is 45.6 kPa and the temperature −21 °C.
+          The amount of gas is fixed, so</p>
+        \[ \frac{P_1V_1}{T_1} = \frac{P_2V_2}{T_2} \quad\Rightarrow\quad V_2 = V_1\,\frac{P_1}{P_2}\,\frac{T_2}{T_1}
+          = 6.0\ \mathrm{L}\times\frac{101.3}{45.6}\times\frac{252\ \mathrm{K}}{295\ \mathrm{K}} = 11\ \mathrm{L} \]
+        <p class="small muted">The lower pressure more than doubles the volume; the cold shrinks it a bit. Temperatures in
+          kelvin, always: in °C the ratio would be −21/22, a negative volume.</p>
+      </details>
+
+      <h3>Density and molar mass: which balloon floats?</h3>
+      <p>Since \(n/V = P/RT\) and \(n = m/M_w\), the density of a gas is</p>
+      \[ \rho = \frac{m}{V} = \frac{P\,M_w}{RT} \qquad\text{and so}\qquad M_w = \frac{\rho RT}{P} \]
+      <p>At the same \(P\) and \(T\), a gas's density is proportional to its molar mass. A balloon floats if its gas is less
+        dense than the air around it (\(M_w\) of air ≈ 28.97 g/mol). Hot air works because density also drops with \(T\).</p>
+      <div class="lab" id="rho-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control o0">
+              <label for="rho-T"><span>Outside air</span> <output id="rho-T-out"></output></label>
+              <input id="rho-T" type="range" min="-20" max="40" step="1" value="20">
+            </div>
+            <div class="control o1">
+              <label for="rho-hot"><span>Hot-air balloon inside</span> <output id="rho-hot-out"></output></label>
+              <input id="rho-hot" type="range" min="-20" max="120" step="1" value="100">
+            </div>
+            <div class="control">
+              <label for="rho-P"><span>Pressure</span> <output id="rho-P-out"></output></label>
+              <input id="rho-P" type="range" min="30" max="105" step="0.5" value="101.3">
+            </div>
+          </div>
+          <div>
+            <div id="rho-plot" class="dh-diagram" role="img" aria-label="Density of several gases compared with the surrounding air"></div>
+            <div class="callout" id="rho-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="mixtures">
+      <h2>4 · Mixtures and partial pressures</h2>
+      <p>In an ideal gas the molecules ignore each other, so in a mixture each gas behaves as if it were alone. The
+        <strong>partial pressure</strong> \(P_i\) of gas \(i\) is the pressure it would exert alone in the same volume, and
+        the total is the sum (<strong>Dalton's law</strong>):</p>
+      \[ P_\text{tot} = P_1 + P_2 + \cdots = (n_1 + n_2 + \cdots)\frac{RT}{V} = n_\text{tot}\frac{RT}{V} \]
+      <p>Dividing one by the other: \(P_i = X_i\,P_\text{tot}\), where \(X_i = n_i / n_\text{tot}\) is the
+        <strong>mole fraction</strong>, a number between 0 and 1 without units.</p>
+      <div class="lab" id="dal-lab">
+        <div class="sim-grid">
+          <div>
+            <canvas class="sim-box" id="dal-sim" role="img" aria-label="Molecules of three gases in one box"></canvas>
+          </div>
+          <div>
+            <div class="controls">
+              <div class="control o1">
+                <label for="dal-a"><span>N₂</span> <output id="dal-a-out"></output></label>
+                <input id="dal-a" type="range" min="0" max="2" step="0.01" value="0.78">
+              </div>
+              <div class="control o0">
+                <label for="dal-b"><span>O₂</span> <output id="dal-b-out"></output></label>
+                <input id="dal-b" type="range" min="0" max="2" step="0.01" value="0.21">
+              </div>
+              <div class="control o2">
+                <label for="dal-c"><span>Ar</span> <output id="dal-c-out"></output></label>
+                <input id="dal-c" type="range" min="0" max="2" step="0.01" value="0.01">
+              </div>
+            </div>
+            <div id="dal-bar" class="dh-diagram" role="img" aria-label="Total pressure as a stack of partial pressures"></div>
+            <div class="table-wrap"><table class="data-table"><thead><tr><th>Gas</th><th>n (mol)</th><th>X</th><th>P (kPa)</th></tr></thead><tbody id="dal-table"></tbody></table></div>
+            <div class="callout" id="dal-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">The box: V = 24.5 L at 25 °C, so 1 mol of gas gives 101 kPa. Air is 78.08 % N₂, 20.95 % O₂ and
+        0.93 % Ar by moles (dry air). Up a mountain the mole fraction of O₂ stays 0.21, but the total pressure drops, and
+        with it \(P_{\mathrm{O_2}}\): at 3500 m it is about 14 kPa instead of 21 kPa.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="kmt">
+      <h2>5 · Kinetic-molecular theory: why the gas law works</h2>
+      <p>The ideal gas law describes what happens; the <strong>kinetic-molecular theory</strong> explains why. Its model of a
+        gas:</p>
+      <ol>
+        <li>Gas molecules are in constant, random motion.</li>
+        <li>Their own volume is negligible compared with the volume of the container.</li>
+        <li>They collide with each other and the walls, but do not attract or repel each other.</li>
+        <li>Energy is passed on in collisions, but the <strong>average kinetic energy</strong> of the molecules stays
+          constant at a given temperature and is proportional to the absolute temperature.</li>
+      </ol>
+      <p>
+        Pressure comes from molecules hitting the walls: how often and how hard. Double the absolute temperature and the
+        average kinetic energy \(\bar{E}_k = \tfrac12 m\overline{u^2}\) doubles, and so does the pressure, at constant
+        volume. This is the molecular meaning of temperature: <strong>\(T\) measures the average kinetic energy of the
+        molecules</strong>, and it is the same for every kind of molecule at the same \(T\). So lighter molecules must move
+        faster.
+      </p>
+
+      <h3>Speed distributions</h3>
+      <p>Not all molecules move at the same speed: collisions constantly speed some up and slow others down. The
+        distribution has three useful “typical” speeds:</p>
+      <ul>
+        <li>\(u_\text{mp}\), the most probable speed (the peak);</li>
+        <li>\(u_\text{av}\), the average speed;</li>
+        <li>\(u_\text{rms}\), the speed of a molecule with the average kinetic energy:
+          \(\displaystyle u_\text{rms} = \sqrt{\frac{3RT}{M_w}}\), with \(M_w\) in <strong>kg/mol</strong>.</li>
+      </ul>
+      <div class="lab" id="mb-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control"><label for="mb-a" class="ctl-label">Gas A</label><select id="mb-a"></select></div>
+            <div class="control"><label for="mb-b" class="ctl-label">Gas B</label><select id="mb-b"></select></div>
+            <div class="control o0">
+              <label for="mb-T"><span>Temperature</span> <output id="mb-T-out"></output></label>
+              <input id="mb-T" type="range" min="100" max="1500" step="10" value="300">
+            </div>
+            <div class="table-wrap" style="margin:0"><table class="data-table"><thead><tr><th></th><th id="mb-ha" style="text-transform:none">A</th><th id="mb-hb" style="text-transform:none">B</th></tr></thead><tbody id="mb-table"></tbody></table></div>
+          </div>
+          <div>
+            <canvas class="plot" id="mb-plot" role="img" aria-label="Distribution of molecular speeds for two gases"></canvas>
+            <div class="legend" id="mb-legend"></div>
+            <div class="callout" id="mb-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">Maxwell–Boltzmann distribution for an ideal gas:
+        \(f(u) = 4\pi \left(\frac{M}{2\pi RT}\right)^{3/2} u^2 e^{-Mu^2/2RT}\) (not needed for the exam). It gives
+        \(u_\text{mp} = \sqrt{2RT/M}\), \(u_\text{av} = \sqrt{8RT/\pi M}\), \(u_\text{rms} = \sqrt{3RT/M}\), always in the
+        order \(u_\text{mp} &lt; u_\text{av} &lt; u_\text{rms}\). \(u_\text{rms}\) lies right of the peak because the kinetic
+        energy goes with \(u^2\), so the fast molecules count extra. As \(T\) rises, a bigger fraction of molecules is
+        fast: remember this for chemical kinetics (week 10).</p>
+
+      <h3>Diffusion, mean free path and effusion</h3>
+      <p>
+        At room temperature the molecules of air move at about 500 m/s, yet a smell takes seconds to cross a room. The
+        reason: collisions. At 1 atm a molecule hits another about 10¹⁰ times per second, so it travels only a tiny
+        distance, the <strong>mean free path</strong>, before its direction is randomized. <strong>Diffusion</strong>,
+        the spreading of one gas through another, is a random walk.
+      </p>
+      <div class="lab" id="mfp-lab">
+        <div class="control o0" style="max-width:520px">
+          <label for="mfp-P"><span>Pressure</span> <output id="mfp-P-out"></output></label>
+          <input id="mfp-P" type="range" min="-4.6" max="2.006" step="0.01" value="2.006">
+        </div>
+        <div class="btn-row" id="mfp-places" role="group" aria-label="Places"></div>
+        <div id="mfp-diagram" class="dh-diagram" role="img" aria-label="Mean free path compared with familiar lengths"></div>
+        <div class="callout" id="mfp-note" aria-live="polite"></div>
+      </div>
+      <p class="small muted">\(\lambda = k_BT / (\sqrt2\,\pi d^2 P)\) for air (d ≈ 0.37 nm) at 25 °C; the 100 km value uses
+        about 0.03 Pa. At 1 atm λ ≈ 60–70 nm; at 100 km altitude about 10 cm.</p>
+      <p>
+        <strong>Effusion</strong> is the escape of a gas through a tiny hole into a vacuum (Brown 10.7). The rate is
+        proportional to the speed of the molecules, so lighter gases escape faster (<strong>Graham's law</strong>):
+      </p>
+      \[ \frac{r_1}{r_2} = \sqrt{\frac{M_2}{M_1}} \]
+      <p class="small muted">The same √M dependence is one reason a helium party balloon goes flat overnight while an air-filled one lasts
+        for days: He atoms (4 g/mol) are √(29/4) ≈ 2.7 times faster than the molecules of air. Uranium was enriched this way:
+        ²³⁵UF₆ effuses 0.4 % faster than ²³⁸UF₆.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="real">
+      <h2>6 · Real gases</h2>
+      <p>The ideal gas law is incredibly useful, but real gases are not ideal when the molecules are close together. A
+        handy measure is the <strong>compressibility factor</strong> \(Z = PV/nRT\), which is exactly 1 for an ideal gas.
+        Two things go wrong:</p>
+      <ul>
+        <li><strong>Attraction</strong> (at moderate pressure and low temperature): molecules start to “stick” to each
+          other. A molecule about to hit the wall is pulled back by its neighbours and hits it less hard. The pressure is
+          lower than ideal: \(Z &lt; 1\).</li>
+        <li><strong>Molecular volume</strong> (at high pressure): the molecules themselves fill part of the container, so
+          the space they can move in is smaller than \(V\). \(Z &gt; 1\).</li>
+      </ul>
+      <p>The <strong>van der Waals equation</strong> keeps the form of \(PV = nRT\) but corrects both:</p>
+      \[ \left(P + \frac{n^2 a}{V^2}\right)\left(V - nb\right) = nRT \]
+      <p>\(a\) measures how strongly the molecules attract each other, \(b\) how much volume a mole of them occupies. Both
+        tend to grow with the size of the molecule.</p>
+      <div class="lab" id="vdw-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control"><label for="vdw-gas" class="ctl-label">Gas</label><select id="vdw-gas"></select></div>
+            <div class="control o0">
+              <label for="vdw-T"><span>Temperature</span> <output id="vdw-T-out"></output></label>
+              <input id="vdw-T" type="range" min="150" max="1000" step="5" value="300">
+            </div>
+            <fieldset class="control-group">
+              <legend>Show</legend>
+              <div class="chips">
+                <label class="chip"><input type="checkbox" id="vdw-sa"><span class="swatch" style="background:var(--c3)"></span>attraction only (b = 0)</label>
+                <label class="chip"><input type="checkbox" id="vdw-sb"><span class="swatch" style="background:var(--c2)"></span>volume only (a = 0)</label>
+              </div>
+            </fieldset>
+            <div class="table-wrap" style="margin:0"><table class="data-table"><tbody id="vdw-readout"></tbody></table></div>
+          </div>
+          <div>
+            <canvas class="plot" id="vdw-plot" role="img" aria-label="Compressibility factor Z against pressure"></canvas>
+            <div class="callout" id="vdw-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">Van der Waals constants from Brown Table 10.3 (a in L² kPa mol⁻², b in L mol⁻¹), the table in
+        Lecture 2. The van der Waals equation is itself only an approximation; it is good enough to show the trends. For
+        comparison: 10 MPa ≈ 100 atm, the pressure in a full gas cylinder is about 20 MPa.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="check">
+      <h2>Quick self-check</h2>
+
+      <div class="card quiz">
+        <p class="q">A gas at 20 °C is heated to 40 °C at constant pressure. Its volume…</p>
+        <div class="opts">
+          <button type="button" data-fb="Doubling the number in °C does not double the absolute temperature. Use kelvin.">doubles</button>
+          <button type="button" data-correct data-fb="V ∝ T in kelvin: 313 K / 293 K = 1.07, so it grows by about 7 %.">grows by about 7 %</button>
+          <button type="button" data-fb="At constant pressure the gas expands when it is heated (Charles's law).">stays the same</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">At the same T and P, which has the larger volume: 1 mol of H₂ or 1 mol of CO₂?</p>
+        <div class="opts">
+          <button type="button" data-fb="CO₂ molecules are heavier, but for an ideal gas the volume depends only on the number of molecules.">CO₂</button>
+          <button type="button" data-fb="H₂ molecules are lighter and faster, but they also hit the walls less hard. It evens out.">H₂</button>
+          <button type="button" data-correct data-fb="Avogadro: equal amounts of any ideal gas at the same T and P have the same volume (22.41 L at STP).">the same</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">A flask contains 2 mol N₂ and 1 mol O₂ at a total of 90 kPa. What is the partial pressure of O₂?</p>
+        <div class="opts">
+          <button type="button" data-correct data-fb="X(O₂) = 1/3, so P(O₂) = 1/3 × 90 kPa = 30 kPa.">30 kPa</button>
+          <button type="button" data-fb="That would be half. The mole fraction of O₂ is 1 of 3 mol.">45 kPa</button>
+          <button type="button" data-fb="That is the partial pressure of N₂ (2/3 of the total).">60 kPa</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">He and O₂ are at the same temperature. Which is true?</p>
+        <div class="opts">
+          <button type="button" data-fb="Temperature fixes the average kinetic energy, not the speed. At the same energy, the lighter He atoms are faster.">they have the same average speed</button>
+          <button type="button" data-correct data-fb="Same T means the same average kinetic energy, ½mu². He is 8 times lighter, so its u_rms is √8 ≈ 2.8 times larger.">they have the same average kinetic energy</button>
+          <button type="button" data-fb="Every molecule has a different speed: both gases have a broad distribution.">all molecules of each gas move at the same speed</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">When does a real gas behave most like an ideal gas?</p>
+        <div class="opts">
+          <button type="button" data-fb="High pressure crowds the molecules together: their own volume starts to matter.">high pressure, low temperature</button>
+          <button type="button" data-correct data-fb="Molecules far apart (low P) and fast (high T): their volume is negligible and attractions hardly matter.">low pressure, high temperature</button>
+          <button type="button" data-fb="Low temperature makes attractions important: slow molecules stick together.">low pressure, low temperature</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="summary">
+      <h2>Summary</h2>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <tbody>
+            <tr><td>Pressure</td><td>\(P = F/A,\ \ P = \rho g h\)</td><td class="small">1 atm = 760 torr = 101.325 kPa</td></tr>
+            <tr><td>Ideal gas law</td><td>\(PV = nRT\)</td><td class="small">\(R\) = 8.314 J mol⁻¹ K⁻¹; \(T\) in K</td></tr>
+            <tr><td>Fixed amount</td><td>\(\dfrac{P_1V_1}{T_1} = \dfrac{P_2V_2}{T_2}\)</td><td class="small">Boyle, Charles as special cases</td></tr>
+            <tr><td>Molar volume</td><td>22.41 L/mol</td><td class="small">STP: 0 °C, 1 atm</td></tr>
+            <tr><td>Density, molar mass</td><td>\(\rho = \dfrac{PM_w}{RT}\)</td><td class="small">\(M_w = \rho RT/P\)</td></tr>
+            <tr><td>Dalton</td><td>\(P_\text{tot} = \sum P_i,\ \ P_i = X_iP_\text{tot}\)</td><td class="small">\(X_i = n_i/n_\text{tot}\)</td></tr>
+            <tr><td>Molecular speed</td><td>\(u_\text{rms} = \sqrt{3RT/M_w}\)</td><td class="small">\(M_w\) in kg/mol</td></tr>
+            <tr><td>Graham</td><td>\(r_1/r_2 = \sqrt{M_2/M_1}\)</td><td class="small">effusion</td></tr>
+            <tr><td>Van der Waals</td><td>\(\left(P + \dfrac{n^2a}{V^2}\right)(V - nb) = nRT\)</td><td class="small">a: attraction, b: volume</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Covered in Lecture 2: Brown 10.1–10.8. More to play with: PhET
+        <a href="https://phet.colorado.edu/en/simulations/gas-properties" rel="noopener">Gas Properties</a>. Next week:
+        reactions in water (<a href="../aqueous/">week 3 page</a>). Intermolecular forces, the reason for \(a\), come back
+        in <a href="../liquids/">week 8</a>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Made by the course TA. Not official course material: if this page and the lecture disagree, the lecture wins.
+      Nothing you do on these pages is recorded.
+    </div>
+  </footer>
+
+  <script type="module" src="pressure.js"></script>
+  <script type="module" src="laws.js"></script>
+  <script type="module" src="igl.js"></script>
+  <script type="module" src="dalton.js"></script>
+  <script type="module" src="speeds.js"></script>
+  <script type="module" src="real.js"></script>
+  <script type="module" src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Properties of Solutions</title>
+  <meta name="description" content="Interactive look at the solution process, solubility, concentration units, Raoult's law, boiling-point elevation, freezing-point depression and osmosis.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false})"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../">Chemistry HS26 <span>· interactive companion</span></a>
+      <nav class="crumbs"><a href="../">Topics</a> › 9 Properties of solutions</nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Properties of solutions</h1>
+    <p class="lede">Why does salt dissolve in water but oil does not? Why does a soda fizz when you open it, why do we salt
+      roads in winter, and why can a little sugar push water up a 25-metre column? Brown, Chapter 13.</p>
+
+    <div class="card">
+      <strong>After this week you should be able to</strong>
+      <ul style="margin:8px 0 0">
+        <li>explain dissolving as a balance of intermolecular forces (enthalpy) and mixing (entropy)</li>
+        <li>predict how pressure and temperature change solubility, and use Henry's law</li>
+        <li>convert between mass percentage, ppm, mole fraction, molarity and molality</li>
+        <li>calculate vapour-pressure lowering, boiling-point elevation, freezing-point depression and osmotic pressure</li>
+        <li>use the van 't Hoff factor for electrolytes, and get a molar mass from a colligative property</li>
+      </ul>
+    </div>
+
+    <nav class="module-nav" aria-label="Modules on this page">
+      <a href="#dissolving"><strong>1 · Why do things dissolve?</strong><span class="tag live">open</span></a>
+      <a href="#solubility"><strong>2 · Pressure and temperature</strong><span class="tag live">open</span></a>
+      <a href="#units"><strong>3 · Concentration units</strong><span class="tag live">open</span></a>
+      <a href="#colligative"><strong>4 · Colligative properties</strong><span class="tag live">open</span></a>
+      <a href="#colloids"><strong>5 · Colloids</strong><span class="tag live">open</span></a>
+    </nav>
+
+    <!-- =============================================================== -->
+    <section id="dissolving">
+      <h2>1 · Why do things dissolve?</h2>
+      <p>
+        A <strong>solution</strong> is a homogeneous mixture: a <em>solute</em> spread out evenly in a <em>solvent</em>.
+        Whether a solute dissolves depends on two things you already know:
+      </p>
+      <ul>
+        <li><strong>Enthalpy</strong> (week 4): which intermolecular forces are broken and which are formed (week 8).</li>
+        <li><strong>Entropy</strong> (week 5): mixing spreads the particles over more arrangements, so entropy almost always
+          favours dissolving.</li>
+      </ul>
+      <p>Think of dissolving as three steps. Because enthalpy is a state function, the order does not matter (Hess's law):</p>
+      \[ \Delta H_\text{soln} = \underbrace{\Delta H_1}_{\text{separate solute particles}\ (>0)}
+         + \underbrace{\Delta H_2}_{\text{make room in the solvent}\ (>0)}
+         + \underbrace{\Delta H_3}_{\text{solute–solvent attractions form}\ (<0)} \]
+
+      <div class="lab" id="dh-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="btn-row" id="dh-presets" role="group" aria-label="Examples"></div>
+            <div class="control">
+              <label for="dh-1"><span>ΔH₁ solute–solute</span> <output id="dh-1-out"></output></label>
+              <input id="dh-1" type="range" min="0" max="100" step="1" value="60">
+            </div>
+            <div class="control">
+              <label for="dh-2"><span>ΔH₂ solvent–solvent</span> <output id="dh-2-out"></output></label>
+              <input id="dh-2" type="range" min="0" max="100" step="1" value="40">
+            </div>
+            <div class="control">
+              <label for="dh-3"><span>ΔH₃ solute–solvent</span> <output id="dh-3-out"></output></label>
+              <input id="dh-3" type="range" min="-200" max="0" step="1" value="-95">
+            </div>
+            <p class="small muted" style="margin:0">Illustrative units, not real kJ/mol. Real numbers for NaCl are below.</p>
+          </div>
+          <div>
+            <div id="dh-diagram" class="dh-diagram" role="img" aria-label="Enthalpy diagram of the three steps of dissolving"></div>
+            <div class="callout" id="dh-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <p><strong>Real numbers for NaCl in water.</strong> Pulling the ions out of the crystal costs the lattice energy,
+        +788 kJ/mol. Surrounding the free ions with water molecules (ion–dipole forces, steps 2 and 3 together, the
+        <em>hydration</em>) gives back −784 kJ/mol. The net \(\Delta H_\text{soln}\) is only about +4 kJ/mol, the small
+        difference of two huge numbers. Entropy does the rest.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Solute in water</th><th>\(\Delta H_\text{soln}\) (kJ/mol)</th><th>What you notice</th></tr></thead>
+          <tbody>
+            <tr><td>NaOH</td><td class="num">−44.5</td><td>the solution gets hot</td></tr>
+            <tr><td>NaCl</td><td class="num">+3.9</td><td>hardly any temperature change</td></tr>
+            <tr><td>NH₄NO₃</td><td class="num">+25.7</td><td>the solution gets cold: instant cold packs</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">NH₄NO₃ dissolves although it is endothermic: the entropy gain makes \(\Delta G = \Delta H - T\Delta S\)
+        negative (week 5). Values at 25 °C for dilute solutions.</p>
+
+      <h3>“Like dissolves like”</h3>
+      <p>
+        A solute dissolves well when the new solute–solvent attractions are about as strong as the solute–solute and
+        solvent–solvent attractions they replace. Polar and ionic substances dissolve in polar solvents (water). Non-polar
+        substances dissolve in non-polar solvents (hexane, oil). Oil does not mix with water because the water molecules
+        attract each other through hydrogen bonds much more strongly than they attract oil molecules.
+      </p>
+      <p>The alcohols show this step by step. The O–H group likes water; the hydrocarbon chain likes hexane. As the chain
+        gets longer, the molecule looks more and more like a hydrocarbon:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Alcohol</th><th>Solubility in water<br><span class="small">(mol per 100 g water, 20 °C)</span></th><th style="min-width:150px"></th><th>Solubility in hexane</th></tr></thead>
+          <tbody id="alc-table"></tbody>
+        </table>
+      </div>
+      <p class="small muted">∞ means the two liquids mix in any proportion (they are <em>miscible</em>). Data as in Brown, Ch. 13.
+        The bar is on a logarithmic scale.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="solubility">
+      <h2>2 · Solubility: pressure and temperature</h2>
+      <p>
+        A <strong>saturated</strong> solution is in dynamic equilibrium with undissolved solute: particles dissolve and come
+        back out at the same rate. Its concentration is the <strong>solubility</strong>.
+      </p>
+
+      <h3>Gases: Henry's law</h3>
+      <p>
+        Press harder on a gas above a liquid and more gas molecules hit the surface and dissolve, until the dissolved
+        concentration is high enough for the rates in and out to be equal again. The solubility of a gas is proportional
+        to its partial pressure:
+      </p>
+      \[ S_\text{g} = k\,P_\text{g} \]
+      <p>\(S_\text{g}\) is the solubility (mol/L), \(P_\text{g}\) the partial pressure of that gas above the solution (atm), and
+        \(k\) the Henry's-law constant (mol L⁻¹ atm⁻¹), which depends on the gas, the solvent and the temperature.</p>
+
+      <div class="lab" id="hl-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Gas (in water, 25 °C)</span>
+              <div class="seg" role="group" aria-label="Gas" id="hl-gas">
+                <button type="button" data-v="co2" aria-pressed="true">CO₂</button>
+                <button type="button" data-v="o2" aria-pressed="false">O₂</button>
+              </div>
+            </div>
+            <div class="control">
+              <label for="hl-P"><span>Partial pressure of the gas</span> <output id="hl-P-out"></output></label>
+              <input id="hl-P" type="range" min="0" max="5" step="0.01" value="4">
+            </div>
+            <div class="btn-row">
+              <button class="btn primary" id="hl-open" type="button">Open the bottle</button>
+              <button class="btn" id="hl-close" type="button">Close and refill</button>
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="hl-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <canvas id="hl-box" class="sim-box wide" role="img" aria-label="Gas molecules above water and dissolved in it"></canvas>
+            <div class="callout" id="hl-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">The picture shows equal volumes of gas and liquid, with the number of molecules in proportion
+        to the real concentrations. At 25 °C, a litre of water holds about 0.8 times as much CO₂ as a litre of the gas above
+        it, but only 0.03 times as much O₂. Henry's-law constants at 25 °C: CO₂ 3.4 × 10⁻², O₂ 1.3 × 10⁻³ mol L⁻¹ atm⁻¹.</p>
+
+      <h3>Temperature</h3>
+      <div class="two-col">
+        <div>
+          <p><strong>Gases become less soluble when the water gets warmer.</strong> Dissolving a gas releases heat, and the
+            faster-moving gas molecules escape more easily. A warm soda goes flat faster, and fish in a warm lake or near
+            the cooling-water outlet of a power plant can run short of oxygen.</p>
+          <p><strong>Most solids become more soluble at higher temperature</strong>, which is why sugar dissolves better in hot
+            tea. There are exceptions, for example Ce₂(SO₄)₃, which gets less soluble.</p>
+        </div>
+        <div>
+          <canvas class="plot" id="o2-plot" role="img" aria-label="Solubility of oxygen from air in water against temperature"></canvas>
+          <p class="small muted" style="margin:4px 0 0">Oxygen dissolved in fresh water in contact with air at 1 atm.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="units">
+      <h2>3 · Concentration units: same solution, five numbers</h2>
+      <p>One solution, described five ways. Each unit is a ratio of an amount of solute to an amount of something else:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Unit</th><th>Definition</th><th>Changes with temperature?</th></tr></thead>
+          <tbody>
+            <tr><td>Mass percentage</td><td>\(\dfrac{\text{mass of solute}}{\text{mass of solution}} \times 100\)</td><td>no</td></tr>
+            <tr><td>ppm</td><td>\(\dfrac{\text{mass of solute}}{\text{mass of solution}} \times 10^6\)</td><td>no</td></tr>
+            <tr><td>Mole fraction \(X\)</td><td>\(X_\text{A} = \dfrac{n_\text{A}}{n_\text{total}}\) (no unit)</td><td>no</td></tr>
+            <tr><td>Molarity \(M\)</td><td>\(\dfrac{\text{mol solute}}{\text{litres of } \textbf{solution}}\)</td><td><strong>yes</strong>: the volume expands when warmed</td></tr>
+            <tr><td>Molality \(m\)</td><td>\(\dfrac{\text{mol solute}}{\text{kg of } \textbf{solvent}}\)</td><td>no</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Watch out: molarity uses the volume of the whole <em>solution</em>, molality the mass of the
+        <em>solvent</em> only. Molality is used for boiling and freezing points because the temperature changes there.</p>
+
+      <div class="lab" id="cu-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="cu-solute" class="ctl-label">Solute (in water)</label>
+              <select id="cu-solute">
+                <option value="58.44" data-n="NaCl">NaCl (58.44 g/mol)</option>
+                <option value="180.16" data-n="glucose">glucose, C₆H₁₂O₆ (180.16 g/mol)</option>
+                <option value="342.30" data-n="sucrose">sucrose, C₁₂H₂₂O₁₁ (342.30 g/mol)</option>
+                <option value="62.07" data-n="ethylene glycol">ethylene glycol, C₂H₆O₂ (62.07 g/mol)</option>
+              </select>
+            </div>
+            <div class="control">
+              <label for="cu-ms"><span>Mass of solute</span> <output id="cu-ms-out"></output></label>
+              <input id="cu-ms" type="range" min="0.1" max="100" step="0.1" value="10">
+            </div>
+            <div class="control">
+              <label for="cu-mw"><span>Mass of water</span> <output id="cu-mw-out"></output></label>
+              <input id="cu-mw" type="range" min="10" max="1000" step="1" value="100">
+            </div>
+            <div class="control">
+              <label for="cu-rho"><span>Density of the solution</span> <output id="cu-rho-out"></output></label>
+              <input id="cu-rho" type="range" min="0.95" max="1.40" step="0.005" value="1.065">
+            </div>
+            <p class="small muted" style="margin:0">The density has to be measured (or given in the problem). The default fits
+              10 g NaCl in 100 g water at 20 °C.</p>
+          </div>
+          <div>
+            <div class="table-wrap" style="margin:0">
+              <table>
+                <thead><tr><th>Quantity</th><th>Working</th><th>Result</th></tr></thead>
+                <tbody id="cu-table"></tbody>
+              </table>
+            </div>
+            <div class="callout" id="cu-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <ol class="try">
+        <li>Change only the density. Which results change? Molarity is the only one that needs it.</li>
+        <li>Make the solution dilute (1 g solute in 1000 g water). Molarity and molality become almost the same number. Why?</li>
+        <li>Make it concentrated (100 g sugar in 100 g water). Now they differ a lot.</li>
+      </ol>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="colligative">
+      <h2>4 · Colligative properties: only the number of particles counts</h2>
+      <p>
+        Some properties of a solution depend only on <strong>how many</strong> solute particles there are, not on what they
+        are. These <strong>colligative properties</strong> are vapour-pressure lowering, boiling-point elevation,
+        freezing-point depression and osmotic pressure. All four start from the same idea: dissolved particles make the
+        solvent less eager to leave the solution.
+      </p>
+
+      <h3>Vapour-pressure lowering: Raoult's law</h3>
+      \[ P_\text{A} = X_\text{A}\,P^\circ_\text{A} \]
+      <p>
+        The partial pressure of the solvent A above the solution is its mole fraction times the vapour pressure of the pure
+        solvent. In an <strong>ideal solution</strong> each solvent molecule leaves the liquid just as easily as in the pure
+        solvent, but only a fraction \(X_\text{A}\) of the molecules are solvent. A non-volatile solute (sugar, salt) does
+        not contribute to the vapour at all.
+      </p>
+
+      <div class="lab" id="ra-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Mixture</span>
+              <div class="seg" role="group" aria-label="Mixture" id="ra-mode">
+                <button type="button" data-v="nv" aria-pressed="true">Sugar in water</button>
+                <button type="button" data-v="bt" aria-pressed="false">Benzene + toluene</button>
+              </div>
+            </div>
+            <div class="control">
+              <label for="ra-x"><span id="ra-x-label">Mole fraction of solute</span> <output id="ra-x-out"></output></label>
+              <input id="ra-x" type="range" min="0" max="0.5" step="0.005" value="0.1">
+            </div>
+            <canvas id="ra-box" class="sim-box" style="max-width:240px" role="img" aria-label="Liquid surface with the vapour above it"></canvas>
+          </div>
+          <div>
+            <canvas class="plot" id="ra-plot" role="img" aria-label="Vapour pressure against composition"></canvas>
+            <div class="legend" id="ra-legend"></div>
+            <div class="callout" id="ra-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <details>
+        <summary>Is the solute really “blocking the surface”?</summary>
+        <p>That picture is popular but not quite right. The deeper reason is entropy (week 5): the solvent in a solution is
+          mixed with solute particles and so has more possible arrangements than the pure solvent. Leaving the solution to
+          become vapour gives up that extra entropy, so fewer molecules leave. Real solutions follow Raoult's law well
+          when they are dilute and when solute and solvent attract each other about as much as they attract themselves.</p>
+      </details>
+
+      <h3>Why the boiling point goes up and the freezing point goes down</h3>
+      <p>
+        Boiling: the liquid has to reach a vapour pressure of 1 atm. The solution's vapour pressure is lower at every
+        temperature, so it has to get hotter. Freezing: pure ice forms (the solute stays in the liquid). The freezing point is
+        where the liquid and the ice have the same vapour pressure. Lower the liquid's curve and the crossing moves to a
+        lower temperature. Here are the real curves for water:
+      </p>
+      <div class="lab" id="why-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Zoom in on</span>
+              <div class="seg" role="group" aria-label="Zoom" id="why-view">
+                <button type="button" data-v="b" aria-pressed="true">Boiling point</button>
+                <button type="button" data-v="f" aria-pressed="false">Freezing point</button>
+              </div>
+            </div>
+            <div class="control">
+              <label for="why-m"><span>Particle molality, i·m</span> <output id="why-m-out"></output></label>
+              <input id="why-m" type="range" min="0" max="3" step="0.05" value="1">
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="why-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <canvas class="plot" id="why-plot" role="img" aria-label="Vapour pressure of pure water and of a solution near the boiling or freezing point"></canvas>
+            <div class="legend" id="why-legend"></div>
+            <div class="callout" id="why-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>The formulas, for any solvent</h3>
+      \[ \Delta T_b = i\,K_b\,m \qquad\qquad \Delta T_f = i\,K_f\,m \]
+      <p>\(m\) is the molality of the solute, \(K_b\) and \(K_f\) are constants of the <em>solvent</em> (°C/m), and \(i\) is the
+        <strong>van 't Hoff factor</strong>: the number of particles each formula unit gives in solution. Both \(\Delta T\) are
+        positive numbers: the boiling point goes up by \(\Delta T_b\), the freezing point goes down by \(\Delta T_f\).</p>
+
+      <div class="lab" id="bf-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="bf-solvent" class="ctl-label">Solvent</label>
+              <select id="bf-solvent"></select>
+            </div>
+            <div class="control">
+              <span class="ctl-label">Solute</span>
+              <div class="seg" role="group" aria-label="Solute" id="bf-i">
+                <button type="button" data-v="1" aria-pressed="true">glucose (i = 1)</button>
+                <button type="button" data-v="2" aria-pressed="false">NaCl (i = 2)</button>
+                <button type="button" data-v="3" aria-pressed="false">CaCl₂ (i = 3)</button>
+              </div>
+            </div>
+            <div class="control">
+              <label for="bf-m"><span>Molality m</span> <output id="bf-m-out"></output></label>
+              <input id="bf-m" type="range" min="0" max="3" step="0.01" value="1">
+            </div>
+          </div>
+          <div>
+            <div id="bf-scale" class="tscale" aria-live="polite"></div>
+            <div class="callout" id="bf-note"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">Constants as in Brown, Table 13.3. The formulas work for dilute solutions. At several mol/kg
+        they are only a rough guide: a 50 % ethylene glycol antifreeze, for example, freezes at about −37 °C.</p>
+
+      <h4>Real van 't Hoff factors are a bit smaller</h4>
+      <p>Oppositely charged ions attract each other in solution. Some of the time they move around as a pair and count as
+        one particle, so the measured \(i\) is smaller than the ideal one. The more dilute the solution and the smaller the
+        ionic charges, the closer \(i\) gets to the ideal value:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Solute</th><th>0.100 m</th><th>0.0100 m</th><th>0.00100 m</th><th>Ideal</th></tr></thead>
+          <tbody>
+            <tr><td>sucrose</td><td class="num">1.00</td><td class="num">1.00</td><td class="num">1.00</td><td class="num">1.00</td></tr>
+            <tr><td>NaCl</td><td class="num">1.87</td><td class="num">1.94</td><td class="num">1.97</td><td class="num">2.00</td></tr>
+            <tr><td>K₂SO₄</td><td class="num">2.32</td><td class="num">2.70</td><td class="num">2.84</td><td class="num">3.00</td></tr>
+            <tr><td>MgSO₄</td><td class="num">1.21</td><td class="num">1.53</td><td class="num">1.82</td><td class="num">2.00</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Measured values at 25 °C, as in Brown, Table 13.4. Use the ideal value unless a problem gives
+        you a measured one.</p>
+
+      <h3>Osmosis</h3>
+      <p>
+        A <strong>semipermeable membrane</strong> lets solvent molecules through but not the solute. Put pure water on one
+        side and a solution on the other: water flows into the solution, the same way it "wants" to dilute any solution.
+        The pressure you must apply to the solution to stop this flow is the <strong>osmotic pressure</strong>:
+      </p>
+      \[ \Pi = i\,M R T \]
+      <p>with \(M\) the molarity. Watch the units: \(M\) in mol/L with \(R = 0.08206\ \mathrm{L\,atm\,mol^{-1}\,K^{-1}}\) gives
+        atm; \(M\) in mol/m³ with \(R = 8.314\ \mathrm{J\,mol^{-1}\,K^{-1}}\) gives Pa. Push harder than \(\Pi\) and water flows
+        the other way: <strong>reverse osmosis</strong>, which is how seawater is desalinated.</p>
+
+      <div class="lab" id="os-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="btn-row" id="os-presets" role="group" aria-label="Examples">
+              <button class="btn" type="button" data-c="0.10" data-i="1">0.10 M sugar</button>
+              <button class="btn" type="button" data-c="0.15" data-i="2">Saline drip</button>
+              <button class="btn" type="button" data-c="0.55" data-i="2">Seawater</button>
+            </div>
+            <div class="control">
+              <label for="os-c"><span>Concentration</span> <output id="os-c-out"></output></label>
+              <input id="os-c" type="range" min="0" max="1" step="0.005" value="0.1">
+            </div>
+            <div class="control">
+              <span class="ctl-label">Solute</span>
+              <div class="seg" role="group" aria-label="Solute" id="os-i">
+                <button type="button" data-v="1" aria-pressed="true">sugar (i = 1)</button>
+                <button type="button" data-v="2" aria-pressed="false">NaCl (i = 2)</button>
+              </div>
+            </div>
+            <div class="control">
+              <label for="os-T"><span>Temperature</span> <output id="os-T-out"></output></label>
+              <input id="os-T" type="range" min="0" max="40" step="1" value="25">
+            </div>
+            <div class="control">
+              <label for="os-Pa"><span>Pressure you apply to the solution</span> <output id="os-Pa-out"></output></label>
+              <input id="os-Pa" type="range" min="0" max="60" step="0.1" value="0">
+            </div>
+          </div>
+          <div>
+            <canvas id="os-box" class="sim-box wide" role="img" aria-label="Pure water and a solution separated by a semipermeable membrane"></canvas>
+            <div class="callout" id="os-note" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table"><tbody id="os-readout"></tbody></table>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <h4>Your red blood cells do this all the time</h4>
+          <p class="small">The inside of a red blood cell is about 0.30 mol of particles per litre. In a solution with the same
+            particle concentration (<em>isotonic</em>, e.g. 0.9 % NaCl, the "saline drip") nothing happens. In pure water
+            (<em>hypotonic</em>) water flows in and the cell can burst. In salty water (<em>hypertonic</em>) water flows out and
+            the cell shrivels. Move the concentration slider above and watch the cell.</p>
+        </div>
+        <div>
+          <canvas id="os-cell" class="plot" style="aspect-ratio:2/1" role="img" aria-label="Red blood cell in the solution"></canvas>
+          <p class="small muted" id="os-cell-note" style="margin:4px 0 0"></p>
+        </div>
+      </div>
+
+      <details>
+        <summary>Getting a molar mass from a colligative property</summary>
+        <p>Measure \(\Delta T_f\), \(\Delta T_b\) or \(\Pi\), work out the amount of solute in mol, and divide the mass by it.
+          Example: 1.00 g of a protein is dissolved in water to make 100.0 mL of solution. At 25 °C the osmotic pressure is
+          0.248 kPa.</p>
+        \[ n = \frac{\Pi V}{RT} = \frac{248\ \mathrm{Pa} \times 1.000\times10^{-4}\ \mathrm{m^3}}{8.314\ \mathrm{J\,mol^{-1}K^{-1}} \times 298.15\ \mathrm{K}}
+           = 1.00\times10^{-5}\ \mathrm{mol}
+           \qquad\Rightarrow\qquad \mathcal{M} = \frac{1.00\ \mathrm{g}}{1.00\times10^{-5}\ \mathrm{mol}} = 1.00\times10^{5}\ \mathrm{g/mol} \]
+        <p class="small muted">The freezing point of the same solution would drop by only about 0.0002 °C, far too little to
+          measure. That is why osmotic pressure is used for large molecules such as proteins and polymers.</p>
+      </details>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="colloids">
+      <h2>5 · Colloids</h2>
+      <p>
+        Between a true solution (particles below about 1 nm) and a suspension that settles out lies the <strong>colloid</strong>:
+        particles of roughly 1 to 1000 nm that stay dispersed. They are too small to see or to settle, but big enough to
+        scatter light. A beam of light through a colloid is visible from the side (the <strong>Tyndall effect</strong>);
+        through a true solution it is not. Think of a sunbeam in a dusty room, or car headlights in fog.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Dispersed in → </th><th>Gas</th><th>Liquid</th><th>Solid</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Gas</strong></td><td class="muted">(always a solution)</td><td>foam: whipped cream</td><td>solid foam: marshmallow</td></tr>
+            <tr><td><strong>Liquid</strong></td><td>aerosol: fog</td><td>emulsion: milk, mayonnaise</td><td>solid emulsion: butter</td></tr>
+            <tr><td><strong>Solid</strong></td><td>aerosol: smoke</td><td>sol: paint</td><td>solid sol: ruby glass</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Rows: what is dispersed. Columns: what it is dispersed in.</p>
+      <p>
+        In water, <strong>hydrophilic</strong> colloids (many proteins) are stabilised by polar or charged groups on their
+        surface. <strong>Hydrophobic</strong> ones (oil droplets) need help: an <em>emulsifying agent</em> such as soap or
+        the lecithin in egg yolk has a polar head and a long non-polar tail. The tails dissolve in the oil droplet, the heads
+        face the water, and the droplet stays suspended. This is how soap washes grease away. Adding salt or heating can
+        make colloid particles clump together and settle (<em>coagulation</em>).
+      </p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="check">
+      <h2>Quick self-check</h2>
+
+      <div class="card quiz">
+        <p class="q">Which concentration unit changes when you warm the solution from 20 °C to 40 °C?</p>
+        <div class="opts">
+          <button type="button" data-correct data-fb="Molarity uses the volume of the solution, and liquids expand when they get warmer. Masses and amounts do not change.">molarity</button>
+          <button type="button" data-fb="Molality is mol per kg of solvent: neither the moles nor the mass change with temperature.">molality</button>
+          <button type="button" data-fb="Mole fractions only count particles, which do not change with temperature.">mole fraction</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">0.10 m NaCl and 0.10 m glucose in water. Which freezes at the lower temperature?</p>
+        <div class="opts">
+          <button type="button" data-correct data-fb="NaCl gives two particles (i = 2): ΔTf ≈ 2 × 1.86 × 0.10 = 0.37 °C, against 0.19 °C for glucose. (The measured i at 0.1 m is about 1.87, so really 0.35 °C.)">NaCl</button>
+          <button type="button" data-fb="Glucose does not split up in water: i = 1.">glucose</button>
+          <button type="button" data-fb="Same molality, but not the same number of particles. Count the ions.">both the same</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Why does a bottle of soda fizz when you open it?</p>
+        <div class="opts">
+          <button type="button" data-fb="The temperature hardly changes when you open the bottle.">the soda warms up</button>
+          <button type="button" data-correct data-fb="Henry's law: the partial pressure of CO₂ above the soda drops from a few atm to about 0.0004 atm, so the equilibrium solubility drops by a factor of about 10 000. The extra CO₂ comes out as bubbles.">the CO₂ pressure above it drops</button>
+          <button type="button" data-fb="The CO₂ was dissolved all along. What changes is how much can stay dissolved.">a reaction starts that makes CO₂</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">What is the osmotic pressure of 0.10 M glucose at 25 °C?</p>
+        <div class="opts">
+          <button type="button" data-fb="Check the units of R: with M in mol/L you need R = 0.08206 L atm mol⁻¹ K⁻¹.">0.25 atm</button>
+          <button type="button" data-correct data-fb="Π = MRT = 0.10 × 0.08206 × 298 = 2.4 atm (248 kPa). That is enough to hold up a column of water about 25 m high.">2.4 atm</button>
+          <button type="button" data-fb="Too big by 10. Π = MRT = 0.10 mol/L × 0.08206 L atm mol⁻¹ K⁻¹ × 298 K.">24 atm</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">You dissolve sugar in water until the mole fraction of water is 0.95. The vapour pressure of the solution is…</p>
+        <div class="opts">
+          <button type="button" data-correct data-fb="Raoult's law: P = X·P° = 0.95 P°. Sugar is non-volatile, so it adds nothing to the vapour.">95 % of that of pure water</button>
+          <button type="button" data-fb="That would be Raoult's law with the mole fraction of the solute, not of the water.">5 % of that of pure water</button>
+          <button type="button" data-fb="A non-volatile solute lowers the vapour pressure; it does not raise it.">higher than that of pure water</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Why do fish struggle in a lake during a heat wave?</p>
+        <div class="opts">
+          <button type="button" data-correct data-fb="Gases are less soluble in warmer water: from about 9.1 mg/L O₂ at 20 °C to 7.6 mg/L at 30 °C, and warm fish need more oxygen.">less O₂ dissolves in warm water</button>
+          <button type="button" data-fb="The partial pressure of O₂ in the air barely changes with the weather.">there is less O₂ in the air</button>
+          <button type="button" data-fb="Solids usually dissolve better when warm, but gases do the opposite.">more O₂ dissolves, but too fast</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="summary">
+      <h2>Summary</h2>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <tbody>
+            <tr><td>Enthalpy of solution</td><td>\(\Delta H_\text{soln} = \Delta H_1 + \Delta H_2 + \Delta H_3\)</td><td class="small">dissolves if \(\Delta G = \Delta H - T\Delta S < 0\)</td></tr>
+            <tr><td>Henry's law</td><td>\(S_\text{g} = k\,P_\text{g}\)</td><td class="small">gases: less soluble when warm</td></tr>
+            <tr><td>Raoult's law</td><td>\(P_\text{A} = X_\text{A}\,P^\circ_\text{A}\)</td><td class="small">ideal solutions</td></tr>
+            <tr><td>Boiling-point elevation</td><td>\(\Delta T_b = i\,K_b\,m\)</td><td class="small">water: \(K_b\) = 0.51 °C/m</td></tr>
+            <tr><td>Freezing-point depression</td><td>\(\Delta T_f = i\,K_f\,m\)</td><td class="small">water: \(K_f\) = 1.86 °C/m</td></tr>
+            <tr><td>Osmotic pressure</td><td>\(\Pi = i\,M R T\)</td><td class="small">M in mol/L, R = 0.08206 L atm mol⁻¹ K⁻¹</td></tr>
+            <tr><td>van 't Hoff factor</td><td>\(i\) = particles per formula unit</td><td class="small">ideal: glucose 1, NaCl 2, CaCl₂ 3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Made by the course TA. Not official course material: if this page and the lecture disagree, the lecture wins.
+      Nothing you do on these pages is recorded.
+    </div>
+  </footer>
+
+  <script type="module" src="dissolve.js"></script>
+  <script type="module" src="henry.js"></script>
+  <script type="module" src="units.js"></script>
+  <script type="module" src="colligative.js"></script>
+  <script type="module" src="osmosis.js"></script>
+  <script type="module" src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Liquids and Intermolecular Forces</title>
+  <meta name="description" content="Interactive look at intermolecular forces, boiling points, vapour pressure, heating curves and phase diagrams.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false})"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../">Chemistry HS26 <span>· interactive companion</span></a>
+      <nav class="crumbs"><a href="../">Topics</a> › 8 Liquids and intermolecular forces</nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Liquids and intermolecular forces</h1>
+    <p class="lede">Why is water a liquid at room temperature but methane a gas? Why does water boil at 72 °C on Mount Everest?
+      It all comes down to how strongly molecules pull on each other. Brown, Chapter 11.</p>
+
+    <div class="card">
+      <strong>After this week you should be able to</strong>
+      <ul style="margin:8px 0 0">
+        <li>tell intermolecular forces apart from chemical bonds</li>
+        <li>name the forces between given molecules (dispersion, dipole–dipole, hydrogen bonding, ion–dipole)</li>
+        <li>use them to rank boiling points, vapour pressures, viscosities and surface tensions</li>
+        <li>calculate the heat needed to warm, melt and boil a substance</li>
+        <li>read a phase diagram, and explain why water's looks different from almost everyone else's</li>
+      </ul>
+    </div>
+
+    <nav class="module-nav" aria-label="Modules on this page">
+      <a href="#forces"><strong>1 · What holds a liquid together?</strong><span class="tag live">open</span></a>
+      <a href="#liquid-props"><strong>2 · Properties of liquids</strong><span class="tag live">open</span></a>
+      <a href="#phase-changes"><strong>3 · Phase changes</strong><span class="tag live">open</span></a>
+      <a href="#phase-diagrams"><strong>4 · Phase diagrams</strong><span class="tag live">open</span></a>
+    </nav>
+
+    <!-- =============================================================== -->
+    <section id="forces">
+      <h2>1 · What holds a liquid together?</h2>
+      <p>
+        Inside a molecule, atoms are held together by <strong>chemical bonds</strong> (<em>intra</em>molecular forces, week 7).
+        Between molecules there are much weaker attractions, the <strong>intermolecular forces</strong>. They decide whether a
+        substance is a gas, a liquid or a solid at a given temperature, and how easily it boils, flows or evaporates.
+      </p>
+      <p>
+        How much weaker? Boiling 1 mol of water takes 40.7 kJ. Breaking all the O–H bonds in that mole would take
+        about \(2 \times 463 = 926\) kJ. <strong>When water boils, the H₂O molecules stay intact.</strong>
+        The bubbles are water vapour, not hydrogen and oxygen.
+      </p>
+
+      <h3>Attraction against motion</h3>
+      <p>Every phase is a contest between two things: the attraction between molecules, which pulls them together, and their
+        kinetic energy (set by the temperature, week 2), which shakes them apart. Play with both in this toy model.</p>
+
+      <div class="lab" id="md-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="md-eps"><span>Strength of attraction</span> <output id="md-eps-out"></output></label>
+              <input id="md-eps" type="range" min="0.3" max="2.0" step="0.05" value="1.0">
+            </div>
+            <div class="control">
+              <label for="md-T"><span>Temperature</span> <output id="md-T-out"></output></label>
+              <input id="md-T" type="range" min="0.05" max="1.50" step="0.01" value="0.50">
+            </div>
+            <div class="btn-row">
+              <button class="btn primary" id="md-play" type="button">▶ Start</button>
+              <button class="btn" id="md-reset" type="button">Reset</button>
+            </div>
+            <div>
+              <span class="ctl-label">Kinetic energy vs. attraction</span>
+              <div class="meter"><span>motion</span><div class="meter-bar"><i id="md-bar-T" style="background:var(--c0)"></i></div></div>
+              <div class="meter"><span>attraction</span><div class="meter-bar"><i id="md-bar-eps" style="background:var(--c1)"></i></div></div>
+            </div>
+            <p class="small muted" style="margin:0">A 2D toy model with 90 molecules and a little gravity. Not to scale and
+              not any real substance.</p>
+          </div>
+          <div>
+            <canvas id="md-box" class="sim-box wide" role="img" aria-label="Box of molecules that attract each other"></canvas>
+            <div class="legend">
+              <span><span class="swatch" style="background:var(--c1)"></span>in the liquid or solid (2 or more close neighbours)</span>
+              <span><span class="swatch" style="background:var(--c0)"></span>in the vapour</span>
+            </div>
+            <div class="callout" id="md-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <ol class="try">
+        <li>Start with the default settings. A liquid collects at the bottom, and a few molecules fly around above it: the vapour.</li>
+        <li>Raise the temperature slowly. More molecules escape into the vapour. Above a certain temperature the liquid is gone.</li>
+        <li>Now make the attraction stronger at the same temperature. Molecules escape less often: stronger forces mean a
+          <strong>higher boiling point</strong> and a <strong>lower vapour pressure</strong>.</li>
+        <li>Cool it right down. The molecules lock into a regular pattern: a solid.</li>
+      </ol>
+
+      <h3>The four kinds of intermolecular force</h3>
+      <p>All of them are electrostatic: a bit of positive charge attracts a bit of negative charge. Dispersion, dipole–dipole and
+        hydrogen bonding together are also called <strong>van der Waals forces</strong>. They add up: a molecule feels all the
+        forces that apply to it.</p>
+      <div class="force-grid">
+        <div class="card force"><h4><span class="fbadge f-disp">Dispersion</span></h4>
+          <p>Electrons move around, so at any instant a molecule can have a small, temporary dipole. It induces a dipole in its
+            neighbour and the two attract. <strong>Every molecule has dispersion forces.</strong> They get stronger with more
+            electrons (larger, more <em>polarisable</em> molecules) and with more contact area.</p></div>
+        <div class="card force"><h4><span class="fbadge f-dip">Dipole–dipole</span></h4>
+          <p>Polar molecules have a permanent dipole. They line up so that the δ+ end of one faces the δ− end of the next.
+            For molecules of similar mass and size, the more polar one has the stronger attractions.</p></div>
+        <div class="card force"><h4><span class="fbadge f-hb">Hydrogen bond</span></h4>
+          <p>A special, strong dipole–dipole attraction. An H atom bonded to <strong>N, O or F</strong> is attracted to a lone
+            pair on an N, O or F atom of another molecule. It explains the high boiling point of water, why ice floats, and how
+            the two strands of DNA stay together.</p></div>
+        <div class="card force"><h4><span class="fbadge f-ion">Ion–dipole</span></h4>
+          <p>An ion attracts the oppositely charged end of polar molecules, for example Na⁺ and Cl⁻ in water. These forces
+            are strong because the ions carry full charges. They matter most for solutions (topic 9).</p></div>
+      </div>
+
+      <h3>Dispersion: where does an attraction between non-polar atoms come from?</h3>
+      <p>Two neutral atoms, side by side. The electron cloud of the left atom sloshes around at random. Watch what the right
+        atom's cloud does.</p>
+      <div class="lab" id="disp-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Noble gas</span>
+              <div class="seg" role="group" aria-label="Noble gas" id="disp-atom">
+                <button type="button" data-v="He" aria-pressed="false">He</button>
+                <button type="button" data-v="Ar" aria-pressed="true">Ar</button>
+                <button type="button" data-v="Xe" aria-pressed="false">Xe</button>
+              </div>
+            </div>
+            <div class="btn-row">
+              <button class="btn" id="disp-play" type="button">⏸ Pause</button>
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table">
+                <tbody id="disp-readout"></tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <canvas id="disp-canvas" class="plot" style="aspect-ratio:16/7" role="img" aria-label="Two atoms whose electron clouds shift together"></canvas>
+            <div class="callout" id="disp-note"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Which forces act? Follow the questions</h3>
+      <p>Pick a substance. The flowchart asks the same three questions you should ask yourself.</p>
+      <div class="lab" id="flow-lab">
+        <div class="mol-picker" id="flow-picker" role="group" aria-label="Choose a substance"></div>
+        <div class="flow-grid">
+          <ol class="flow" id="flow-steps"></ol>
+          <div>
+            <p class="ctl-label" style="margin:0 0 6px">Forces present</p>
+            <div id="flow-forces" class="badges"></div>
+            <p id="flow-facts" class="small muted"></p>
+            <p id="flow-why" class="callout"></p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Boiling points tell you how strong the forces are</h3>
+      <p>To boil a liquid, you have to pull its molecules apart. Here are the boiling points of the simple hydrides of groups
+        14 to 17. Down a group the molecules get bigger, the dispersion forces get stronger, and the boiling point rises.
+        Then look at the first member of groups 15, 16 and 17.</p>
+      <div class="lab" id="bp-lab">
+        <div class="plot-head">
+          <div class="chips" id="bp-groups"></div>
+          <label class="chip"><input type="checkbox" id="bp-trend">Where water "should" be</label>
+        </div>
+        <canvas class="plot" id="bp-plot" role="img" aria-label="Boiling points of the hydrides of groups 14 to 17 against period"></canvas>
+        <div class="callout" id="bp-note"></div>
+      </div>
+
+      <p>Mass is not everything. These molecules all have about the same molar mass, so their dispersion forces are similar.
+        What changes is the polarity:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Substance</th><th>Molar mass (g/mol)</th><th>Dipole moment (D)</th><th>Boiling point</th><th style="min-width:160px"></th></tr></thead>
+          <tbody id="dipole-table"></tbody>
+        </table>
+      </div>
+      <p class="small muted">1 debye (D) = 3.34 × 10⁻³⁰ C m. Data as in Brown, Ch. 11.</p>
+
+      <h3>Your turn: rank the boiling points</h3>
+      <p>Click the substances in order, <strong>lowest boiling point first</strong>.</p>
+      <div class="lab" id="rank-lab">
+        <div class="btn-row" id="rank-sets" role="group" aria-label="Choose a set"></div>
+        <div class="rank-pool" id="rank-pool"></div>
+        <p class="small muted" id="rank-order" style="margin:10px 0 0"></p>
+        <div class="btn-row" style="margin-top:8px">
+          <button class="btn" id="rank-undo" type="button">Start over</button>
+        </div>
+        <div class="feedback" id="rank-fb" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="liquid-props">
+      <h2>2 · Properties of liquids</h2>
+
+      <h3>Viscosity and surface tension</h3>
+      <div class="two-col">
+        <div>
+          <p><strong>Viscosity</strong> is a liquid's resistance to flow. Molecules that attract each other strongly, or long
+            molecules that get tangled, slide past each other less easily. Viscosity <strong>drops when the temperature
+            rises</strong>, because the molecules have more energy to break free from their neighbours. Water: 1.00 mPa s at
+            20 °C, 0.47 mPa s at 60 °C.</p>
+          <p><strong>Surface tension</strong> is the energy needed to increase the surface of a liquid by one unit of area.
+            A molecule in the bulk is pulled equally in all directions. A molecule at the surface has neighbours only below and
+            beside it, so it is pulled inwards. The liquid tries to keep its surface small: drops are round, and a paper clip
+            can lie on water.</p>
+        </div>
+        <figure class="figure">
+          <svg viewBox="0 0 300 200" role="img" aria-label="A molecule at the surface is pulled only inwards; a molecule in the bulk is pulled in all directions">
+            <rect x="0" y="60" width="300" height="140" fill="var(--accent-soft)"/>
+            <line x1="0" y1="60" x2="300" y2="60" stroke="var(--accent)" stroke-width="2"/>
+            <g fill="var(--c1)">
+              <circle cx="70" cy="74" r="11"/><circle cx="40" cy="74" r="9" opacity=".45"/><circle cx="100" cy="74" r="9" opacity=".45"/>
+              <circle cx="70" cy="104" r="9" opacity=".45"/>
+              <circle cx="210" cy="140" r="11"/><circle cx="180" cy="140" r="9" opacity=".45"/><circle cx="240" cy="140" r="9" opacity=".45"/>
+              <circle cx="210" cy="110" r="9" opacity=".45"/><circle cx="210" cy="170" r="9" opacity=".45"/>
+            </g>
+            <g stroke="var(--text)" stroke-width="2" marker-end="url(#ah)">
+              <line x1="70" y1="74" x2="46" y2="74"/><line x1="70" y1="74" x2="94" y2="74"/><line x1="70" y1="74" x2="70" y2="98"/>
+              <line x1="210" y1="140" x2="186" y2="140"/><line x1="210" y1="140" x2="234" y2="140"/>
+              <line x1="210" y1="140" x2="210" y2="116"/><line x1="210" y1="140" x2="210" y2="164"/>
+            </g>
+            <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text)"/></marker></defs>
+            <text x="70" y="40" text-anchor="middle" font-size="13" fill="var(--text)">surface: net pull inwards</text>
+            <text x="210" y="196" text-anchor="middle" font-size="13" fill="var(--text)">bulk: pulls cancel</text>
+          </svg>
+        </figure>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Liquid (20 °C)</th><th>Main forces</th><th>Viscosity (mPa s)</th><th>Surface tension (mJ/m²)</th></tr></thead>
+          <tbody>
+            <tr><td>Hexane, C₆H₁₄</td><td>dispersion</td><td class="num">0.31</td><td class="num">18.4</td></tr>
+            <tr><td>Ethanol, C₂H₅OH</td><td>H-bonds (one O–H)</td><td class="num">1.2</td><td class="num">22.4</td></tr>
+            <tr><td>Water, H₂O</td><td>H-bond network</td><td class="num">1.00</td><td class="num">72.8</td></tr>
+            <tr><td>Glycerol, C₃H₅(OH)₃</td><td>H-bonds (three O–H)</td><td class="num">1410</td><td class="num">63.4</td></tr>
+            <tr><td>Mercury, Hg</td><td>metallic bonding</td><td class="num">1.55</td><td class="num">486</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">1 mPa s = 10⁻³ kg m⁻¹ s⁻¹ (Brown gives viscosities in kg m⁻¹ s⁻¹). 1 mJ/m² = 1 mN/m. Rounded
+        literature values. Mercury is held together by metallic bonding, which is why its surface tension is so high.</p>
+      <p><strong>Cohesion and adhesion.</strong> Cohesive forces hold a liquid to itself, adhesive forces hold it to a surface.
+        Water attracts glass (adhesion stronger than cohesion), so it creeps up a thin glass tube (<em>capillary action</em>)
+        and its meniscus curves up. Mercury attracts itself much more than glass, so its meniscus curves down.</p>
+
+      <h3>Vapour pressure and boiling</h3>
+      <p>
+        In a closed container, some molecules always have enough kinetic energy to escape from the liquid surface. Others come
+        back. When evaporation and condensation happen at the same rate (a <strong>dynamic equilibrium</strong>), the pressure
+        of the vapour is the <strong>vapour pressure</strong>. Weak intermolecular forces mean many molecules escape: the liquid
+        is <em>volatile</em> and has a high vapour pressure.
+      </p>
+      <p>
+        A liquid <strong>boils</strong> when its vapour pressure equals the pressure outside. Then bubbles of vapour can form
+        inside the liquid. The <strong>normal boiling point</strong> is the boiling point at 1 atm = 101.3 kPa. Lower the outside
+        pressure and the liquid boils at a lower temperature.
+      </p>
+
+      <div class="lab" id="vp-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="vp-P"><span>Outside pressure</span> <output id="vp-P-out"></output></label>
+              <input id="vp-P" type="range" min="20" max="250" step="0.1" value="101.3">
+            </div>
+            <div class="btn-row" id="vp-presets" role="group" aria-label="Pressure presets">
+              <button class="btn" type="button" data-p="33.7">Everest</button>
+              <button class="btn" type="button" data-p="57.9">Matterhorn</button>
+              <button class="btn" type="button" data-p="96.5">Zurich</button>
+              <button class="btn" type="button" data-p="101.325">1 atm</button>
+              <button class="btn" type="button" data-p="200">Pressure cooker</button>
+            </div>
+            <div class="control">
+              <label for="vp-T"><span>Temperature</span> <output id="vp-T-out"></output></label>
+              <input id="vp-T" type="range" min="0" max="200" step="0.5" value="25">
+            </div>
+            <p class="small muted" style="margin:0" id="vp-alt-note">Typical air pressure at the summit of Everest (8849 m)
+              and the Matterhorn (4478 m), in Zurich (408 m) and inside a pressure cooker.</p>
+          </div>
+          <div>
+            <div class="plot-head">
+              <div class="seg" role="group" aria-label="What to plot" id="vp-view">
+                <button type="button" data-view="P" aria-pressed="true">P against T</button>
+                <button type="button" data-view="ln" aria-pressed="false">ln P against 1/T</button>
+              </div>
+            </div>
+            <canvas class="plot" id="vp-plot" role="img" aria-label="Vapour pressure of four liquids against temperature"></canvas>
+            <div class="legend" id="vp-legend"></div>
+            <div class="callout" id="vp-note" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Liquid</th><th>Intermolecular forces</th><th id="vp-col-T">Vapour pressure at T</th><th id="vp-col-P">Boils at</th><th>Normal boiling point</th><th>ΔH<sub>vap</sub> from slope</th></tr></thead>
+            <tbody id="vp-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <details open>
+        <summary>The Clausius–Clapeyron equation: a straight line again</summary>
+        <p>Vapour pressure rises steeply, almost exponentially, with temperature. Plot \(\ln P\) against \(1/T\) instead
+          (switch the view above) and each liquid gives a nearly straight line:</p>
+        \[ \ln P = -\frac{\Delta H_\text{vap}}{RT} + C \qquad\Longrightarrow\qquad
+           \ln\frac{P_2}{P_1} = \frac{\Delta H_\text{vap}}{R}\left(\frac{1}{T_1} - \frac{1}{T_2}\right) \]
+        <p>The slope is \(-\Delta H_\text{vap}/R\). The steeper the line, the more energy it takes to free a molecule from the
+          liquid. \(T\) must be in kelvin, and \(R = 8.314\ \mathrm{J\,mol^{-1}\,K^{-1}}\).</p>
+        <p class="small muted">The equation assumes that \(\Delta H_\text{vap}\) is constant and the vapour is an ideal gas.
+          That is why the slope gives 41 kJ/mol for water near 100 °C, slightly more than the measured 40.7 kJ/mol.
+          It is the same trick as in kinetics (topic 10): turn a curve into a straight line and read a constant off the slope.
+          Arrhenius (topic 11) will look just like this.</p>
+      </details>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="phase-changes">
+      <h2>3 · Phase changes: where does the heat go?</h2>
+      <p>
+        Heat a block of ice at a steady rate and watch the thermometer. The temperature rises, then <strong>stops</strong>
+        while the ice melts, rises again, and stops again while the water boils. On those flat parts, all the heat goes into
+        pulling molecules apart against their intermolecular forces, not into making them move faster.
+      </p>
+      \[ \text{warming one phase: } q = m \, C_s \, \Delta T \qquad\qquad \text{changing phase: } q = n\,\Delta H_\text{fus} \ \text{ or } \ q = n\,\Delta H_\text{vap} \]
+
+      <div class="lab" id="hc-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="hc-m"><span>Mass of water</span> <output id="hc-m-out"></output></label>
+              <input id="hc-m" type="range" min="1" max="100" step="0.01" value="18.02">
+            </div>
+            <div class="control">
+              <label for="hc-T1"><span>Start temperature</span> <output id="hc-T1-out"></output></label>
+              <input id="hc-T1" type="range" min="-50" max="150" step="1" value="-25">
+            </div>
+            <div class="control">
+              <label for="hc-T2"><span>End temperature</span> <output id="hc-T2-out"></output></label>
+              <input id="hc-T2" type="range" min="-50" max="150" step="1" value="125">
+            </div>
+            <div class="control">
+              <label for="hc-q"><span>Heat added so far</span> <output id="hc-q-out"></output></label>
+              <input id="hc-q" type="range" min="0" max="1000" step="1" value="300">
+            </div>
+            <canvas id="hc-box" class="sim-box" style="max-width:220px" role="img" aria-label="Molecules of water in the current state"></canvas>
+            <p class="small muted" style="margin:0" id="hc-state"></p>
+          </div>
+          <div>
+            <canvas class="plot" id="hc-plot" role="img" aria-label="Heating curve of water: temperature against heat added"></canvas>
+            <div class="callout" id="hc-note" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Step</th><th>What happens</th><th>Formula</th><th>q (kJ)</th></tr></thead>
+            <tbody id="hc-table"></tbody>
+          </table>
+        </div>
+        <p class="small muted" style="margin:8px 0 0">At 1 atm. Data: \(C_s\) = 2.03 (ice), 4.18 (liquid), 1.84 (steam) J g⁻¹ K⁻¹;
+          \(\Delta H_\text{fus}\) = 6.01 kJ/mol at 0 °C, \(\Delta H_\text{vap}\) = 40.67 kJ/mol at 100 °C; M = 18.02 g/mol.</p>
+      </div>
+
+      <ol class="try">
+        <li>With the default settings (1.00 mol, −25 °C to 125 °C), which step takes by far the most heat? Why is boiling so
+          much more expensive than melting? (Think about how far apart the molecules end up.)</li>
+        <li>Set start 0 °C and end 80 °C. Compare the heat for melting with the heat for warming the water by 80 °C.</li>
+        <li>Switch the start and end temperature: the same amounts of heat now come <em>out</em>, in reverse order.</li>
+      </ol>
+
+      <div class="two-col">
+        <div class="card">
+          <strong>Why do ice cubes cool a drink so well?</strong>
+          <p class="small" style="margin:6px 0 0">Melting 1 g of ice takes 334 J. That is as much heat as it takes to warm that
+            gram of water from 0 °C to 80 °C, and the ice pulls it all out of your drink while it stays at 0 °C.</p>
+        </div>
+        <div class="card">
+          <strong>Why do you feel cold when you step out of a pool?</strong>
+          <p class="small" style="margin:6px 0 0">The water on your skin evaporates. Vaporisation is endothermic (2.4 kJ per gram
+            at skin temperature), and the heat comes from your body. Sweating works the same way.</p>
+        </div>
+      </div>
+      <p class="small muted">Melting, vaporisation and sublimation are endothermic. Freezing, condensation and deposition are
+        exothermic and release the same amounts of heat. Because enthalpy is a state function (week 4):
+        \(\Delta H_\text{sub} = \Delta H_\text{fus} + \Delta H_\text{vap}\).</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="phase-diagrams">
+      <h2>4 · Phase diagrams: a map of solid, liquid and gas</h2>
+      <p>
+        A phase diagram shows which phase is stable at each temperature and pressure. The lines are where two phases coexist
+        in equilibrium:
+      </p>
+      <ul>
+        <li>the <strong>vapour-pressure curve</strong> (liquid ⇌ gas) is the curve from section 2. It ends at the
+          <strong>critical point</strong>. Beyond it, liquid and gas can no longer be told apart: the substance is a
+          <strong>supercritical fluid</strong>. Stronger intermolecular forces mean a higher critical temperature.</li>
+        <li>the <strong>melting curve</strong> (solid ⇌ liquid) is nearly vertical, because pressure barely changes the
+          melting point.</li>
+        <li>the <strong>sublimation curve</strong> (solid ⇌ gas) is where a solid turns straight into vapour.</li>
+        <li>All three meet at the <strong>triple point</strong>, the only point where solid, liquid and gas coexist.</li>
+      </ul>
+
+      <div class="lab" id="pd-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Substance</span>
+              <div class="seg" role="group" aria-label="Substance" id="pd-sub">
+                <button type="button" data-v="water" aria-pressed="true">Water</button>
+                <button type="button" data-v="co2" aria-pressed="false">CO₂</button>
+              </div>
+            </div>
+            <div class="control">
+              <label for="pd-P"><span>Pressure</span> <output id="pd-P-out"></output></label>
+              <input id="pd-P" type="range" min="1" max="8.3" step="0.001" value="5.006">
+            </div>
+            <div class="control">
+              <label for="pd-T"><span>Temperature</span> <output id="pd-T-out"></output></label>
+              <input id="pd-T" type="range" min="-40" max="450" step="0.01" value="25">
+            </div>
+            <div class="btn-row" id="pd-presets" role="group" aria-label="Points to jump to"></div>
+            <p class="small muted" style="margin:0">Or tap the diagram to move the point.</p>
+          </div>
+          <div>
+            <canvas class="plot" id="pd-plot" role="img" aria-label="Phase diagram" style="cursor:crosshair"></canvas>
+            <div class="legend">
+              <span><span class="swatch" style="background:var(--c1)"></span>solid</span>
+              <span><span class="swatch" style="background:var(--c2)"></span>liquid</span>
+              <span><span class="swatch" style="background:var(--c0)"></span>gas</span>
+              <span><span class="swatch" style="background:var(--c3)"></span>supercritical fluid</span>
+            </div>
+            <div class="callout" id="pd-note" aria-live="polite"></div>
+          </div>
+        </div>
+        <p class="small muted" style="margin:8px 0 0">Real data, with the pressure on a <strong>logarithmic</strong> axis (each grid
+          line is 10 times the one below). Textbook sketches are not to scale, so their lines look different.
+          Above about 210 MPa, water forms other kinds of ice, which are not shown.</p>
+      </div>
+
+      <ol class="try">
+        <li>Water at 1 atm: move the temperature slider from −40 °C to 150 °C. You cross the melting curve at 0 °C and the
+          vapour-pressure curve at 100 °C.</li>
+        <li>Now CO₂ at 1 atm. There is no liquid at all: dry ice sublimes at −78.5 °C. Which pressure do you need at least
+          to see liquid CO₂? (Look at the triple point.)</li>
+        <li>Water at −5 °C and very low pressure: ice turns straight into vapour. That is how freeze-drying works.</li>
+        <li>CO₂ at 20 °C: raise the pressure. At 57 bar the gas condenses, which is why a CO₂ fire extinguisher contains liquid.
+          Then try the same at 40 °C, above the critical temperature (31 °C).</li>
+      </ol>
+
+      <h3>The odd one out: water</h3>
+      <p>
+        For almost every substance the solid is denser than the liquid, so squeezing a liquid helps it freeze and the melting
+        curve leans to the <strong>right</strong> (CO₂). Ice is <strong>less</strong> dense than liquid water: hydrogen bonds
+        lock the molecules into an open hexagonal network that collapses partly when it melts. So squeezing ice helps it
+        <em>melt</em>, and water's melting curve leans to the <strong>left</strong>.
+      </p>
+      <p class="small muted">The lean is tiny: you need about 130 atm to lower the melting point of ice by just 1 °C.
+        Because ice floats, lakes freeze from the top down, and the ice layer insulates the water beneath it.</p>
+
+      <details>
+        <summary>Liquid crystals (Brown 11.7)</summary>
+        <p>Some substances made of long, rod-shaped molecules do not melt in one step. In between solid and liquid, they form a
+          <strong>liquid crystal</strong>: the molecules can flow like a liquid but still point in roughly the same direction.
+          In the <em>nematic</em> phase they are only aligned; in <em>smectic</em> phases they are also arranged in layers; in
+          <em>cholesteric</em> phases the direction twists from layer to layer. An electric field can turn the molecules, which
+          changes how they let light through. That is how an LCD screen works.</p>
+      </details>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="check">
+      <h2>Quick self-check</h2>
+
+      <div class="card quiz">
+        <p class="q">Dimethyl ether (CH₃OCH₃) and ethanol (CH₃CH₂OH) have the same formula, C₂H₆O. Which one boils higher?</p>
+        <div class="opts">
+          <button type="button" data-fb="Same formula, same mass, so the dispersion forces are similar. Only ethanol has an H on an O, so only ethanol forms hydrogen bonds with itself.">dimethyl ether</button>
+          <button type="button" data-correct data-fb="Ethanol has an O–H group and forms hydrogen bonds: it boils at 78 °C, dimethyl ether at −25 °C.">ethanol</button>
+          <button type="button" data-fb="Same formula does not mean same forces. Look for an H bonded to O.">the same</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">What is inside the bubbles in boiling water?</p>
+        <div class="opts">
+          <button type="button" data-fb="That would need the O–H bonds to break (about 926 kJ per mole). Boiling only overcomes the intermolecular forces (40.7 kJ/mol).">H₂ and O₂</button>
+          <button type="button" data-fb="Dissolved air comes out when you start heating, but the big bubbles of a rolling boil are something else.">air</button>
+          <button type="button" data-correct data-fb="The molecules stay intact. Boiling only separates whole H₂O molecules from each other.">water vapour, H₂O</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">CCl₄ has four polar C–Cl bonds. Which intermolecular forces act between CCl₄ molecules?</p>
+        <div class="opts">
+          <button type="button" data-fb="The bonds are polar, but in a tetrahedron the four bond dipoles cancel. The molecule has no net dipole.">dipole–dipole and dispersion</button>
+          <button type="button" data-correct data-fb="The molecule is tetrahedral, so its bond dipoles cancel. Only dispersion is left, but CCl₄ has many electrons, so it still boils at 77 °C.">dispersion only</button>
+          <button type="button" data-fb="Hydrogen bonds need an H bonded to N, O or F. CCl₄ has no H at all.">hydrogen bonds</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">On Everest, water boils at about 72 °C. Why does pasta take longer to cook there?</p>
+        <div class="opts">
+          <button type="button" data-fb="The heat goes into the water just as well. The problem is the temperature the water can reach.">the stove burns less well</button>
+          <button type="button" data-correct data-fb="The outside pressure is only about 34 kPa, so the vapour pressure of water reaches it at a lower temperature. Boiling water there is only about 72 °C, and cooking is slower at a lower temperature.">boiling water is cooler there</button>
+          <button type="button" data-fb="Boiling water stays at the boiling point however strongly you heat it; extra heat only makes it boil faster.">it takes longer to reach the boil</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">You compress CO₂ gas at 40 °C to higher and higher pressure. What happens?</p>
+        <div class="opts">
+          <button type="button" data-fb="That happens below 31 °C. At 40 °C you are above the critical temperature.">it condenses to a liquid at some pressure</button>
+          <button type="button" data-correct data-fb="40 °C is above the critical temperature of CO₂ (31 °C). The gas gets denser and denser but never forms a separate liquid: it becomes a supercritical fluid. (Only at thousands of bar would it finally freeze.)">it never forms a separate liquid</button>
+          <button type="button" data-fb="Look at the phase diagram: the solid region at 40 °C needs far more pressure than the slider shows (thousands of bar).">it freezes to dry ice at a few bar</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Which takes more heat: melting 10 g of ice at 0 °C, or boiling away 10 g of water at 100 °C?</p>
+        <div class="opts">
+          <button type="button" data-fb="Melting only loosens the network a little; the molecules stay in contact.">melting</button>
+          <button type="button" data-correct data-fb="Boiling: 10 g × 2257 J/g = 22.6 kJ against 10 g × 334 J/g = 3.3 kJ. Molecules in a gas are completely separated, so almost all the attractions have to be overcome.">boiling, about 7 times more</button>
+          <button type="button" data-fb="Look at the length of the two flat parts of the heating curve.">about the same</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="summary">
+      <h2>Summary</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Force</th><th>Between</th><th>Gets stronger with</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><span class="fbadge f-disp">Dispersion</span></td><td>all molecules</td><td>more electrons (size, molar mass); more contact area</td><td>I₂ boils higher than Cl₂</td></tr>
+            <tr><td><span class="fbadge f-dip">Dipole–dipole</span></td><td>polar molecules</td><td>bigger dipole moment</td><td>CH₃CN boils higher than C₃H₈</td></tr>
+            <tr><td><span class="fbadge f-hb">Hydrogen bond</span></td><td>H on N, O, F → lone pair on N, O, F</td><td>more O–H / N–H groups</td><td>H₂O boils higher than H₂S</td></tr>
+            <tr><td><span class="fbadge f-ion">Ion–dipole</span></td><td>ions and polar molecules</td><td>higher charge, smaller ion</td><td>NaCl dissolves in water</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Stronger intermolecular forces mean</strong>: higher boiling and melting points, larger \(\Delta H_\text{vap}\) and
+        \(\Delta H_\text{fus}\), lower vapour pressure, higher viscosity and surface tension, and a higher critical temperature.</p>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <tbody>
+            <tr><td>Heat to warm one phase</td><td>\(q = m\,C_s\,\Delta T\)</td></tr>
+            <tr><td>Heat to change phase</td><td>\(q = n\,\Delta H_\text{fus}\), \(q = n\,\Delta H_\text{vap}\); \(\Delta H_\text{sub} = \Delta H_\text{fus} + \Delta H_\text{vap}\)</td></tr>
+            <tr><td>Clausius–Clapeyron</td><td>\(\ln P = -\Delta H_\text{vap}/RT + C\)</td></tr>
+            <tr><td>Boiling</td><td>vapour pressure = outside pressure; normal boiling point at 1 atm = 101.3 kPa</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Made by the course TA. Not official course material: if this page and the lecture disagree, the lecture wins.
+      Nothing you do on these pages is recorded.
+    </div>
+  </footer>
+
+  <script type="module" src="md.js"></script>
+  <script type="module" src="forces.js"></script>
+  <script type="module" src="vapour.js"></script>
+  <script type="module" src="heating.js"></script>
+  <script type="module" src="phase.js"></script>
+  <script type="module" src="../assets/quiz.js"></script>
+</body>
+</html>

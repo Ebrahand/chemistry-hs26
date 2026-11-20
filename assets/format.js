@@ -35,3 +35,6 @@ export function kUnit(order) {
   if (p === 1) return 'M s⁻¹';
   return `M${superscript(p)} s⁻¹`;
 }
+
+// toFixed with a proper minus sign: fix(-2.5, 1) → '−2.5'
+export const fix = (x, d = 0) => x.toFixed(d).replace('-', '−');

@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atoms, Molecules and Reactions</title>
+  <meta name="description" content="Interactive look at matter, units and significant figures, atoms and isotopes, ions and ionic compounds, balancing equations, the mole and limiting reactants.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false})"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../">Chemistry HS26 <span>· interactive companion</span></a>
+      <nav class="crumbs"><a href="../">Topics</a> › 1 Atoms, molecules, reactions</nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Atoms, molecules and reactions: the language of chemistry</h1>
+    <p class="lede">Chemistry has its own alphabet (atoms and elements), words (molecules and compounds) and sentences
+      (reactions). This week you learn to read and write it, and to count atoms you cannot see by weighing them. Brown,
+      Chapters 1–3.</p>
+
+    <div class="card">
+      <strong>After this week you should be able to</strong>
+      <ul style="margin:8px 0 0">
+        <li>tell elements, compounds and mixtures apart, and homogeneous from heterogeneous mixtures</li>
+        <li>convert units with conversion factors, and report a result with the right number of significant figures</li>
+        <li>read a nuclide symbol such as \(^{58}_{28}\mathrm{Ni}^{2+}\): protons, neutrons, electrons</li>
+        <li>calculate an atomic weight from isotope masses and abundances</li>
+        <li>write the formula and name of an ionic compound from its ions</li>
+        <li>balance a chemical equation</li>
+        <li>convert between grams, moles and number of particles, and find the limiting reactant and the yield</li>
+      </ul>
+    </div>
+
+    <nav class="module-nav" aria-label="Modules on this page">
+      <a href="#matter"><strong>1 · Matter and measurement</strong><span class="tag live">open</span></a>
+      <a href="#atom"><strong>2 · Inside the atom</strong><span class="tag live">open</span></a>
+      <a href="#ions"><strong>3 · Periodic table, molecules, ions</strong><span class="tag live">open</span></a>
+      <a href="#balance"><strong>4 · Chemical equations</strong><span class="tag live">open</span></a>
+      <a href="#mole"><strong>5 · The mole</strong><span class="tag live">open</span></a>
+      <a href="#limiting"><strong>6 · Stoichiometry and limiting reactants</strong><span class="tag live">open</span></a>
+    </nav>
+
+    <!-- =============================================================== -->
+    <section id="matter">
+      <h2>1 · Matter and measurement</h2>
+      <p><strong>Chemistry</strong> is the study of the properties and behaviour of matter. Lecture 1 sorted matter like
+        a language:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Chemistry</th><th>Language</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Atom</strong></td><td>letter</td><td>the smallest unit of an element</td></tr>
+            <tr><td><strong>Element</strong></td><td>letter</td><td>a substance made of only one type of atom (O₂, Fe, He)</td></tr>
+            <tr><td><strong>Molecule</strong></td><td>word</td><td>two or more atoms joined together (O₂, H₂O)</td></tr>
+            <tr><td><strong>Compound</strong></td><td>word</td><td>made of two or more <em>different</em> elements, in a fixed ratio (H₂O, NaCl)</td></tr>
+            <tr><td><strong>Reaction</strong></td><td>sentence</td><td>describes a chemical change from one substance to another</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Elements and compounds are <strong>pure substances</strong>: their composition and properties are the same in
+        every sample. A <strong>mixture</strong> contains two or more pure substances in a ratio that can vary. If the
+        mixture looks the same everywhere it is <strong>homogeneous</strong> (mineral water, air, brass), otherwise
+        <strong>heterogeneous</strong> (milk, sand in water, granite). Pure water is a pure substance.</p>
+
+      <h3>Sort the particle pictures</h3>
+      <p>Each circle is an atom, each colour an element. Atoms that touch are bonded into a molecule.</p>
+      <div class="lab" id="cls-lab">
+        <div class="lab-grid">
+          <div><div class="pic-box" id="cls-pic" role="img" aria-label="Particle picture of a sample of matter"></div></div>
+          <div>
+            <p style="margin:0 0 8px"><strong>What is in the box?</strong></p>
+            <div class="answer-btns" id="cls-btns"></div>
+            <div class="callout" id="cls-note" aria-live="polite">Pick an answer.</div>
+            <div class="btn-row" style="margin-top:10px"><button class="btn primary" type="button" id="cls-next">Next picture</button>
+              <span class="small muted" id="cls-score" style="align-self:center"></span></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">A physical change (melting ice, dissolving sugar) does not change what the substances are. A
+        chemical change (burning, rusting) makes new substances. Every property is also either <em>extensive</em>,
+        depending on how much you have (mass, volume), or <em>intensive</em>, not depending on it (temperature, density,
+        melting point). Intensive properties identify a substance.</p>
+
+      <h3>SI units</h3>
+      <p>Science uses the SI system: seven base units (m, kg, s, K, mol, A, cd), with prefixes for big and small
+        numbers. Everything else is derived from them: \(1\ \mathrm{J} = 1\ \mathrm{kg\,m^2\,s^{-2}}\),
+        \(1\ \mathrm{Pa} = 1\ \mathrm{N\,m^{-2}}\). Temperature in kelvin: \(T(\mathrm{K}) = T(^\circ\mathrm{C}) + 273.15\).
+        A litre is not SI but used everywhere: \(1\ \mathrm{L} = 1\ \mathrm{dm^3} = 1000\ \mathrm{mL}\) and
+        \(1\ \mathrm{mL} = 1\ \mathrm{cm^3}\).</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Prefix</th><th>giga G</th><th>mega M</th><th>kilo k</th><th>centi c</th><th>milli m</th><th>micro μ</th><th>nano n</th><th>pico p</th></tr></thead>
+          <tbody><tr><td>factor</td><td>10⁹</td><td>10⁶</td><td>10³</td><td>10⁻²</td><td>10⁻³</td><td>10⁻⁶</td><td>10⁻⁹</td><td>10⁻¹²</td></tr></tbody>
+        </table>
+      </div>
+
+      <h3>Dimensional analysis: let the units do the work</h3>
+      <p>A <strong>conversion factor</strong> is a fraction whose top and bottom are the same quantity in different
+        units, so it equals 1. \(1\ \mathrm{cal} = 4.184\ \mathrm{J}\) gives two of them:
+        \(\frac{4.184\ \mathrm{J}}{1\ \mathrm{cal}}\) and \(\frac{1\ \mathrm{cal}}{4.184\ \mathrm{J}}\). Pick the one
+        that cancels the unit you have and leaves the unit you want. If a factor is upside down, the units do not cancel
+        and you see it at once. (NASA lost the Mars Climate Orbiter in 1999 to a units mix-up.)</p>
+      <div class="lab" id="da-lab">
+        <div class="control" style="max-width:520px">
+          <label for="da-task" class="ctl-label">Task</label>
+          <select id="da-task"></select>
+        </div>
+        <div class="chain" id="da-chain" aria-live="polite"></div>
+        <p class="small muted" style="margin:0 0 6px">Add conversion factors. Click “flip” to turn one upside down.</p>
+        <div class="btn-row" id="da-factors" role="group" aria-label="Conversion factors"></div>
+        <div class="btn-row" style="margin-top:8px"><button class="btn" type="button" id="da-undo">Remove last</button><button class="btn" type="button" id="da-clear">Start again</button></div>
+        <div class="callout" id="da-note" aria-live="polite"></div>
+      </div>
+
+      <h3>Significant figures</h3>
+      <p>Every measurement has an uncertainty, and the last digit you write is the uncertain one. A measurement can be
+        <strong>precise</strong> (repeat measurements agree) without being <strong>accurate</strong> (close to the true
+        value), and the other way round. Exact numbers, such as 12 eggs in a dozen or the 2 in \(2\,\mathrm{H_2}\),
+        have no uncertainty.</p>
+      <div class="lab" id="sf-lab">
+        <div class="lab-grid">
+          <div>
+            <label for="sf-in" class="ctl-label">Type a measured value</label>
+            <input id="sf-in" class="text-input" type="text" value="0.004050" inputmode="decimal" autocomplete="off" spellcheck="false">
+            <div class="btn-row" id="sf-ex" style="margin-top:8px" role="group" aria-label="Examples"></div>
+          </div>
+          <div>
+            <div class="digits" id="sf-digits" aria-live="polite"></div>
+            <div class="callout" id="sf-note"></div>
+          </div>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <h4 style="margin:0 0 6px">The rules for zeros</h4>
+          <ul class="small" style="margin:0;padding-left:1.2em">
+            <li>Non-zero digits are always significant.</li>
+            <li>Zeros between non-zero digits are significant: 60<u>0</u>23 has 5.</li>
+            <li>Zeros at the start are never significant: 0.006 has 1. They only place the decimal point.</li>
+            <li>Zeros at the end count if there is a decimal point: 0.0060 has 2, 6.0 has 2. Without one,
+              6000 is ambiguous (taken as 1). Write 6.0 × 10³ to say you mean 2.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 6px">In calculations</h4>
+          <ul class="small" style="margin:0;padding-left:1.2em">
+            <li><strong>× and ÷:</strong> as many significant figures as the factor with the fewest.</li>
+            <li><strong>+ and −:</strong> as many decimal places as the number with the fewest.</li>
+            <li><strong>Several steps:</strong> keep all digits in the calculator and round only at the end.</li>
+            <li><strong>Logarithms:</strong> decimal places of the log = significant figures of the number (matters for pH).</li>
+          </ul>
+        </div>
+      </div>
+      <div class="lab" id="calc-lab">
+        <p style="margin:0 0 8px"><strong>Try the calculation rules</strong></p>
+        <div class="answer-row" style="margin-top:0">
+          <input id="calc-a" class="text-input" style="width:8em" type="text" value="6.22" inputmode="decimal" aria-label="First number">
+          <select id="calc-op" aria-label="Operation"><option value="*">×</option><option value="/">÷</option><option value="+">+</option><option value="-">−</option></select>
+          <input id="calc-b" class="text-input" style="width:8em" type="text" value="5.2" inputmode="decimal" aria-label="Second number">
+        </div>
+        <div class="callout" id="calc-note" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="atom">
+      <h2>2 · Inside the atom</h2>
+      <p>
+        Dalton's atomic theory (1803–1807): each element is made of atoms; all atoms of one element are chemically
+        identical; atoms are not created, destroyed or changed in a chemical reaction; compounds are combinations of
+        atoms of two or more elements. This explains the laws of <em>conservation of mass</em>, <em>constant
+        composition</em> and <em>multiple proportions</em>.
+      </p>
+      <p>We now know atoms are made of three smaller particles:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Particle</th><th>Charge</th><th>Mass</th><th>Mass (u)</th><th>Where</th></tr></thead>
+          <tbody>
+            <tr><td>proton</td><td>\(+e\)</td><td class="num">1.67 × 10⁻²⁷ kg</td><td class="num">1.0073</td><td>nucleus</td></tr>
+            <tr><td>neutron</td><td>0</td><td class="num">1.67 × 10⁻²⁷ kg</td><td class="num">1.0087</td><td>nucleus</td></tr>
+            <tr><td>electron</td><td>\(-e\)</td><td class="num">9.11 × 10⁻³¹ kg</td><td class="num">5.486 × 10⁻⁴</td><td>electron cloud</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">\(e = 1.60\times10^{-19}\) C. The nucleus is about \(10^{-4}\) Å across, the electron cloud 1–5 Å
+        (1 Å = 10⁻¹⁰ m). If the electron cloud were a football pitch, the nucleus would be a 1 mm grain at the centre
+        spot, yet it holds almost all the mass.</p>
+      <ul>
+        <li>The <strong>atomic number</strong> \(Z\) = number of protons. It decides which element it is: every carbon
+          atom in the universe has 6 protons. A neutral atom has as many electrons as protons.</li>
+        <li>The <strong>mass number</strong> \(A\) = protons + neutrons.</li>
+        <li><strong>Isotopes</strong> of an element have the same \(Z\) but a different number of neutrons. They have
+          almost the same chemistry (that is set by the electrons) but a different mass.</li>
+      </ul>
+
+      <h3>Build an atom</h3>
+      <div class="lab" id="ba-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control o0">
+              <label for="ba-p"><span>Protons</span> <output id="ba-p-out"></output></label>
+              <input id="ba-p" type="range" min="1" max="30" step="1" value="6">
+            </div>
+            <div class="control">
+              <label for="ba-n"><span>Neutrons</span> <output id="ba-n-out"></output></label>
+              <input id="ba-n" type="range" min="0" max="40" step="1" value="6">
+            </div>
+            <div class="control o1">
+              <label for="ba-e"><span>Electrons</span> <output id="ba-e-out"></output></label>
+              <input id="ba-e" type="range" min="0" max="34" step="1" value="6">
+            </div>
+            <div class="table-wrap" style="margin:0"><table class="data-table"><tbody id="ba-readout"></tbody></table></div>
+          </div>
+          <div>
+            <div id="ba-diagram" class="dh-diagram" role="img" aria-label="The atom: nucleus and electron cloud, not to scale"></div>
+            <div class="callout" id="ba-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Atomic mass and atomic weight</h3>
+      <p>
+        Masses in kilograms are awkward for atoms, so chemists use the <strong>atomic mass unit</strong>: by definition a
+        ¹²C atom has a mass of exactly 12 u, and \(1\ \mathrm{u} = 1.66054\times10^{-27}\ \mathrm{kg}\).
+        The <strong>atomic weight</strong> on the periodic table is the <em>average</em> mass of the atoms of an
+        element, weighted by how common each isotope is in nature:
+      </p>
+      \[ \text{atomic weight} = \sum_\text{isotopes} (\text{fractional abundance}) \times (\text{isotope mass}) \]
+      <p class="small muted">Carbon: \(0.9893 \times 12\ \mathrm{u} + 0.0107 \times 13.0034\ \mathrm{u} = 12.01\ \mathrm{u}\).
+        No single carbon atom weighs 12.01 u.</p>
+      <div class="lab" id="iso-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="iso-el" class="ctl-label">Element</label>
+              <select id="iso-el"></select>
+            </div>
+            <div class="control o0">
+              <label for="iso-x"><span id="iso-x-label">Lighter isotope</span> <output id="iso-x-out"></output></label>
+              <input id="iso-x" type="range" min="0" max="100" step="0.01" value="50">
+            </div>
+            <div class="btn-row"><button class="btn" type="button" id="iso-nat">Natural abundance</button></div>
+            <div class="table-wrap" style="margin:0"><table class="data-table"><tbody id="iso-readout"></tbody></table></div>
+          </div>
+          <div>
+            <p class="small muted" style="margin:0 0 6px">A sample of 200 atoms:</p>
+            <div class="dot-grid" id="iso-dots" role="img" aria-label="200 atoms coloured by isotope"></div>
+            <div class="legend" id="iso-legend"></div>
+            <div class="callout" id="iso-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">Isotope masses and natural abundances: IUPAC/NIST. Some isotopes are unstable and decay
+        (radioactivity): uranium is 99.3 % ²³⁸U and 0.7 % ²³⁵U, the isotope used in nuclear reactors.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="ions">
+      <h2>3 · The periodic table, molecules and ions</h2>
+      <p>
+        The periodic table (Mendeleev, 1869) lists the 118 known elements in order of atomic number. Columns are
+        <strong>groups</strong>: elements in a group behave alike chemically. Rows are <strong>periods</strong>. A
+        staircase line separates the <strong>metals</strong> (left) from the <strong>nonmetals</strong> (right), with
+        the <strong>metalloids</strong> in between. Why the table has this shape comes in week 6, from quantum mechanics.
+        Click an element.
+      </p>
+      <div class="lab" id="pt-lab">
+        <div class="legend" style="margin:0 0 8px">
+          <span><i style="border-color:var(--c0);background:color-mix(in srgb, var(--c0) 30%, var(--surface))"></i>metals</span>
+          <span><i style="border-color:var(--c3);background:color-mix(in srgb, var(--c3) 30%, var(--surface))"></i>metalloids</span>
+          <span><i style="border-color:var(--c1);background:color-mix(in srgb, var(--c1) 30%, var(--surface))"></i>nonmetals</span>
+        </div>
+        <div class="ptable-wrap"><div id="pt-table" aria-label="Periodic table, Z = 1 to 86, with atomic weights"></div></div>
+        <div class="callout" id="pt-note" aria-live="polite"></div>
+      </div>
+      <p class="small muted">Atomic weights as on the periodic table in Brown. Classification as in Brown Fig. 2.13:
+        metalloids B, Si, Ge, As, Sb, Te. Elements 87–118 are left out here.</p>
+
+      <h3>Molecules</h3>
+      <p>
+        Only the noble gases exist as single atoms. Most matter is made of molecules or ions. A <strong>molecular
+        formula</strong> gives the actual numbers of atoms (H₂O₂), the <strong>empirical formula</strong> only the
+        smallest whole-number ratio (HO). Structural formulas show which atom is bonded to which; perspective drawings,
+        ball-and-stick and space-filling models also show the 3D shape. You can rotate real 3D shapes on the
+        <a href="../bonding/#vsepr">week 7 page</a>.
+      </p>
+
+      <h3>Ions and ionic compounds</h3>
+      <p>
+        An <strong>ion</strong> is an atom or molecule with a charge. Remove electrons and you get a positive
+        <strong>cation</strong> (Na⁺); add electrons and you get a negative <strong>anion</strong> (Cl⁻). Atoms at the
+        edges of the table gain or lose electrons until they have as many as the nearest noble gas: group 1 forms 1+,
+        group 2 forms 2+, group 16 forms 2−, group 17 forms 1−. <strong>Polyatomic ions</strong> are groups of atoms with
+        an overall charge, such as ammonium NH₄⁺ and sulfate SO₄²⁻.
+      </p>
+      <p>
+        An <strong>ionic compound</strong> forms between cations and anions, usually a metal and a nonmetal. The
+        compound is electrically neutral, so the charges must cancel. Its formula is an empirical formula: solid NaCl is
+        a 3D lattice of Na⁺ and Cl⁻, not NaCl molecules.
+      </p>
+      <div class="lab" id="ic-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control"><label for="ic-cat" class="ctl-label">Cation</label><select id="ic-cat"></select></div>
+            <div class="control"><label for="ic-an" class="ctl-label">Anion</label><select id="ic-an"></select></div>
+          </div>
+          <div>
+            <div id="ic-diagram" class="dh-diagram" role="img" aria-label="Charges of the ions adding up to zero"></div>
+            <p class="big-answer" id="ic-formula" aria-live="polite"></p>
+            <div class="callout" id="ic-note"></div>
+          </div>
+        </div>
+      </div>
+      <details>
+        <summary>Naming rules (Brown 2.8)</summary>
+        <ul>
+          <li><strong>Cations:</strong> metal name (sodium ion). If a metal can have more than one charge, give it as a
+            Roman numeral: iron(II) Fe²⁺, iron(III) Fe³⁺. Older names use -ous (lower charge) and -ic (higher): ferrous,
+            ferric. Cations of nonmetals end in -ium: ammonium NH₄⁺.</li>
+          <li><strong>Monatomic anions:</strong> -ide: chloride Cl⁻, oxide O²⁻, nitride N³⁻. Also hydroxide OH⁻ and cyanide CN⁻.</li>
+          <li><strong>Oxyanions:</strong> -ate for the common one, -ite for one O fewer (same charge): nitrate NO₃⁻,
+            nitrite NO₂⁻; sulfate SO₄²⁻, sulfite SO₃²⁻. With four in a series: per…ate, …ate, …ite, hypo…ite
+            (ClO₄⁻, ClO₃⁻, ClO₂⁻, ClO⁻). Adding H⁺ gives “hydrogen”: HCO₃⁻ hydrogen carbonate.</li>
+          <li><strong>Ionic compound:</strong> cation name, then anion name: calcium chloride CaCl₂.</li>
+          <li><strong>Acids:</strong> -ide → hydro…ic acid (HCl hydrochloric acid); -ate → -ic acid (HNO₃ nitric acid);
+            -ite → -ous acid (HNO₂ nitrous acid).</li>
+          <li><strong>Binary molecular compounds</strong> (two nonmetals): Greek prefixes mono-, di-, tri-, tetra-,
+            penta-, hexa-: N₂O₄ dinitrogen tetroxide, CO carbon monoxide, SF₆ sulfur hexafluoride.</li>
+        </ul>
+        <p class="small muted">Brown asks you to read 2.8; the lecture does not test the long lists by heart. Learn
+          the bold ions in Brown Tables 2.4 and 2.5 first.</p>
+      </details>
+      <div class="lab" id="nm-lab">
+        <p style="margin:0 0 6px"><strong>Practice:</strong> write the formula of <span id="nm-name" style="font-weight:700"></span></p>
+        <div class="answer-row" style="margin-top:0">
+          <input id="nm-in" class="text-input" style="width:12em" type="text" autocomplete="off" spellcheck="false" aria-label="Your formula" placeholder="e.g. Al2(SO4)3">
+          <button class="btn primary" type="button" id="nm-check">Check</button>
+          <button class="btn" type="button" id="nm-next">Another one</button>
+        </div>
+        <p class="feedback" id="nm-fb" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="balance">
+      <h2>4 · Chemical equations</h2>
+      <p>
+        A chemical equation describes a reaction: \(\text{reactants} \longrightarrow \text{products}\). Atoms are not
+        created or destroyed in a reaction, so <strong>every type of atom must be balanced</strong>: the same number on
+        both sides. Balance by putting <strong>coefficients</strong> in front of the formulas. Never change the
+        subscripts: that would turn H₂O into H₂O₂, a different substance.
+      </p>
+      \[ 2\,\mathrm{H_2} + \mathrm{O_2} \longrightarrow 2\,\mathrm{H_2O} \]
+      <p>States are written in brackets: (s) solid, (l) liquid, (g) gas, (aq) dissolved in water. Some simple patterns
+        come up again and again: <strong>combination</strong> (A + B → C, e.g. N₂ + 3 H₂ → 2 NH₃),
+        <strong>decomposition</strong> (C → A + B, e.g. CaCO₃ → CaO + CO₂ for cement) and <strong>combustion</strong>
+        (burning in O₂; a hydrocarbon gives CO₂ and H₂O).</p>
+      <div class="lab" id="bal-lab">
+        <div class="control" style="max-width:420px">
+          <label for="bal-rxn" class="ctl-label">Reaction</label>
+          <select id="bal-rxn"></select>
+        </div>
+        <div class="eqn" id="bal-eqn"></div>
+        <div class="lab-grid">
+          <div>
+            <p class="small muted" style="margin:0 0 4px">Atoms on each side (left: reactants, right: products)</p>
+            <div id="bal-counts"></div>
+          </div>
+          <div>
+            <div class="callout" id="bal-note" aria-live="polite"></div>
+            <div class="btn-row" style="margin-top:10px"><button class="btn" type="button" id="bal-reset">Reset to 1</button><button class="btn" type="button" id="bal-show">Show the systematic way</button></div>
+          </div>
+        </div>
+        <div id="bal-sys" class="small" hidden></div>
+      </div>
+      <p class="small muted">Tip for combustion: balance C first, then H, and O last, because O₂ appears on its own. If
+        you need a half O₂, multiply everything by 2. More practice with pictures: PhET
+        <a href="https://phet.colorado.edu/en/simulations/balancing-chemical-equations" rel="noopener">Balancing Chemical Equations</a>.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="mole">
+      <h2>5 · The mole: counting by weighing</h2>
+      <p>
+        The <strong>formula weight</strong> (FW) is the sum of the atomic weights of all atoms in a formula:
+        FW(H₂O) = 2 × 1.008 u + 16.00 u = 18.02 u, the mass of one water molecule. For a molecule this is also called
+        the <strong>molecular weight</strong> \(M_w\); for an ionic solid it uses the empirical formula (NaCl, CaCl₂).
+      </p>
+      <p>
+        Lecture 1 worked out how many grams of O₂ react with 2.00 g of H₂ by counting molecules one by one: 6.02 × 10²³ of
+        them, through u and kg. Tedious. The <strong>mole</strong> does that counting once and for all:
+      </p>
+      \[ 1\ \mathrm{mol} = N_A = 6.022\times10^{23}\ \text{items} \qquad \text{(Avogadro's number)} \]
+      <p>
+        \(N_A\) is chosen so that the atomic weight of any element <em>in grams</em> contains exactly one mole of atoms:
+        one K atom weighs 39.0983 u, so 39.0983 g of potassium contain \(N_A\) atoms. The same holds for molecules. So
+        the formula weight in u is numerically the <strong>molar mass</strong> \(M\) in g/mol, and you can read it off
+        the periodic table. A mole is just a number, like a dozen (12): 6.02 × 10²³ marbles would cover the Earth in a
+        layer about 5 km thick.
+      </p>
+      \[ n = \frac{m}{M} \qquad\qquad N = n \, N_A \]
+      <div class="lab" id="mm-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="mm-f" class="ctl-label">Formula</label>
+              <input id="mm-f" class="text-input" type="text" value="C6H12O6" autocomplete="off" spellcheck="false">
+              <div class="btn-row" id="mm-ex" style="margin-top:8px" role="group" aria-label="Examples"></div>
+            </div>
+            <div class="control">
+              <label for="mm-amt" class="ctl-label">Amount</label>
+              <div class="answer-row" style="margin-top:0">
+                <input id="mm-amt" class="text-input" style="width:8em" type="text" value="10.0" inputmode="decimal" aria-label="Amount">
+                <select id="mm-unit" aria-label="Unit"><option value="g">g</option><option value="mol">mol</option><option value="N">particles</option></select>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="table-wrap" style="margin-top:0"><table><thead><tr><th>Element</th><th>Atoms</th><th>× atomic weight</th><th>= g/mol</th><th>mass %</th></tr></thead><tbody id="mm-table"></tbody></table></div>
+            <div id="mm-map" class="dh-diagram" role="img" aria-label="Mass, moles and number of particles, with the conversion factors between them"></div>
+            <div class="callout" id="mm-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Empirical formula from an analysis</h3>
+      <p>A lab tells you the mass percentages of the elements in a compound. To get the formula: (1) take 100 g, so % becomes
+        grams; (2) divide by the molar masses to get moles; (3) divide by the smallest number of moles; (4) multiply
+        until all are whole numbers. If you also know the molar mass, the molecular formula is a whole-number multiple of
+        the empirical one.</p>
+      <div class="lab" id="emp-lab">
+        <div class="btn-row" id="emp-ex" role="group" aria-label="Examples"></div>
+        <div class="table-wrap"><table><thead><tr><th>Element</th><th>mass %</th><th>g in 100 g</th><th>÷ M = mol</th><th>÷ smallest</th><th>× <span id="emp-k">1</span></th></tr></thead><tbody id="emp-table"></tbody></table></div>
+        <div class="answer-row">
+          <label for="emp-M" class="small">Molar mass, if known (g/mol)</label>
+          <input id="emp-M" class="text-input" style="width:7em" type="text" inputmode="decimal" value="">
+        </div>
+        <div class="callout" id="emp-note" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="limiting">
+      <h2>6 · Stoichiometry and limiting reactants</h2>
+      <p>
+        <strong>Stoichiometry</strong> is how much reactant is used up and how much product is made. The coefficients of a
+        balanced equation are ratios of <em>particles</em>, and so of <em>moles</em>, never of grams:
+        \(2\,\mathrm{H_2} + \mathrm{O_2} \to 2\,\mathrm{H_2O}\) says 2 mol H₂ react with 1 mol O₂. The route is always
+        the same:
+      </p>
+      \[ \text{grams A} \xrightarrow{\ \div M_A\ } \text{mol A} \xrightarrow{\ \times\,\frac{\text{coeff. B}}{\text{coeff. A}}\ } \text{mol B} \xrightarrow{\ \times M_B\ } \text{grams B} \]
+      <p>
+        If you mix reactants in a ratio that is not the one in the equation, one runs out first: the
+        <strong>limiting reactant</strong>. It decides how much product forms (the <strong>theoretical yield</strong>);
+        the rest of the other reactant is left over (in <strong>excess</strong>). Think of sandwiches: 10 slices of bread
+        and 3 slices of cheese make only 3 cheese sandwiches if each takes 2 bread and 1 cheese. The cheese limits, not
+        because there is less of it, but because there is less of it <em>per sandwich</em>.
+      </p>
+
+      <h3>Molecule by molecule</h3>
+      <div class="lab" id="lr-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control"><label for="lr-rxn" class="ctl-label">Reaction</label><select id="lr-rxn"></select></div>
+            <div class="control o0">
+              <label for="lr-a"><span id="lr-a-label">A</span> <output id="lr-a-out"></output></label>
+              <input id="lr-a" type="range" min="0" max="12" step="1" value="6">
+            </div>
+            <div class="control o1">
+              <label for="lr-b"><span id="lr-b-label">B</span> <output id="lr-b-out"></output></label>
+              <input id="lr-b" type="range" min="0" max="12" step="1" value="5">
+            </div>
+          </div>
+          <div>
+            <div id="lr-diagram" class="dh-diagram" role="img" aria-label="Molecules before and after the reaction"></div>
+            <div class="callout" id="lr-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>In the lab: grams</h3>
+      <div class="lab" id="lg-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control"><label for="lg-rxn" class="ctl-label">Reaction</label><select id="lg-rxn"></select></div>
+            <div class="control o0">
+              <label for="lg-a"><span id="lg-a-label">A</span> <output id="lg-a-out"></output></label>
+              <input id="lg-a" type="range" min="0.5" max="100" step="0.5" value="10">
+            </div>
+            <div class="control o1">
+              <label for="lg-b"><span id="lg-b-label">B</span> <output id="lg-b-out"></output></label>
+              <input id="lg-b" type="range" min="0.5" max="100" step="0.5" value="40">
+            </div>
+            <div class="control o2">
+              <label for="lg-y"><span>Product actually collected</span> <output id="lg-y-out"></output></label>
+              <input id="lg-y" type="range" min="0" max="100" step="1" value="85">
+            </div>
+          </div>
+          <div>
+            <div id="lg-diagram" class="dh-diagram" role="img" aria-label="How many times each reactant could run the reaction"></div>
+            <div class="table-wrap"><table class="data-table"><tbody id="lg-readout"></tbody></table></div>
+            <div class="callout" id="lg-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      \[ \text{percent yield} = \frac{\text{actual yield}}{\text{theoretical yield}} \times 100\,\% \]
+      <p class="small muted">Real yields are below 100 %: side reactions, incomplete reactions, product lost while
+        purifying. The lecture's D-MAVT example: hydrogen from electrolysis (2 H₂O → 2 H₂ + O₂) stored and burned in a gas
+        turbine (2 H₂ + O₂ → 2 H₂O) for electricity when demand peaks.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="check">
+      <h2>Quick self-check</h2>
+
+      <div class="card quiz">
+        <p class="q">Air is…</p>
+        <div class="opts">
+          <button type="button" data-fb="Air contains N₂, O₂, Ar, CO₂, … : more than one substance.">a compound</button>
+          <button type="button" data-correct data-fb="Air is a mixture of several gases, the same throughout: a homogeneous mixture.">a homogeneous mixture</button>
+          <button type="button" data-fb="Gases always mix completely. Air looks the same everywhere.">a heterogeneous mixture</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">How many protons, neutrons and electrons does ³⁷Cl⁻ have?</p>
+        <div class="opts">
+          <button type="button" data-fb="37 is the mass number, protons + neutrons. Chlorine has Z = 17.">37, 0, 38</button>
+          <button type="button" data-correct data-fb="Z = 17 protons, 37 − 17 = 20 neutrons, and 17 + 1 = 18 electrons for the 1− charge.">17, 20, 18</button>
+          <button type="button" data-fb="A negative ion has gained an electron, so it has more electrons than protons.">17, 20, 16</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">What is 3.0 cm × 2.135 cm, with the right number of significant figures?</p>
+        <div class="opts">
+          <button type="button" data-fb="That is the calculator's answer. 3.0 has only 2 significant figures.">6.405 cm²</button>
+          <button type="button" data-correct data-fb="Multiplication: as many significant figures as the factor with the fewest (3.0 has 2), so 6.4 cm².">6.4 cm²</button>
+          <button type="button" data-fb="One significant figure is too few: 3.0 has two (the zero after the decimal point counts).">6 cm²</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">What is the formula of aluminium sulfate?</p>
+        <div class="opts">
+          <button type="button" data-fb="Al³⁺ and SO₄²⁻ do not cancel 1 : 1 (3+ and 2−).">AlSO₄</button>
+          <button type="button" data-fb="Without brackets this means one S and 12 O. Polyatomic ions need brackets.">Al₂SO₄₃</button>
+          <button type="button" data-correct data-fb="2 Al³⁺ (+6) and 3 SO₄²⁻ (−6) add up to zero. The brackets keep the sulfate together.">Al₂(SO₄)₃</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Which contains more atoms: 1.0 g of H₂ or 1.0 g of O₂?</p>
+        <div class="opts">
+          <button type="button" data-correct data-fb="1.0 g H₂ is 0.50 mol (M = 2.0 g/mol); 1.0 g O₂ is only 0.031 mol (M = 32 g/mol). Both are diatomic, so H₂ has 16 times as many atoms.">H₂</button>
+          <button type="button" data-fb="Same mass, but an O₂ molecule is 16 times heavier than an H₂ molecule, so there are fewer of them.">O₂</button>
+          <button type="button" data-fb="Equal masses do not mean equal numbers of particles. Equal moles would.">the same</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">For N₂ + 3 H₂ → 2 NH₃ you have 2 mol N₂ and 3 mol H₂. Which is limiting?</p>
+        <div class="opts">
+          <button type="button" data-fb="There is less N₂ (2 mol) than H₂ (3 mol), but each N₂ needs three H₂.">N₂</button>
+          <button type="button" data-correct data-fb="2 mol N₂ would need 6 mol H₂. You have only 3, so H₂ runs out first: it makes 2 mol NH₃, and 1 mol N₂ is left over.">H₂</button>
+          <button type="button" data-fb="Check the ratio: you need 3 H₂ per N₂ but have only 1.5.">neither</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="summary">
+      <h2>Summary</h2>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <tbody>
+            <tr><td>Nuclide symbol</td><td>\(^{A}_{Z}\mathrm{X}^{\text{charge}}\)</td><td class="small">\(Z\) protons, \(A - Z\) neutrons, \(Z - \text{charge}\) electrons</td></tr>
+            <tr><td>Atomic weight</td><td>\(\sum (\text{abundance}) \times (\text{isotope mass})\)</td><td class="small">¹²C = 12 u exactly</td></tr>
+            <tr><td>Ionic formula</td><td>total charge = 0</td><td class="small">Al³⁺ + SO₄²⁻ → Al₂(SO₄)₃</td></tr>
+            <tr><td>Balancing</td><td>same number of each atom on both sides</td><td class="small">change coefficients, never subscripts</td></tr>
+            <tr><td>The mole</td><td>\(N_A = 6.022\times10^{23}\ \mathrm{mol^{-1}}\)</td><td class="small">\(n = m/M,\ N = n N_A\)</td></tr>
+            <tr><td>Stoichiometry</td><td>g → mol → mol → g</td><td class="small">coefficients are mole ratios</td></tr>
+            <tr><td>Percent yield</td><td>\(\frac{\text{actual}}{\text{theoretical}} \times 100\,\%\)</td><td class="small">theoretical yield from the limiting reactant</td></tr>
+            <tr><td>Significant figures</td><td>× ÷: fewest sig. figs; + −: fewest decimals</td><td class="small">round only at the end</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Covered in Lecture 1 and the tutorials of Exercises 1 and 2: Brown 1.1–1.3 and 1.5–1.7, 2.1 and 2.3–2.8,
+        3.1–3.7. Tutorial 1 (energy, Brown 1.4) is picked up on the <a href="../thermo-1/">week 4 page</a>.
+        More to play with: PhET <a href="https://phet.colorado.edu/en/simulations/build-an-atom" rel="noopener">Build an Atom</a>
+        and <a href="https://phet.colorado.edu/en/simulations/isotopes-and-atomic-mass" rel="noopener">Isotopes and Atomic Mass</a>.
+        Next week: gases (<a href="../gases/">week 2 page</a>).</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Made by the course TA. Not official course material: if this page and the lecture disagree, the lecture wins.
+      Nothing you do on these pages is recorded.
+    </div>
+  </footer>
+
+  <script type="module" src="matter.js"></script>
+  <script type="module" src="atom.js"></script>
+  <script type="module" src="compounds.js"></script>
+  <script type="module" src="balance.js"></script>
+  <script type="module" src="mole.js"></script>
+  <script type="module" src="limiting.js"></script>
+  <script type="module" src="../assets/quiz.js"></script>
+</body>
+</html>

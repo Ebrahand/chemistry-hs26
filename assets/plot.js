@@ -7,7 +7,13 @@
 //     segments: [{ x1, y1, x2, y2, color, width, dash }],
 //     hlines:   [{ y, label, color }],  vlines: [{ x, color, dash }],
 //     markers:  [{ x, y, color, r, hollow }],
+//     texts:    [{ x, y, text, color, align, baseline, dx, dy, bold, size }],
+//     raster:   { fn: (x, y) => cssColour | null, nx, ny, alpha },   // shaded regions
 //   });
+//
+// Axes may also take tickValues: [numbers] and tickFormat: v => string
+// (used for log axes, where the data are log10 values). Series may set
+// dots: true (or a radius) to mark every data point.
 //
 // Colours may be CSS custom properties ("--c1") or plain CSS colours.
 
@@ -83,10 +89,34 @@ export class Plot {
     ctx.clearRect(0, 0, cssW, cssH);
 
     const compact = cssW < 420;
-    this.pad.l = compact ? 50 : 60;
+    this.pad.l = s.padL ? (compact ? s.padL - 8 : s.padL) : (compact ? 50 : 60);
     this.pad.r = (s.hlines || []).some(h => h.label) ? (compact ? 40 : 48) : 18;
     this.w = cssW - this.pad.l - this.pad.r;
     this.h = cssH - this.pad.t - this.pad.b;
+
+    if (s.raster) {
+      // paint one pixel per cell on a small offscreen canvas, then scale it up: no seams between cells
+      const { fn, nx = 140, ny = 90, alpha = 0.22 } = s.raster;
+      const off = this.off || (this.off = document.createElement('canvas'));
+      off.width = nx; off.height = ny;
+      const octx = off.getContext('2d');
+      const cache = {};
+      for (let i = 0; i < nx; i++) {
+        for (let j = 0; j < ny; j++) {
+          const x = s.x.min + ((i + 0.5) / nx) * (s.x.max - s.x.min);
+          const y = s.y.min + (1 - (j + 0.5) / ny) * (s.y.max - s.y.min);
+          const col = fn(x, y);
+          if (!col) continue;
+          octx.fillStyle = cache[col] || (cache[col] = cssColor(col));
+          octx.fillRect(i, j, 1, 1);
+        }
+      }
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(off, this.pad.l, this.pad.t, this.w, this.h);
+      ctx.restore();
+    }
 
     const grid = cssColor('--plot-grid'), axis = cssColor('--plot-axis');
     const text = cssColor('--text'), muted = cssColor('--text-muted');
@@ -94,8 +124,12 @@ export class Plot {
     const fs = compact ? 11 : 12;
 
     // grid + ticks
-    const xt = ticks(s.x.min, s.x.max, compact ? 4 : 6);
-    const yt = ticks(s.y.min, s.y.max, compact ? 4 : 5);
+    const axTicks = (ax, n) => ax.tickValues
+      ? { values: ax.tickValues.filter(v => v >= ax.min - 1e-9 && v <= ax.max + 1e-9), step: 1, fmt: ax.tickFormat }
+      : Object.assign(ticks(ax.min, ax.max, n), { fmt: ax.tickFormat });
+    const xt = axTicks(s.x, compact ? 4 : 6);
+    const yt = axTicks(s.y, compact ? 4 : 5);
+    const tl = (t, v) => t.fmt ? t.fmt(v) : fmtTick(v, t.step);
     ctx.lineWidth = 1;
     ctx.strokeStyle = grid;
     ctx.beginPath();
@@ -113,9 +147,9 @@ export class Plot {
     ctx.fillStyle = muted;
     ctx.font = `${fs}px ${font}`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-    for (const v of xt.values) ctx.fillText(fmtTick(v, xt.step), this.X(v), this.pad.t + this.h + 6);
+    for (const v of xt.values) ctx.fillText(tl(xt, v), this.X(v), this.pad.t + this.h + 6);
     ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
-    for (const v of yt.values) ctx.fillText(fmtTick(v, yt.step), this.pad.l - 6, this.Y(v));
+    for (const v of yt.values) ctx.fillText(tl(yt, v), this.pad.l - 6, this.Y(v));
 
     // axis labels
     ctx.fillStyle = text;
@@ -190,6 +224,15 @@ export class Plot {
       }
       ctx.stroke();
       ctx.setLineDash([]);
+      if (sr.dots) {
+        const r = sr.dots === true ? 4 : sr.dots;
+        for (const [x, y] of sr.points) {
+          if (!Number.isFinite(y)) continue;
+          ctx.beginPath(); ctx.arc(this.X(x), this.Y(y), r, 0, Math.PI * 2);
+          ctx.fillStyle = cssColor(sr.color); ctx.fill();
+          ctx.strokeStyle = cssColor('--surface'); ctx.lineWidth = 1.5; ctx.stroke();
+        }
+      }
     }
 
     for (const sg of s.segments || []) {
@@ -212,6 +255,13 @@ export class Plot {
         ctx.fillStyle = col; ctx.fill();
         ctx.strokeStyle = cssColor('--surface'); ctx.lineWidth = 1.5; ctx.stroke();
       }
+    }
+    for (const t of s.texts || []) {
+      if (!Number.isFinite(t.y) || !Number.isFinite(t.x)) continue;
+      ctx.fillStyle = cssColor(t.color || '--text');
+      ctx.font = `${t.bold ? '600 ' : ''}${t.size || fs}px ${font}`;
+      ctx.textAlign = t.align || 'left'; ctx.textBaseline = t.baseline || 'middle';
+      ctx.fillText(t.text, this.X(t.x) + (t.dx || 0), this.Y(t.y) + (t.dy || 0));
     }
     ctx.restore();
 

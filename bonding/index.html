@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chemical Bonding and Molecular Shape</title>
+  <meta name="description" content="Interactive look at ionic and covalent bonds, electronegativity, Lewis structures, formal charge, bond enthalpies and VSEPR shapes.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false})"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../">Chemistry HS26 <span>· interactive companion</span></a>
+      <nav class="crumbs"><a href="../">Topics</a> › 7 Chemical bonding; molecular geometry</nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Chemical bonding and molecular shape</h1>
+    <p class="lede">Why is salt a hard crystal and water a bent molecule? Atoms bond by moving or sharing their valence
+      electrons. Count those electrons and you can predict how atoms connect, how strong the bonds are and what shape the
+      molecule takes. Brown, Chapter 8, section 5.8 and sections 9.1–9.2.</p>
+
+    <div class="card">
+      <strong>After this week you should be able to</strong>
+      <ul style="margin:8px 0 0">
+        <li>tell ionic, covalent and metallic bonding apart, and explain what makes a lattice energy large</li>
+        <li>use electronegativity to say how polar a bond is</li>
+        <li>draw Lewis structures, including resonance structures and exceptions to the octet rule</li>
+        <li>pick the best Lewis structure with formal charges, and tell formal charge, oxidation number and partial charge apart</li>
+        <li>estimate a reaction enthalpy from bond enthalpies</li>
+        <li>predict electron-domain and molecular geometry with VSEPR</li>
+      </ul>
+    </div>
+
+    <nav class="module-nav" aria-label="Modules on this page">
+      <a href="#ionic"><strong>1 · Ionic bonds</strong><span class="tag live">open</span></a>
+      <a href="#polarity"><strong>2 · Covalent bonds and polarity</strong><span class="tag live">open</span></a>
+      <a href="#lewis"><strong>3 · Lewis structures</strong><span class="tag live">open</span></a>
+      <a href="#bond-energy"><strong>4 · Bond strength and length</strong><span class="tag live">open</span></a>
+      <a href="#vsepr"><strong>5 · Molecular shape (VSEPR)</strong><span class="tag live">open</span></a>
+    </nav>
+
+    <!-- =============================================================== -->
+    <section id="ionic">
+      <h2>1 · Ionic bonds</h2>
+      <p>
+        Bonds are made by the <strong>valence electrons</strong>, the electrons in the outermost shell (week 6). A
+        <strong>Lewis symbol</strong> shows them as dots around the element symbol, at most two per side: sulfur,
+        [Ne] 3s² 3p⁴, has six. Atoms tend to gain, lose or share electrons until they have eight valence electrons, the
+        configuration of a noble gas: the <strong>octet rule</strong>. It works best for s and p electrons, and it has
+        exceptions (section 3).
+      </p>
+      <div class="force-grid">
+        <div class="card force"><h4>Ionic</h4><p>A metal gives electrons to a nonmetal. The ions attract each other
+          electrostatically. Example: Na⁺Cl⁻, an ionic solid.</p></div>
+        <div class="card force"><h4>Covalent</h4><p>Two atoms share valence electrons. Example: H₂O, made of molecules.</p></div>
+        <div class="card force"><h4>Metallic</h4><p>The valence electrons are shared by the whole solid. Example: silver,
+          Ag(s).</p></div>
+      </div>
+
+      <h3>Lattice energy: why ionic solids are so stable</h3>
+      <p>
+        Sodium gives up its 3s electron and becomes Na⁺ ([Ne]); chlorine takes it and becomes Cl⁻ ([Ar]). On its own that
+        costs energy (496 kJ/mol to ionize Na, only 349 kJ/mol back from Cl). What pays for it is the attraction between the
+        ions once they pack into a crystal. The <strong>lattice energy</strong> is the energy needed to pull one mole of the
+        solid apart into gaseous ions:
+      </p>
+      \[ \mathrm{NaCl}(s) \rightarrow \mathrm{Na^+}(g) + \mathrm{Cl^-}(g) \qquad \Delta H_\text{lattice} = +788\ \mathrm{kJ/mol} \]
+      <p>
+        It is always positive (endothermic). How large it is follows from Coulomb's law: the attraction grows with the
+        charges \(Q_1, Q_2\) of the ions and falls with their distance \(d\), the sum of the ionic radii.
+      </p>
+      \[ E_\text{el} = \kappa\,\frac{Q_1 Q_2}{d} \qquad\Longrightarrow\qquad \Delta H_\text{lattice} \propto \frac{|Q_1 Q_2|}{d} \]
+      <div class="lab" id="lat-lab">
+        <div class="plot-head">
+          <div class="seg" role="group" aria-label="View" id="lat-view">
+            <button type="button" data-v="all" aria-pressed="true">All salts</button>
+            <button type="button" data-v="zoom" aria-pressed="false">Zoom in on the 1+/1− salts</button>
+          </div>
+        </div>
+        <canvas class="plot" id="lat-plot" role="img" aria-label="Lattice energy of 1:1 ionic compounds against charge product divided by ion distance"></canvas>
+        <div class="callout" id="lat-note" aria-live="polite"></div>
+        <p class="small muted" style="margin:8px 0 0">Lattice energies: Brown Table 8.1. \(d\) = sum of the ionic radii
+          (Brown Fig. 7.8). Only salts with one cation per anion are shown, so the Coulomb factor compares like with like.
+          Tap a point.</p>
+      </div>
+      <ol class="try">
+        <li>Going down the halides (LiF → LiCl → LiI) the anion gets bigger, \(d\) grows, and the lattice energy drops.</li>
+        <li>MgO, CaO and SrO have charges 2+ and 2−: \(|Q_1Q_2| = 4\). Their lattice energies are about four times larger.
+          Charge matters more than size, because ionic radii only vary over a small range (problem set 7, question 3).</li>
+      </ol>
+
+      <h3>Getting the lattice energy from a cycle (Born–Haber)</h3>
+      <p>The lattice energy cannot be measured directly. But enthalpy is a state function (week 4): go from the solid to the
+        gaseous ions by a detour through steps you <em>can</em> measure, and the total is the same.</p>
+      <div class="lab" id="bh-lab">
+        <div class="btn-row" id="bh-salt" role="group" aria-label="Salt"></div>
+        <div class="lab-grid" style="margin-top:12px">
+          <div class="controls">
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="bh-table"></tbody></table>
+            </div>
+            <div class="btn-row">
+              <button class="btn primary" id="bh-next" type="button">Next step →</button>
+              <button class="btn" id="bh-reset" type="button">Start over</button>
+            </div>
+          </div>
+          <div>
+            <div class="ladder" id="bh-svg"></div>
+          </div>
+        </div>
+        <div class="callout" id="bh-note" aria-live="polite"></div>
+        <p class="small muted" style="margin:8px 0 0">\(\Delta H_f^\circ\) values from Brown Appendix C; \(I_1\) and \(EA\) as in
+          week 6. Energies drawn to scale.</p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="polarity">
+      <h2>2 · Covalent bonds and polarity</h2>
+      <p>
+        Most substances are not ionic: the atoms <strong>share</strong> electron pairs. In H₂ each H brings one electron, the
+        pair sits between the nuclei and attracts both: H–H. Each line in a Lewis structure is one shared pair. Atoms can share
+        two pairs (a double bond, O=C=O) or three (a triple bond, N≡N). <strong>More shared pairs, shorter bonds:</strong>
+        N–N 147 pm, N=N 124 pm, N≡N 110 pm.
+      </p>
+
+      <h3>Who gets the electrons? Electronegativity</h3>
+      <p>
+        <strong>Electronegativity</strong> is the ability of an atom <em>in a molecule</em> to attract electrons to itself
+        (Pauling's scale, no units). It is high for atoms with a large ionization energy and a very negative electron affinity:
+        it increases to the right and to the top of the periodic table. Fluorine (4.0) is the most electronegative element,
+        caesium (0.7) the least.
+      </p>
+      <div class="lab" id="en-lab">
+        <div class="two-col">
+          <div>
+            <span class="ctl-label">Atom A</span>
+            <div class="mol-picker" id="en-a" role="group" aria-label="Atom A"></div>
+          </div>
+          <div>
+            <span class="ctl-label">Atom B</span>
+            <div class="mol-picker" id="en-b" role="group" aria-label="Atom B"></div>
+          </div>
+        </div>
+        <div class="lab-grid" style="margin-top:6px">
+          <div>
+            <div class="table-wrap" style="margin:0"><table class="data-table"><tbody id="en-table"></tbody></table></div>
+            <div class="en-bar" aria-hidden="true"><i id="en-mark"></i></div>
+            <div class="en-scale"><span>0 · nonpolar</span><span>polar covalent</span><span>≥ 2 · ionic</span></div>
+          </div>
+          <div>
+            <canvas id="en-canvas" class="plot" style="aspect-ratio:16/8" role="img" aria-label="Electron cloud of the bond, shifted towards the more electronegative atom"></canvas>
+            <div class="callout" id="en-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">Rule of thumb from the lecture: a difference of about 2 or more means the bond is ionic. It is a
+        useful guide, not a law: there is no sharp line between ionic and covalent.</p>
+
+      <h3>Dipole moments</h3>
+      <p>
+        Equal and opposite charges \(\pm Q\) a distance \(r\) apart form a <strong>dipole</strong>, with dipole moment
+        \(\mu = Q\,r\), measured in debye: 1 D = 3.34 × 10⁻³⁰ C m. A proton and an electron 0.1 nm apart would give 4.8 D.
+        Real bonds share the electrons only partly, so the partial charges \(\delta\) are smaller. You can work them out from
+        the measured dipole moment and bond length:
+      </p>
+      \[ \delta = \frac{\mu}{e\, r} \]
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Molecule</th><th>Bond length (pm)</th><th>Δ electronegativity</th><th>Dipole moment (D)</th><th>Partial charge δ</th></tr></thead>
+          <tbody id="hx-table"></tbody>
+        </table>
+      </div>
+      <p class="small muted">Data: Brown Table 8.3. δ in units of the elementary charge \(e = 1.602\times10^{-19}\) C.
+        Direction: the lecture draws the dipole moment as a vector from the negative to the positive end (the physicists'
+        convention). Chemistry books, including Brown, often draw the crossed arrow ⟼ the other way, pointing to the
+        negative end. Both describe the same dipole.</p>
+
+      <div class="two-col">
+        <div class="card">
+          <strong>Three ways to put a charge on an atom</strong>
+          <div class="table-wrap" style="margin-top:8px"><table class="data-table small">
+            <tbody>
+              <tr><td><strong>Oxidation number</strong></td><td>as if the bonds were completely ionic: shared electrons all go to the more electronegative atom</td><td class="num">H +1, Cl −1</td></tr>
+              <tr><td><strong>Formal charge</strong></td><td>as if the electrons were shared exactly equally (ignores electronegativity)</td><td class="num">H 0, Cl 0</td></tr>
+              <tr><td><strong>Partial charge</strong></td><td>the real charge, somewhere in between</td><td class="num">H +0.18, Cl −0.18</td></tr>
+            </tbody>
+          </table></div>
+          <p class="small muted" style="margin:6px 0 0">Example: H–Cl, as in Lecture 7.</p>
+        </div>
+        <div class="card">
+          <strong>Ionic or covalent? A continuum</strong>
+          <p class="small" style="margin:6px 0 0">The higher the oxidation number of a metal, the more covalent its bonds.
+            Manganese(II) oxide, MnO, is an ionic solid that melts at 1842 °C. Manganese(VII) oxide, Mn₂O₇, is made of
+            molecules and is a liquid at room temperature (it melts at 5.9 °C).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="lewis">
+      <h2>3 · Lewis structures</h2>
+      <p>The recipe from the lecture:</p>
+      <ol>
+        <li>Add up the valence electrons of all atoms. Add one for each negative charge, take one away for each positive charge.</li>
+        <li>Write the symbols and connect them with single bonds. The central atom is often written first in the formula (not always). H is never central.</li>
+        <li>Complete the octets of the outer atoms. H only needs 2 electrons.</li>
+        <li>Put any remaining electrons on the central atom, even if that gives it more than 8.</li>
+        <li>If the central atom still has fewer than 8, turn lone pairs of its neighbours into multiple bonds.</li>
+      </ol>
+      <div class="lab" id="lw-lab">
+        <div class="plot-head">
+          <label class="ctl-label" style="margin:0">Molecule <select id="lw-mol" style="margin-left:6px"></select></label>
+          <div class="seg" role="group" aria-label="Charges to show on the final structure" id="lw-kind">
+            <button type="button" data-v="fc" aria-pressed="true">Formal charges</button>
+            <button type="button" data-v="ox" aria-pressed="false">Oxidation numbers</button>
+            <button type="button" data-v="none" aria-pressed="false">None</button>
+          </div>
+        </div>
+        <div class="lab-grid" style="margin-top:10px">
+          <div>
+            <ol class="lewis-steps" id="lw-steps"></ol>
+            <div class="btn-row" style="margin-top:8px">
+              <button class="btn" id="lw-prev" type="button">← Back</button>
+              <button class="btn primary" id="lw-next" type="button">Next step →</button>
+              <button class="btn" id="lw-all" type="button">Show result</button>
+            </div>
+          </div>
+          <div>
+            <div class="lewis" id="lw-svg" aria-live="polite"></div>
+            <div class="callout small" id="lw-note"></div>
+          </div>
+        </div>
+        <div id="lw-alt" style="margin-top:14px"></div>
+      </div>
+
+      <h3>Formal charge: choosing between structures</h3>
+      <div class="two-col">
+        <div>
+          <p>Sometimes several Lewis structures obey the octet rule. To decide, give each atom its <strong>formal charge</strong>:</p>
+          \[ \text{FC} = (\text{valence } e^-) - (\text{non-bonding } e^-) - \tfrac12(\text{bonding } e^-) \]
+          <p>The formal charges add up to the charge of the molecule or ion. The <strong>dominant</strong> structure has
+            formal charges closest to zero, and puts any negative formal charge on the more electronegative atom.</p>
+        </div>
+        <div class="card">
+          <strong>Try in the explorer</strong>
+          <ul class="small" style="margin:6px 0 0">
+            <li>CO₂: O=C=O against O≡C–O</li>
+            <li>SCN⁻ (thiocyanate): three structures, two of them with just one −1</li>
+            <li>N₃⁻ (azide, problem set 7)</li>
+            <li>BF₃: why boron stays with six electrons</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Resonance</h3>
+      <p>
+        Ozone, O₃, needs one single and one double bond to the central O, and there are two equally good ways to draw that.
+        Yet both O–O bonds are measured to be the same length. Neither structure alone is right: the real molecule is a
+        <strong>blend</strong> of the two <strong>resonance structures</strong>, written with a double-headed arrow ⟷. The
+        electrons of the double bond are spread over the whole molecule. The same happens in benzene, C₆H₆: its six C–C bonds
+        are all equal, in between a single and a double bond. Pick O₃, NO₃⁻, CO₃²⁻ or HCO₂⁻ above and go to the last step.
+      </p>
+
+      <h3>Exceptions to the octet rule</h3>
+      <div class="force-grid">
+        <div class="card force"><h4>Odd number of electrons</h4><p>NO has 11 valence electrons, so one is always unpaired.
+          (Pick NO above.)</p></div>
+        <div class="card force"><h4>Less than an octet</h4><p>Boron and beryllium compounds, for example BF₃: B keeps only 6
+          electrons.</p></div>
+        <div class="card force"><h4>More than an octet</h4><p>Central atoms from period 3 on can hold 10 or 12 electrons:
+          PCl₅, SF₆, XeF₄. These are called <em>hypervalent</em>. Period-2 atoms (C, N, O, F) never can.</p></div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="bond-energy">
+      <h2>4 · Bond strength and length</h2>
+      <p>
+        The <strong>bond enthalpy</strong> \(D\) is the enthalpy change for breaking one mole of a particular bond in the gas
+        phase. It is always positive: breaking a bond costs energy. Tables give average values, because the same bond is a
+        little different in different molecules (Lecture 7, Brown Table 8.3). That is enough to <em>estimate</em> a reaction
+        enthalpy: pull all reactant molecules apart into atoms, then build the products.
+      </p>
+      \[ \Delta H_\text{rxn} \approx \sum D(\text{bonds broken}) - \sum D(\text{bonds formed}) \]
+      <div class="lab" id="be-lab">
+        <span class="ctl-label">Reaction</span>
+        <div class="mol-picker" id="be-rxn" role="group" aria-label="Reaction"></div>
+        <div class="lab-grid">
+          <div>
+            <div class="table-wrap" style="margin:0"><table class="data-table"><tbody id="be-table"></tbody></table></div>
+          </div>
+          <div>
+            <div class="ladder" id="be-svg"></div>
+          </div>
+        </div>
+        <div class="callout" id="be-note" aria-live="polite"></div>
+      </div>
+      <ol class="try">
+        <li>Problem set 7, question 2: 2 H₂ + O₂ → 2 H₂O. The estimate is for water <em>vapour</em>. Liquid water releases
+          another 44 kJ/mol when it condenses, so the true value for H₂O(l) is more negative.</li>
+        <li>Why is burning methane exothermic? Compare the energy needed to break C–H and O=O with the energy released by
+          forming C=O and O–H.</li>
+        <li>For which reaction is the estimate worst? Average bond enthalpies are averages over many molecules.</li>
+      </ol>
+
+      <h3>Shorter bonds are stronger</h3>
+      <p>Between the same two atoms, every extra shared pair pulls the atoms closer together and makes the bond harder to
+        break.</p>
+      <div class="lab" id="bl-lab">
+        <canvas class="plot" id="bl-plot" role="img" aria-label="Bond enthalpy against bond length for C–C, N–N, C–O, C–N, N–O and O–O bonds"></canvas>
+        <div class="legend" id="bl-legend"></div>
+        <p class="small muted" style="margin:8px 0 0">Brown Tables 8.3 and 8.4 (as in Lecture 7). Single, double and triple bond
+          of each pair are joined by a line.</p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="vsepr">
+      <h2>5 · Molecular shape (VSEPR)</h2>
+      <p>
+        A Lewis structure shows which atoms are connected, but not the shape of the molecule. CCl₄ is drawn flat, yet its four
+        Cl atoms sit at the corners of a tetrahedron, all Cl–C–Cl angles 109.5°.
+      </p>
+      <p>
+        The <strong>valence-shell electron-pair repulsion</strong> (VSEPR) model: the electron pairs around the central atom
+        repel each other and get as far apart as possible, like balloons tied together. Each bond (single, double or triple)
+        and each lone pair counts as one <strong>electron domain</strong>. The number of domains fixes the
+        <strong>electron-domain geometry</strong>. The <strong>molecular geometry</strong> describes only where the atoms are:
+        the lone pairs are there, but invisible.
+      </p>
+      <div class="lab" id="vs-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Bonding domains (atoms around the centre)</span>
+              <div class="seg" role="group" aria-label="Bonding domains" id="vs-b"></div>
+            </div>
+            <div class="control">
+              <span class="ctl-label">Lone pairs on the central atom</span>
+              <div class="seg" role="group" aria-label="Lone pairs" id="vs-l"></div>
+            </div>
+            <div class="table-wrap" style="margin:0"><table class="data-table"><tbody id="vs-table"></tbody></table></div>
+          </div>
+          <div>
+            <canvas id="vs-canvas" class="vsepr-box" role="img" aria-label="Three-dimensional model of the chosen geometry"></canvas>
+            <div class="callout" id="vs-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <ol class="try">
+        <li>Four domains: go from 0 to 1 to 2 lone pairs. The electron-domain geometry stays tetrahedral, but the molecule goes
+          from tetrahedral (CH₄) to trigonal pyramidal (NH₃) to bent (H₂O).</li>
+        <li>Five domains: the lone pairs always take the <em>equatorial</em> positions, where they have the most room (only two
+          neighbours at 90°). That gives seesaw, T-shaped and linear.</li>
+        <li>Six domains with two lone pairs: they sit opposite each other, and the molecule is square planar (XeF₄, BrF₄⁻).</li>
+      </ol>
+
+      <div class="two-col">
+        <div class="card">
+          <strong>Refinements</strong>
+          <p class="small" style="margin:6px 0 0">Lone pairs take up more space than bonding pairs, and so do multiple bonds. They
+            push the other bonds closer together: H–C–H 109.5° in CH₄, H–N–H 107° in NH₃, H–O–H 104.5° in H₂O. In phosgene,
+            COCl₂, the C=O double bond pushes the Cl–C–Cl angle down to 111.4°.</p>
+        </div>
+        <div class="card">
+          <strong>Shape decides polarity</strong>
+          <p class="small" style="margin:6px 0 0">Bond dipoles add up like vectors. In CO₂ (linear) and CCl₄ (tetrahedral) they
+            cancel, so the molecules are nonpolar although their bonds are polar. In H₂O (bent) and NH₃ (pyramidal) they do not:
+            these molecules are polar. This matters a lot in topic 8.</p>
+        </div>
+      </div>
+
+      <h3>Your turn: predict the shape</h3>
+      <p>Draw the Lewis structure on paper, count the domains on the central atom, then choose.</p>
+      <div class="lab" id="pr-lab">
+        <p style="margin:0 0 10px"><span class="ctl-label" style="display:inline">Molecule: </span><span id="pr-mol" style="font-size:22px;font-weight:700"></span></p>
+        <div class="answer-grid">
+          <label class="ctl-label">Electron domains on the centre <select id="pr-dom"><option value="">choose</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label>
+          <label class="ctl-label">Electron-domain geometry <select id="pr-ed"><option value="">choose</option></select></label>
+          <label class="ctl-label">Molecular geometry <select id="pr-mg"><option value="">choose</option></select></label>
+        </div>
+        <div class="btn-row" style="margin-top:12px">
+          <button class="btn primary" id="pr-check" type="button">Check</button>
+          <button class="btn" id="pr-next" type="button">Next molecule</button>
+          <span class="small muted" id="pr-score"></span>
+        </div>
+        <div class="feedback" id="pr-fb" aria-live="polite"></div>
+        <div class="lewis" id="pr-svg"></div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="check">
+      <h2>Quick self-check</h2>
+
+      <div class="card quiz">
+        <p class="q">Which has the larger lattice energy, NaF or MgO? (The ions are about the same size.)</p>
+        <div class="opts">
+          <button type="button" data-fb="Similar sizes, but Mg²⁺ and O²⁻ carry twice the charge each.">NaF</button>
+          <button type="button" data-correct data-fb="|Q₁Q₂| is 4 for MgO and 1 for NaF, at about the same distance. MgO: 3795 kJ/mol, NaF: 910 kJ/mol.">MgO, about 4 times larger</button>
+          <button type="button" data-fb="Coulomb's law depends on the product of the charges.">about the same</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Rank the bonds by polarity: C–H, O–H, Na–Cl (lecture electronegativities).</p>
+        <div class="opts">
+          <button type="button" data-fb="Check the differences: C–H 0.4, O–H 1.4, Na–Cl 2.1.">O–H &gt; Na–Cl &gt; C–H</button>
+          <button type="button" data-correct data-fb="Differences: Na–Cl 3.0 − 0.9 = 2.1 (ionic), O–H 3.5 − 2.1 = 1.4 (polar covalent), C–H 2.5 − 2.1 = 0.4 (nearly nonpolar).">Na–Cl &gt; O–H &gt; C–H</button>
+          <button type="button" data-fb="C–H has the smallest difference of the three: 0.4.">C–H &gt; O–H &gt; Na–Cl</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">What is the formal charge on the central N in the nitrate ion, NO₃⁻?</p>
+        <div class="opts">
+          <button type="button" data-fb="N has 5 valence electrons, no lone pairs and 4 bonds (one double, two single): 5 − 0 − 4.">0</button>
+          <button type="button" data-correct data-fb="5 − 0 − ½·8 = +1. Each singly bonded O has −1, the doubly bonded O 0: total +1 − 1 − 1 = −1, the charge of the ion.">+1</button>
+          <button type="button" data-fb="That is the formal charge of the singly bonded O atoms, not of N.">−1</button>
+          <button type="button" data-fb="+5 is N's oxidation number in nitrate, not its formal charge.">+5</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Why can PCl₅ exist, but not NCl₅?</p>
+        <div class="opts">
+          <button type="button" data-fb="Both have 5 valence electrons (group 15).">P has more valence electrons</button>
+          <button type="button" data-correct data-fb="More than an octet is only possible for central atoms from period 3 on: P is big enough for five neighbours, N (period 2) is not.">N is in period 2 and too small for five neighbours</button>
+          <button type="button" data-fb="Cl is the same in both. The central atom is the problem.">Cl is too electronegative</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">BrF₄⁻ and BF₄⁻ both have four F atoms around the centre. What are their shapes?</p>
+        <div class="opts">
+          <button type="button" data-fb="BF₄⁻ is tetrahedral, but count the lone pairs on Br: 36 valence electrons leave two of them.">both tetrahedral</button>
+          <button type="button" data-correct data-fb="BF₄⁻: 4 domains, no lone pair: tetrahedral. BrF₄⁻: 6 domains (4 bonds + 2 lone pairs), octahedral electron-domain geometry, lone pairs opposite each other: square planar.">BF₄⁻ tetrahedral, BrF₄⁻ square planar</button>
+          <button type="button" data-fb="Seesaw needs 5 domains with 1 lone pair (like SF₄).">BF₄⁻ tetrahedral, BrF₄⁻ seesaw</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Estimated from bond enthalpies, is the bond-enthalpy value for 2 H₂ + O₂ → 2 H₂O more or less negative than the true ΔH for liquid water?</p>
+        <div class="opts">
+          <button type="button" data-correct data-fb="Bond enthalpies are for gases, so the estimate (−485 kJ) is for H₂O(g). Condensing the vapour releases more heat, so ΔH for H₂O(l) is more negative (−572 kJ).">less negative</button>
+          <button type="button" data-fb="Bond enthalpies describe gas-phase molecules. Which way does condensing the water vapour push ΔH?">more negative</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="summary">
+      <h2>Summary</h2>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <tbody>
+            <tr><td>Lattice energy</td><td>\(\mathrm{MX}(s) \rightarrow \mathrm{M^+}(g) + \mathrm{X^-}(g)\), \(\Delta H > 0\), grows with \(|Q_1Q_2|/d\)</td></tr>
+            <tr><td>Bond polarity</td><td>Δ electronegativity: 0 nonpolar, larger = more polar, ≳ 2 ionic</td></tr>
+            <tr><td>Dipole moment</td><td>\(\mu = Qr\), 1 D = 3.34 × 10⁻³⁰ C m</td></tr>
+            <tr><td>Formal charge</td><td>valence e⁻ − non-bonding e⁻ − ½ bonding e⁻</td></tr>
+            <tr><td>Bond enthalpies</td><td>\(\Delta H_\text{rxn} \approx \sum D_\text{broken} - \sum D_\text{formed}\)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Domains</th><th>Electron-domain geometry</th><th>0 lone pairs</th><th>1 lone pair</th><th>2 lone pairs</th><th>3 lone pairs</th></tr></thead>
+          <tbody>
+            <tr><td>2</td><td>linear, 180°</td><td>linear (CO₂)</td><td></td><td></td><td></td></tr>
+            <tr><td>3</td><td>trigonal planar, 120°</td><td>trigonal planar (BF₃)</td><td>bent (NO₂⁻)</td><td></td><td></td></tr>
+            <tr><td>4</td><td>tetrahedral, 109.5°</td><td>tetrahedral (CH₄)</td><td>trigonal pyramidal (NH₃)</td><td>bent (H₂O)</td><td></td></tr>
+            <tr><td>5</td><td>trigonal bipyramidal, 90° and 120°</td><td>trigonal bipyramidal (PCl₅)</td><td>seesaw (SF₄)</td><td>T-shaped (ClF₃)</td><td>linear (XeF₂)</td></tr>
+            <tr><td>6</td><td>octahedral, 90°</td><td>octahedral (SF₆)</td><td>square pyramidal (BrF₅)</td><td>square planar (XeF₄)</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">The lecture stopped at VSEPR. Hybrid orbitals and molecular orbital theory (Brown 9.4–9.8) were
+        not covered this year and are not on this page.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Made by the course TA. Not official course material: if this page and the lecture disagree, the lecture wins.
+      Nothing you do on these pages is recorded.
+    </div>
+  </footer>
+
+  <script type="module" src="ionic.js"></script>
+  <script type="module" src="polarity.js"></script>
+  <script type="module" src="lewis.js"></script>
+  <script type="module" src="energy.js"></script>
+  <script type="module" src="vsepr.js"></script>
+  <script type="module" src="../assets/quiz.js"></script>
+</body>
+</html>

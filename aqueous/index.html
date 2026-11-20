@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reactions in Water</title>
+  <meta name="description" content="Interactive look at electrolytes, precipitation and net ionic equations, acids, bases and neutralization, oxidation numbers, the activity series and molarity.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false})"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../">Chemistry HS26 <span>· interactive companion</span></a>
+      <nav class="crumbs"><a href="../">Topics</a> › 3 Reactions in aqueous solutions</nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Reactions in water: who swaps what</h1>
+    <p class="lede">Most of the chemistry around you, from limescale in the kettle to rust on a bike, happens in water.
+      Three kinds of reaction cover most of it, and each one is a transfer: of <strong>ions</strong> (precipitation), of
+      <strong>protons</strong> (acid–base) or of <strong>electrons</strong> (redox). Brown, Chapter 4 (sections 4.1–4.5).</p>
+
+    <div class="card">
+      <strong>After this week you should be able to</strong>
+      <ul style="margin:8px 0 0">
+        <li>tell strong, weak and nonelectrolytes apart, and say what is really floating around in the solution</li>
+        <li>predict a precipitate with the solubility guidelines, and write molecular, complete ionic and net ionic equations</li>
+        <li>name the common strong acids and bases, and write a neutralization reaction</li>
+        <li>assign oxidation numbers, and say what is oxidized and what is reduced</li>
+        <li>use the activity series to predict whether a metal reacts with a metal ion or an acid</li>
+        <li>calculate a molarity and convert between moles, volume and concentration, including dilution</li>
+      </ul>
+    </div>
+
+    <nav class="module-nav" aria-label="Modules on this page">
+      <a href="#electrolytes"><strong>1 · Solutions and electrolytes</strong><span class="tag live">open</span></a>
+      <a href="#precipitation"><strong>2 · Precipitation</strong><span class="tag live">open</span></a>
+      <a href="#acids"><strong>3 · Acids, bases, neutralization</strong><span class="tag live">open</span></a>
+      <a href="#redox"><strong>4 · Redox and oxidation numbers</strong><span class="tag live">open</span></a>
+      <a href="#activity"><strong>5 · The activity series</strong><span class="tag live">open</span></a>
+      <a href="#molarity"><strong>6 · Molarity and dilution</strong><span class="tag live">open</span></a>
+    </nav>
+
+    <!-- =============================================================== -->
+    <section id="electrolytes">
+      <h2>1 · Solutions and electrolytes</h2>
+      <p>
+        A <strong>solution</strong> is a homogeneous mixture. The substance present in the largest amount is the
+        <strong>solvent</strong>; the others, dissolved in it, are <strong>solutes</strong>. In an <strong>aqueous
+        solution</strong> (aq) the solvent is water.
+      </p>
+      <ul>
+        <li>An <strong>electrolyte</strong> dissolves by forming ions. An ionic solid such as NaCl <em>dissociates</em>:
+          the lattice falls apart into Na⁺ and Cl⁻, each surrounded by water molecules. The ions can move, so the
+          solution conducts electricity. Polyatomic ions stay in one piece: KNO₃ gives K⁺ and NO₃⁻.</li>
+        <li>A <strong>nonelectrolyte</strong> dissolves as whole, neutral molecules (sugar, ethanol). No ions, no current.</li>
+        <li>A <strong>strong electrolyte</strong> is (practically) completely ionized; a <strong>weak electrolyte</strong>
+          only partly, so most of it stays as molecules. Acetic acid (vinegar) and ammonia are weak electrolytes.</li>
+      </ul>
+      <p>
+        Why is water so good at dissolving ions? Its O atom carries a partial negative charge (δ−) and its H atoms partial
+        positive charges (δ+). Water molecules turn their O towards cations and their H towards anions, and so stabilize
+        the separated ions. (More on why in weeks 7 and 8; whether something dissolves at all is a question of energy
+        <em>and</em> entropy, weeks 4, 5 and 9.)
+      </p>
+      <div class="lab" id="el-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Dissolve in water</span>
+              <div class="btn-row" id="el-pick" role="group" aria-label="Solute"></div>
+            </div>
+            <div class="callout" id="el-note" aria-live="polite" style="margin-top:0"></div>
+          </div>
+          <div>
+            <div id="el-diagram" class="dh-diagram" role="img" aria-label="A conductivity tester in the solution, and the particles in the solution"></div>
+            <p class="small muted" id="el-eq" style="margin:6px 0 0"></p>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">Water molecules are left out of the picture. The bulb glows when ions carry the current between
+        the two electrodes. Pure water contains a tiny number of ions (week 13), far too few to light a bulb.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="precipitation">
+      <h2>2 · Precipitation reactions</h2>
+      <p>
+        Mix two solutions of ionic compounds and the cations and anions meet new partners. If one of the new combinations
+        is <strong>insoluble</strong>, it comes out of solution as a solid, the <strong>precipitate</strong>:
+      </p>
+      \[ \mathrm{AgNO_3(aq) + KCl(aq) \longrightarrow AgCl(s) + KNO_3(aq)} \]
+      <p>
+        The cations and anions trade partners, AX + BY → AY + BX: an <strong>exchange</strong> or
+        <strong>metathesis</strong> reaction. Hard water and soap give “soap scum” this way. There are no simple
+        rules from first principles for what is soluble, so chemists use guidelines from experiments (Brown Table 4.1).
+        Two to remember first: <em>all nitrates and acetates are soluble</em>, and <em>all compounds of the alkali
+        metals and of NH₄⁺ are soluble</em>.
+      </p>
+      <div class="lab" id="sol-lab">
+        <p style="margin:0 0 8px"><strong>Solubility guidelines as a grid.</strong> Click a cell.</p>
+        <div class="table-wrap" style="margin:0"><table class="solgrid" id="sol-grid"></table></div>
+        <div class="legend"><span><i style="background:color-mix(in srgb, var(--c1) 18%, var(--surface));border-color:var(--c1)"></i>soluble</span><span><i style="background:color-mix(in srgb, var(--c0) 55%, var(--surface));border-color:var(--c0)"></i>insoluble: forms a precipitate</span></div>
+        <div class="callout" id="sol-note" aria-live="polite"></div>
+      </div>
+
+      <h3>Three ways to write the same reaction</h3>
+      <p>
+        The <strong>molecular equation</strong> writes every compound as a whole formula. But the dissolved compounds
+        really exist as separate ions, so the <strong>complete ionic equation</strong> writes them as ions. Ions that
+        appear unchanged on both sides take no part: they are <strong>spectator ions</strong>. Cancel them and you get
+        the <strong>net ionic equation</strong>, which shows what actually happens.
+      </p>
+      <div class="lab" id="mix-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control"><label for="mix-a" class="ctl-label">Solution 1</label><select id="mix-a"></select></div>
+            <div class="control"><label for="mix-b" class="ctl-label">Solution 2</label><select id="mix-b"></select></div>
+          </div>
+          <div>
+            <p class="small muted" style="margin:0">Ions in the mixture:</p>
+            <div class="ion-chips" id="mix-ions"></div>
+            <div class="callout" id="mix-note" aria-live="polite" style="margin-top:0"></div>
+          </div>
+        </div>
+        <div id="mix-eqs" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="acids">
+      <h2>3 · Acids, bases and neutralization</h2>
+      <p>
+        An <strong>acid</strong> is a substance that ionizes in water to form H⁺ ions: it is a <em>proton donor</em>
+        (an H⁺ is just a proton). A <strong>base</strong> accepts H⁺ ions. Many bases do this by releasing OH⁻, which
+        then reacts with H⁺; but a base does not need to contain OH⁻. Ammonia takes an H⁺ from water:
+      </p>
+      \[ \mathrm{NH_3(aq) + H_2O(l) \rightleftharpoons NH_4^+(aq) + OH^-(aq)} \]
+      <div class="two-col">
+        <div>
+          <p style="margin-top:0">Acids with one ionizable H are <strong>monoprotic</strong> (HCl, HNO₃), with two
+            <strong>diprotic</strong> (H₂SO₄):</p>
+          <p class="small">\(\mathrm{H_2SO_4(aq) \to H^+(aq) + HSO_4^-(aq)}\)<br>\(\mathrm{HSO_4^-(aq) \rightleftharpoons H^+(aq) + SO_4^{2-}(aq)}\)</p>
+          <p class="small">The first step is complete, the second only partial. Not every H counts: the H atoms of
+            CH₃COOH bonded to C never come off; only the one on O does.</p>
+        </div>
+        <div class="table-wrap" style="margin-top:0">
+          <table>
+            <thead><tr><th>Strong acids</th><th>Strong bases</th></tr></thead>
+            <tbody>
+              <tr><td>HCl, HBr, HI</td><td>LiOH, NaOH, KOH, RbOH, CsOH</td></tr>
+              <tr><td>HClO₃, HClO₄</td><td>Ca(OH)₂, Sr(OH)₂, Ba(OH)₂</td></tr>
+              <tr><td>HNO₃, H₂SO₄ (first H⁺)</td><td></td></tr>
+            </tbody>
+          </table>
+          <p class="small muted" style="margin:4px 0 0">Brown Table 4.2: learn these. Every other acid is weak, and NH₃ is
+            the most common weak base.</p>
+        </div>
+      </div>
+      <p>
+        Strong or weak tells you how far an acid ionizes, not how dangerous it is. HF is a <em>weak</em> acid, yet very
+        reactive and corrosive because of the F⁻ ion: it attacks glass and bone. Acid strength is put on a number scale
+        (pH) in week 13.
+      </p>
+
+      <h3>Neutralization</h3>
+      <p>An acid and a base react to give water and a <strong>salt</strong>, an ionic compound whose cation comes from the
+        base and whose anion comes from the acid. With a strong acid and a strong base, everything except the water is
+        a spectator:</p>
+      \[ \mathrm{HCl(aq) + NaOH(aq) \to H_2O(l) + NaCl(aq)} \qquad\text{net:}\qquad \mathrm{H^+(aq) + OH^-(aq) \to H_2O(l)} \]
+      <div class="lab" id="neu-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control"><label for="neu-acid" class="ctl-label">Acid</label><select id="neu-acid"></select></div>
+            <div class="control o0">
+              <label for="neu-na"><span>Amount of acid</span> <output id="neu-na-out"></output></label>
+              <input id="neu-na" type="range" min="0" max="10" step="0.5" value="5">
+            </div>
+            <div class="control"><label for="neu-base" class="ctl-label">Base</label><select id="neu-base"></select></div>
+            <div class="control o1">
+              <label for="neu-nb"><span>Amount of base</span> <output id="neu-nb-out"></output></label>
+              <input id="neu-nb" type="range" min="0" max="10" step="0.5" value="3">
+            </div>
+          </div>
+          <div>
+            <div id="neu-diagram" class="dh-diagram" role="img" aria-label="H+ and OH- before and after mixing"></div>
+            <div id="neu-eqs" class="eq-line"></div>
+            <div class="callout" id="neu-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Acid on limescale</h3>
+      <p>Hard water leaves limescale (Kalk) in kettles and showers: a precipitate of calcium carbonate,
+        \(\mathrm{Ca^{2+}(aq) + CO_3^{2-}(aq) \to CaCO_3(s)}\). The carbonate is a base, so an acid such as vinegar
+        (acetic acid) dissolves it, and the bubbles are CO₂:</p>
+      \[ \mathrm{CaCO_3(s) + 2\,CH_3COOH(aq) \to Ca(CH_3COO)_2(aq) + H_2O(l) + CO_2(g)} \]
+      <p class="small muted">The H₂CO₃ that would form falls apart into H₂O and CO₂. Acetic acid is weak, so it is written as
+        molecules even in the ionic equation.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="redox">
+      <h2>4 · Oxidation–reduction reactions</h2>
+      <p>
+        In a <strong>redox</strong> reaction electrons move from one atom to another. Rust is the classic example: iron
+        gives electrons to O₂ in the air and becomes Fe₂O₃. Silver tarnishes the same way with H₂S, to Ag₂S.
+      </p>
+      <ul>
+        <li><strong>Oxidation</strong>: an atom, ion or molecule <em>loses</em> electrons and becomes more positive.
+          (The name comes from the first examples studied: metals reacting with oxygen.)</li>
+        <li><strong>Reduction</strong>: it <em>gains</em> electrons, so its charge is “reduced”.</li>
+        <li>The two always go together: electrons given up by one species must be taken by another.
+          <strong>LEO the lion says GER</strong>: Losing Electrons is Oxidation, Gaining Electrons is Reduction.</li>
+      </ul>
+      \[ 2\,\mathrm{Ca(s) + O_2(g) \to 2\,CaO(s)} \qquad \mathrm{Ca \to Ca^{2+}}\ \text{(oxidized)},\quad \mathrm{O \to O^{2-}}\ \text{(reduced)} \]
+      <p>
+        To keep track of electrons in molecules too, every atom gets an <strong>oxidation number</strong> (oxidation
+        state): the charge it would have if all its bonds were ionic. Apply the rules in this order:
+      </p>
+      <ol>
+        <li>An atom in an element (Fe, O₂, Cl₂) has oxidation number 0.</li>
+        <li>A monatomic ion has its charge (Na⁺ +1, S²⁻ −2). In compounds, group 1 metals are always +1, group 2 metals +2, Al +3.</li>
+        <li>Nonmetals are usually negative:
+          <ul>
+            <li>F is always −1.</li>
+            <li>O is −2, except in peroxides (O₂²⁻, H₂O₂): −1.</li>
+            <li>H is +1 with nonmetals, −1 with metals (NaH).</li>
+            <li>Cl, Br, I are −1, except when combined with O (then positive).</li>
+          </ul></li>
+        <li>The oxidation numbers add up to the overall charge: 0 for a compound, the ion's charge for a polyatomic ion.</li>
+      </ol>
+      <div class="lab" id="ox-lab">
+        <div class="lab-grid">
+          <div>
+            <p style="margin:0 0 4px" class="small muted">What is the oxidation number of the <strong>highlighted</strong> element?</p>
+            <p class="big-answer" id="ox-species" style="font-size:30px"></p>
+            <div class="answer-row" style="margin-top:4px">
+              <input id="ox-in" class="text-input" style="width:6em" type="text" inputmode="numeric" autocomplete="off" aria-label="Your oxidation number" placeholder="e.g. +5">
+              <button class="btn primary" type="button" id="ox-check">Check</button>
+              <button class="btn" type="button" id="ox-next">Another one</button>
+            </div>
+            <p class="feedback" id="ox-fb" aria-live="polite"></p>
+          </div>
+          <div>
+            <button class="btn" type="button" id="ox-show">Show the rules step by step</button>
+            <ol id="ox-steps" class="small" hidden style="margin:10px 0 0;padding-left:1.3em"></ol>
+          </div>
+        </div>
+      </div>
+      <p>In a redox reaction, the oxidation number of the oxidized element goes up and that of the reduced element goes down.
+        The species that gets oxidized is the <strong>reductant</strong> (reducing agent): it reduces the other one. The
+        species that gets reduced is the <strong>oxidant</strong>:</p>
+      \[ \overset{0}{\mathrm{Mg}}\mathrm{(s)} + 2\,\overset{+1}{\mathrm{H}}\overset{-1}{\mathrm{Cl}}\mathrm{(aq)} \longrightarrow \overset{+2}{\mathrm{Mg}}\overset{-1}{\mathrm{Cl}}{}_2\mathrm{(aq)} + \overset{0}{\mathrm{H}}{}_2\mathrm{(g)} \]
+      <p class="small muted">Mg goes from 0 to +2: oxidized, the reductant. H goes from +1 to 0: reduced, HCl is the oxidant.
+        Cl stays −1: a spectator. A metal reacting with an acid or a metal salt like this is a
+        <strong>displacement reaction</strong>, A + BX → AX + B.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="activity">
+      <h2>5 · The activity series</h2>
+      <p>
+        Which metals are oxidized easily? The <strong>activity series</strong> (Brown Table 4.5) lists metals from the
+        easiest to oxidize (top) to the hardest (bottom). Two rules follow:
+      </p>
+      <ul>
+        <li>A metal is oxidized by the ions of any metal <strong>below</strong> it.</li>
+        <li>Only metals <strong>above hydrogen</strong> react with acids (H⁺) to give H₂ gas.</li>
+      </ul>
+      <p>The noble metals at the bottom (Ag, Pt, Au) hardly react, which is why gold stays shiny and has served as money
+        for thousands of years. Lithium at the top gives up its electron most easily: no surprise that it ends up in
+        batteries (week 14).</p>
+      <div class="lab" id="act-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control"><label for="act-metal" class="ctl-label">Metal (solid)</label><select id="act-metal"></select></div>
+            <div class="control"><label for="act-ion" class="ctl-label">Dipped into a solution of</label><select id="act-ion"></select></div>
+            <div id="act-beaker" class="dh-diagram" role="img" aria-label="A metal strip in a solution"></div>
+          </div>
+          <div>
+            <div id="act-ladder" class="dh-diagram" style="max-width:330px" role="img" aria-label="Activity series with the chosen metal and ion"></div>
+          </div>
+        </div>
+        <div class="callout" id="act-note" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="molarity">
+      <h2>6 · Concentration: molarity</h2>
+      <p>To calculate with solutions we need to say how much solute is in them. The most common measure:</p>
+      \[ \text{molarity } M = \frac{\text{moles of solute}}{\text{volume of solution in litres}} \qquad 1\ \mathrm{M} = 1\ \mathrm{mol/L} \]
+      <p>
+        Note: litres of <em>solution</em>, not of water. To make 1.00 L of a 1.00 M solution, dissolve 1.00 mol of solute
+        and then fill up to the 1 L mark. If you know two of \(M\), \(V\) and \(n\), you get the third:
+        \(n = M \times V\). Molarity is not the only way to give a concentration (week 9 has more).
+      </p>
+      <div class="lab" id="mol-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control"><label for="mol-sol" class="ctl-label">Solute</label><select id="mol-sol"></select></div>
+            <div class="control o0">
+              <label for="mol-m"><span>Mass dissolved</span> <output id="mol-m-out"></output></label>
+              <input id="mol-m" type="range" min="0.5" max="50" step="0.5" value="8">
+            </div>
+            <div class="control o1">
+              <label for="mol-V"><span>Volume of solution</span> <output id="mol-V-out"></output></label>
+              <input id="mol-V" type="range" min="50" max="1000" step="10" value="250">
+            </div>
+            <div class="table-wrap" style="margin:0"><table class="data-table"><tbody id="mol-readout"></tbody></table></div>
+          </div>
+          <div>
+            <div id="mol-diagram" class="dh-diagram" style="max-width:340px;margin:0 auto" role="img" aria-label="Volumetric flask with the solution"></div>
+            <div class="callout" id="mol-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Dilution</h3>
+      <p>Add water to a solution and the amount of solute does not change, only the volume. So</p>
+      \[ n = M_1 V_1 = M_2 V_2 \]
+      <div class="lab" id="dil-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <p class="small muted" style="margin:0">Start from the solution made above (<span id="dil-stock"></span>).</p>
+            <div class="control o0">
+              <label for="dil-V1"><span>Take with a pipette</span> <output id="dil-V1-out"></output></label>
+              <input id="dil-V1" type="range" min="1" max="100" step="1" value="25">
+            </div>
+            <div class="control o1">
+              <label for="dil-V2"><span>Fill up to</span> <output id="dil-V2-out"></output></label>
+              <input id="dil-V2" type="range" min="10" max="1000" step="10" value="250">
+            </div>
+          </div>
+          <div>
+            <div id="dil-diagram" class="dh-diagram" role="img" aria-label="Stock solution and diluted solution"></div>
+            <div class="callout" id="dil-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">Solution stoichiometry and titrations (Brown 4.6) were not part of Lecture 3. Molar masses from
+        the atomic weights in Brown.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="check">
+      <h2>Quick self-check</h2>
+
+      <div class="card quiz">
+        <p class="q">Which solution conducts electricity best (same concentration)?</p>
+        <div class="opts">
+          <button type="button" data-fb="Sugar dissolves as neutral molecules: a nonelectrolyte.">sugar water</button>
+          <button type="button" data-fb="Acetic acid is a weak acid: only about 1 % is ionized.">acetic acid</button>
+          <button type="button" data-correct data-fb="CaCl₂ is a strong electrolyte and gives 3 ions per formula unit: Ca²⁺ + 2 Cl⁻.">calcium chloride</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">You mix solutions of Na₂SO₄ and BaCl₂. What is the net ionic equation?</p>
+        <div class="opts">
+          <button type="button" data-fb="NaCl is soluble (alkali metal compound): Na⁺ and Cl⁻ are spectators.">Na⁺ + Cl⁻ → NaCl(s)</button>
+          <button type="button" data-correct data-fb="BaSO₄ is one of the insoluble sulfates (Sr²⁺, Ba²⁺, Hg₂²⁺, Pb²⁺). Na⁺ and Cl⁻ are spectators.">Ba²⁺ + SO₄²⁻ → BaSO₄(s)</button>
+          <button type="button" data-fb="Both products would be written this way only if both were insoluble.">no reaction</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">What is the oxidation number of S in the sulfate ion, SO₄²⁻?</p>
+        <div class="opts">
+          <button type="button" data-fb="The sum must equal the charge of the ion, −2, not 0.">+8</button>
+          <button type="button" data-correct data-fb="4 × (−2) for O = −8. S + (−8) = −2, so S = +6.">+6</button>
+          <button type="button" data-fb="−2 is the charge of the whole ion, not of the S atom.">−2</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">A copper wire is put into a silver nitrate solution. What happens?</p>
+        <div class="opts">
+          <button type="button" data-correct data-fb="Cu is above Ag in the activity series: Cu + 2 Ag⁺ → Cu²⁺ + 2 Ag. Silver crystals grow on the wire and the solution turns blue.">silver forms on the wire</button>
+          <button type="button" data-fb="Copper is below hydrogen, and there is no acid here anyway.">hydrogen gas bubbles off</button>
+          <button type="button" data-fb="Look at the activity series: Ag⁺ is below Cu, so it can oxidize copper.">nothing</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">10.0 mL of 2.00 M NaCl is diluted to 100.0 mL. What is the new concentration?</p>
+        <div class="opts">
+          <button type="button" data-fb="Dilution lowers the concentration: the same moles in more volume.">20.0 M</button>
+          <button type="button" data-fb="Check the ratio of the volumes: 10 mL to 100 mL is a factor of 10.">1.00 M</button>
+          <button type="button" data-correct data-fb="M₂ = M₁V₁/V₂ = 2.00 M × 10.0 mL / 100.0 mL = 0.200 M.">0.200 M</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="summary">
+      <h2>Summary</h2>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <tbody>
+            <tr><td>Electrolytes</td><td>strong: fully ionized; weak: partly; non: molecules</td><td class="small">only ions conduct</td></tr>
+            <tr><td>Precipitation</td><td>AX + BY → AY(s) + BX</td><td class="small">transfer of ions; Brown Table 4.1</td></tr>
+            <tr><td>Net ionic equation</td><td>drop the spectator ions</td><td class="small">weak electrolytes and solids stay as formulas</td></tr>
+            <tr><td>Neutralization</td><td>H⁺ + OH⁻ → H₂O</td><td class="small">transfer of protons; acid + base → salt + water</td></tr>
+            <tr><td>Redox</td><td>oxidation: loses e⁻, ON up; reduction: gains e⁻, ON down</td><td class="small">transfer of electrons</td></tr>
+            <tr><td>Activity series</td><td>a metal reduces the ions below it</td><td class="small">above H: reacts with acids</td></tr>
+            <tr><td>Molarity</td><td>\(M = n / V_\text{solution}\)</td><td class="small">\(M_1V_1 = M_2V_2\) for dilution</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Covered in Lecture 3: Brown 4.1–4.5. Next week: energy and heat in reactions
+        (<a href="../thermo-1/">week 4 page</a>). Acids and bases come back in week 13, redox and batteries in week 14.
+        More to play with: PhET <a href="https://phet.colorado.edu/en/simulations/molarity" rel="noopener">Molarity</a>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Made by the course TA. Not official course material: if this page and the lecture disagree, the lecture wins.
+      Nothing you do on these pages is recorded.
+    </div>
+  </footer>
+
+  <script type="module" src="electrolytes.js"></script>
+  <script type="module" src="precipitation.js"></script>
+  <script type="module" src="acids.js"></script>
+  <script type="module" src="redox.js"></script>
+  <script type="module" src="activity.js"></script>
+  <script type="module" src="molarity.js"></script>
+  <script type="module" src="../assets/quiz.js"></script>
+</body>
+</html>

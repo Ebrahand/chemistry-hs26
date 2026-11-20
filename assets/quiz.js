@@ -9,7 +9,7 @@
 // </div>
 // Nothing is stored or sent anywhere.
 
-for (const quiz of document.querySelectorAll('.quiz')) {
+for (const quiz of document.querySelectorAll('.quiz:not([data-custom])')) {
   const fb = quiz.querySelector('.feedback');
   for (const btn of quiz.querySelectorAll('.opts button')) {
     btn.addEventListener('click', () => {

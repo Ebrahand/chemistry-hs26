@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Electronic Structure and Periodic Trends</title>
+  <meta name="description" content="Interactive look at light, the hydrogen atom, atomic orbitals, electron configurations and periodic trends.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false})"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../">Chemistry HS26 <span>· interactive companion</span></a>
+      <nav class="crumbs"><a href="../">Topics</a> › 6 Electronic structure; periodic properties</nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Electronic structure and periodic trends</h1>
+    <p class="lede">Chemistry is about electrons: they decide how atoms react and how they bond. This week: where the electrons
+      in an atom are, how much energy they have, and why the periodic table has the shape it has.
+      Brown, Chapter 6 and sections 7.2–7.5.</p>
+
+    <div class="card">
+      <strong>After this week you should be able to</strong>
+      <ul style="margin:8px 0 0">
+        <li>convert between wavelength, frequency and photon energy</li>
+        <li>use the Bohr energy levels to find the wavelength of a hydrogen emission line, and the other way round</li>
+        <li>say what the four quantum numbers \(n, \ell, m_\ell, m_s\) mean and which combinations are allowed</li>
+        <li>write the electron configuration of any atom up to radon, with orbital boxes, Pauli and Hund</li>
+        <li>explain the trends in atomic radius, ionic radius, ionization energy and electron affinity with screening and \(Z_\text{eff}\)</li>
+      </ul>
+    </div>
+
+    <nav class="module-nav" aria-label="Modules on this page">
+      <a href="#light"><strong>1 · Light comes in packets</strong><span class="tag live">open</span></a>
+      <a href="#hydrogen"><strong>2 · The hydrogen atom</strong><span class="tag live">open</span></a>
+      <a href="#orbitals"><strong>3 · Orbitals and quantum numbers</strong><span class="tag live">open</span></a>
+      <a href="#configurations"><strong>4 · Filling the orbitals</strong><span class="tag live">open</span></a>
+      <a href="#trends"><strong>5 · Periodic trends</strong><span class="tag live">open</span></a>
+    </nav>
+
+    <!-- =============================================================== -->
+    <section id="light">
+      <h2>1 · Light comes in packets</h2>
+      <p>
+        Light is an electromagnetic wave. Its <strong>wavelength</strong> \(\lambda\) and <strong>frequency</strong> \(\nu\)
+        are tied together by the speed of light, which is the same for all colours:
+      </p>
+      \[ c = \lambda\,\nu, \qquad c = 2.998 \times 10^{8}\ \mathrm{m/s} \]
+      <p>
+        But light does not deliver its energy continuously. It comes in packets, the <strong>photons</strong>, and each photon
+        carries an energy set only by its frequency:
+      </p>
+      \[ E = h\nu = \frac{hc}{\lambda}, \qquad h = 6.626 \times 10^{-34}\ \mathrm{J\,s}\ \text{(Planck's constant)} \]
+      <p>
+        <strong>Short wavelength = high frequency = energetic photons.</strong> A brighter lamp sends <em>more</em> photons,
+        not stronger ones. That is why UV light gives you a sunburn and a much brighter red lamp does not: one UV photon has
+        enough energy to damage a molecule, one red photon does not, however many of them there are.
+      </p>
+
+      <div class="lab" id="em-lab">
+        <canvas id="em-band" class="plot" style="aspect-ratio:16/3.2" role="img" aria-label="The electromagnetic spectrum from gamma rays to radio waves, with the chosen wavelength marked"></canvas>
+        <div class="lab-grid" style="margin-top:12px">
+          <div class="controls">
+            <div class="control">
+              <label for="em-lam"><span>Wavelength</span> <output id="em-lam-out"></output></label>
+              <input id="em-lam" type="range" min="-12" max="1" step="0.005" value="-6.3">
+            </div>
+            <div class="btn-row" id="em-presets" role="group" aria-label="Wavelengths to jump to"></div>
+          </div>
+          <div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table">
+                <tbody id="em-table"></tbody>
+              </table>
+            </div>
+            <div class="callout" id="em-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <ol class="try">
+        <li>Drag across the visible part. Colour follows wavelength: about 430 nm is blue, 530 nm green, 630 nm red.
+          Visible light runs from about 400 to 750 nm.</li>
+        <li>Compare the energy per mole of photons with the energy of a C–C bond, 348 kJ/mol (week 7). Where do photons become
+          strong enough to break bonds?</li>
+        <li>Problem set 6, question 1: try the presets "10 µm", "5.50 × 10¹⁴ s⁻¹" and "413 nm".</li>
+      </ol>
+      <details>
+        <summary>Units: watch the nanometres</summary>
+        <p>Put \(\lambda\) in <strong>metres</strong> into \(E = hc/\lambda\): 413 nm = 413 × 10⁻⁹ m = 4.13 × 10⁻⁷ m. Then
+          \(E = (6.626\times10^{-34})(2.998\times10^{8})/(4.13\times10^{-7}) = 4.81\times10^{-19}\) J for <em>one</em> photon.
+          For a mole of photons multiply by \(N_A = 6.022\times10^{23}\ \mathrm{mol^{-1}}\): 290 kJ/mol.</p>
+      </details>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="hydrogen">
+      <h2>2 · The hydrogen atom</h2>
+      <p>
+        A hot solid glows in all colours. Hot hydrogen gas does not: it emits light at a few sharp wavelengths only, its
+        <strong>line spectrum</strong>. In the visible part there are four lines:
+      </p>
+      <canvas id="h-lines" class="plot" style="aspect-ratio:16/2.6" role="img" aria-label="Visible emission lines of hydrogen at 410, 434, 486 and 656 nanometres"></canvas>
+      <p>
+        Johann Balmer (a Swiss school teacher) and later Johannes Rydberg found a formula that fits every line, the
+        <strong>Rydberg equation</strong>, with whole numbers \(n_2 > n_1 > 0\):
+      </p>
+      \[ \frac{1}{\lambda} = R_H\left(\frac{1}{n_1^2} - \frac{1}{n_2^2}\right), \qquad R_H = 1.097 \times 10^{7}\ \mathrm{m^{-1}} \]
+
+      <h3>Bohr's explanation: only certain energies are allowed</h3>
+      <p>
+        Niels Bohr proposed that the electron can only have certain energies, labelled by \(n = 1, 2, 3, \dots\)
+        The zero of energy is an electron that has left the atom (\(n = \infty\)), so all bound energies are negative:
+      </p>
+      \[ E_n = -hcR_H\,\frac{1}{n^2} = \left(-2.18 \times 10^{-18}\ \mathrm{J}\right)\frac{1}{n^2} \]
+      <p>
+        When the electron drops from a higher level to a lower one, the energy difference leaves as one photon:
+        \(\Delta E = E_\text{f} - E_\text{i} < 0\) and \(E_\text{photon} = -\Delta E = hc/\lambda\). To go up, the atom has to
+        <em>absorb</em> a photon of exactly the right energy.
+      </p>
+
+      <div class="lab" id="bohr-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Electron starts in</span>
+              <div class="seg" role="group" aria-label="Initial level" id="bohr-ni"></div>
+            </div>
+            <div class="control">
+              <span class="ctl-label">and ends in</span>
+              <div class="seg" role="group" aria-label="Final level" id="bohr-nf"></div>
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="bohr-table"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <canvas id="bohr-levels" class="plot" style="aspect-ratio:16/11" role="img" aria-label="Energy levels of the hydrogen atom with the chosen transition"></canvas>
+            <div class="callout" id="bohr-note" aria-live="polite"></div>
+          </div>
+        </div>
+        <p class="ctl-label" style="margin:14px 0 4px">Where the line lands (log scale)</p>
+        <canvas id="bohr-spec" class="plot" style="aspect-ratio:16/3.4" role="img" aria-label="All emission lines of hydrogen ending on the chosen final level"></canvas>
+      </div>
+      <ol class="try">
+        <li>Start at 3, end at 1: the lecture example, a 103 nm photon in the ultraviolet.</li>
+        <li>All lines that end on \(n = 2\) form the <em>Balmer series</em>. Which of them are visible? Compare with the strip at
+          the top of this section.</li>
+        <li>Why are the levels crowded together near the top? Look at \(1/n^2\) for large \(n\).</li>
+        <li><strong>Problem set 6, question 2.</strong> One hydrogen emission line has \(\lambda = 94.974\) nm. Find the
+          transition by trying. <span id="bohr-mystery" class="tag">not found yet</span></li>
+      </ol>
+      <details>
+        <summary>How to find the transition without guessing</summary>
+        <p>Only lines that end on \(n_\text{f} = 1\) have enough energy for the UV below 122 nm, so take \(n_\text{f} = 1\).
+          The photon energy is \(hc/\lambda = 2.09\times10^{-18}\) J, which must equal
+          \(2.18\times10^{-18}\,\mathrm{J}\,(1/1^2 - 1/n_\text{i}^2)\). So \(1/n_\text{i}^2 = 1 - 0.959 = 0.041\) and
+          \(n_\text{i} \approx 4.96\). Quantum numbers are whole numbers: \(n_\text{i} = 5\).</p>
+      </details>
+      <div class="card">
+        <strong>What Bohr got right, and what he got wrong</strong>
+        <p class="small" style="margin:6px 0 0">Right: the energy of the electron is <em>quantized</em>, and the levels
+          \(E_n \propto -1/n^2\) are correct for hydrogen. Wrong: the electron does not circle the nucleus on a fixed orbit,
+          and the model fails for every atom with more than one electron. Quantum mechanics fixes both (section 3).</p>
+      </div>
+
+      <h3>Why there are no orbits: the uncertainty principle</h3>
+      <p>
+        Heisenberg: you cannot know both the position \(x\) and the momentum \(p = mv\) of a particle exactly. The
+        uncertainties are linked:
+      </p>
+      \[ \Delta x \cdot \Delta(mv) \ \ge\ \frac{h}{4\pi} \qquad\Longrightarrow\qquad \Delta x \ \ge\ \frac{h}{4\pi\, m\, \Delta v} \]
+      <p>Note that it is the uncertainty in the speed, \(\Delta v\), that matters, not the speed itself. Try it for a few
+        objects:</p>
+      <div class="lab" id="hup-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Object</span>
+              <div class="seg" role="group" aria-label="Object" id="hup-obj"></div>
+            </div>
+            <div class="control">
+              <label for="hup-dv"><span>Uncertainty in speed, Δv</span> <output id="hup-dv-out"></output></label>
+              <input id="hup-dv" type="range" min="-3" max="7" step="0.01" value="-2">
+            </div>
+          </div>
+          <div>
+            <canvas id="hup-scale" class="plot" style="aspect-ratio:16/4.2" role="img" aria-label="Length scale comparing the position uncertainty with the size of the object and of an atom"></canvas>
+            <div class="callout" id="hup-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">So for an electron in an atom we can only give <strong>probabilities</strong> for where it is:
+        a fuzzy electron cloud instead of a sharp orbit. For a mosquito the uncertainty is far below the size of a nucleus,
+        which is why everyday objects behave classically.</p>
+      <details>
+        <summary>Matter waves (Brown 6.4)</summary>
+        <p>Louis de Broglie suggested that if light (a wave) behaves like particles, particles might behave like waves, with
+          wavelength \(\lambda = h/(mv)\). For an electron moving at \(2.2\times10^{6}\) m/s this is 0.33 nm, about the size of an
+          atom, so wave behaviour matters. For a 45 g golf ball at 40 m/s it is \(3.7\times10^{-34}\) m: far too small to
+          ever notice. Electron microscopes use the short wavelength of fast electrons to see details smaller than visible
+          light can show.</p>
+      </details>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="orbitals">
+      <h2>3 · Orbitals and quantum numbers</h2>
+      <p>
+        Quantum mechanics describes the electron by a <strong>wavefunction</strong> \(\psi\). Its square, \(\psi^2\), is the
+        <em>probability density</em>: how likely you are to find the electron at a given place. A solution with a definite
+        energy is called an <strong>orbital</strong>. Each orbital is labelled by three quantum numbers, and each electron in
+        it by a fourth:
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Symbol</th><th>Name</th><th>Allowed values</th><th>Tells you</th></tr></thead>
+          <tbody>
+            <tr><td>\(n\)</td><td>principal (the <strong>shell</strong>)</td><td>1, 2, 3, …</td><td>size and energy; the same \(n\) as Bohr's</td></tr>
+            <tr><td>\(\ell\)</td><td>angular momentum (the <strong>subshell</strong>)</td><td>0, 1, …, \(n-1\)</td><td>shape: \(\ell\) = 0, 1, 2, 3 is s, p, d, f</td></tr>
+            <tr><td>\(m_\ell\)</td><td>magnetic</td><td>\(-\ell, \dots, 0, \dots, +\ell\)</td><td>orientation in space; \(2\ell+1\) orbitals per subshell</td></tr>
+            <tr><td>\(m_s\)</td><td>spin magnetic</td><td>\(+\tfrac12\) or \(-\tfrac12\)</td><td>spin "up" or "down" (the electron behaves like a tiny magnet)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Look at an orbital</h3>
+      <p>Each dot pattern below is a slice through the electron cloud of a hydrogen orbital: dense where the electron is
+        likely to be, empty at the <em>nodes</em>, where \(\psi = 0\). The graph shows the radial probability: how likely the
+        electron is to be at distance \(r\) from the nucleus, in any direction.</p>
+      <div class="lab" id="orb-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <span class="ctl-label">Shell \(n\)</span>
+              <div class="seg" role="group" aria-label="Principal quantum number" id="orb-n"></div>
+            </div>
+            <div class="control">
+              <span class="ctl-label">Subshell \(\ell\)</span>
+              <div class="seg" role="group" aria-label="Subshell" id="orb-l"></div>
+            </div>
+            <div class="control">
+              <span class="ctl-label">Orientation</span>
+              <div class="seg" role="group" aria-label="Orientation" id="orb-m"></div>
+            </div>
+            <label class="chip"><input type="checkbox" id="orb-fixed">Same scale for all orbitals</label>
+            <label class="chip"><input type="checkbox" id="orb-sign">Colour by sign of ψ</label>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="orb-table"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <div class="two-col" style="gap:12px">
+              <canvas id="orb-cloud" class="sim-box" role="img" aria-label="Electron cloud of the chosen orbital"></canvas>
+              <canvas id="orb-radial" class="plot" style="aspect-ratio:1/1" role="img" aria-label="Radial probability of the chosen orbital"></canvas>
+            </div>
+            <div class="callout" id="orb-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <ol class="try">
+        <li>Step through 1s, 2s, 3s. The orbital gets bigger with \(n\) (tick "same scale" to see how much), and gains
+          spherical nodes: an ns orbital has \(n - 1\) of them.</li>
+        <li>Switch to 2p and try the three orientations. Same shape, pointing along x, y or z: that is what \(m_\ell\) is about.</li>
+        <li>Look at 3d: four lobes ("four-leaf clover") for four of the five, and the odd-looking \(d_{z^2}\).</li>
+        <li>Compare the radial graphs of 3s, 3p and 3d. The 3s electron has a small bump close to the nucleus: it
+          <em>penetrates</em> the inner shells. This becomes important in section 4.</li>
+      </ol>
+      <p class="small muted">Shown are exact hydrogen orbitals. The \(p_x, p_y, p_z\) and five d labels describe the shapes;
+        each subshell still has exactly \(2\ell + 1\) orbitals, one per \(m_\ell\) value (\(p_z\) and \(d_{z^2}\) are the
+        \(m_\ell = 0\) ones). The sign of \(\psi\) is not needed this semester; it becomes important for bonding.</p>
+
+      <h3>Allowed or not?</h3>
+      <p>Set four quantum numbers and see whether an electron can have them.</p>
+      <div class="lab" id="qn-lab">
+        <div class="answer-grid">
+          <label class="ctl-label">\(n\) <select id="qn-n"></select></label>
+          <label class="ctl-label">\(\ell\) <select id="qn-l"></select></label>
+          <label class="ctl-label">\(m_\ell\) <select id="qn-m"></select></label>
+          <label class="ctl-label">\(m_s\) <select id="qn-s"><option value="0.5">+1/2</option><option value="-0.5">−1/2</option></select></label>
+        </div>
+        <div class="feedback" id="qn-fb" aria-live="polite"></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Shell \(n\)</th><th>Subshells</th><th>Orbitals (\(n^2\))</th><th>Max. electrons (\(2n^2\))</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>1s</td><td class="num">1</td><td class="num">2</td></tr>
+            <tr><td>2</td><td>2s 2p</td><td class="num">1 + 3 = 4</td><td class="num">8</td></tr>
+            <tr><td>3</td><td>3s 3p 3d</td><td class="num">1 + 3 + 5 = 9</td><td class="num">18</td></tr>
+            <tr><td>4</td><td>4s 4p 4d 4f</td><td class="num">1 + 3 + 5 + 7 = 16</td><td class="num">32</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="configurations">
+      <h2>4 · Filling the orbitals</h2>
+      <p>
+        In hydrogen, the energy depends only on \(n\): 2s and 2p have the same energy. With more electrons, the electrons
+        repel each other and the subshells split: <strong>for a given \(n\), s &lt; p &lt; d &lt; f</strong>. The reason is
+        screening (section 5): an s electron spends some time very close to the nucleus, where the inner electrons do not
+        shield it, so it is held more tightly.
+      </p>
+      <p>To build the ground state of an atom, fill the orbitals from the bottom up with three rules:</p>
+      <div class="force-grid">
+        <div class="card force"><h4>Aufbau</h4><p>Fill the subshells in order of energy. The periodic table gives the
+          order: 1s 2s 2p 3s 3p <strong>4s 3d</strong> 4p 5s 4d 5p 6s 4f 5d 6p.</p></div>
+        <div class="card force"><h4>Pauli exclusion</h4><p>No two electrons have the same four quantum numbers. So an
+          orbital (a box) holds at most two electrons, with opposite spins: s 2, p 6, d 10, f 14.</p></div>
+        <div class="card force"><h4>Hund's rule</h4><p>In a subshell with several orbitals, put one electron in each box
+          first, all with parallel spins, before pairing them up. Electrons avoid each other when they can.</p></div>
+      </div>
+
+      <h3>Configuration of any element</h3>
+      <p>Click an element. Colours show the blocks: the subshell that the last electron goes into.</p>
+      <div class="lab" id="cfg-lab">
+        <div id="cfg-table"></div>
+        <div class="legend" style="margin-top:8px">
+          <span><span class="swatch" style="background:var(--c1)"></span>s block</span>
+          <span><span class="swatch" style="background:var(--c2)"></span>p block</span>
+          <span><span class="swatch" style="background:var(--c0)"></span>d block</span>
+          <span><span class="swatch" style="background:var(--c3)"></span>f block</span>
+        </div>
+        <div class="btn-row" style="margin-top:12px">
+          <button class="btn" id="cfg-prev" type="button">← previous</button>
+          <button class="btn" id="cfg-next" type="button">next →</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table"><tbody id="cfg-out"></tbody></table>
+        </div>
+        <div id="cfg-boxes" class="orb-boxes" aria-live="polite"></div>
+        <div class="callout" id="cfg-note"></div>
+      </div>
+      <ol class="try">
+        <li>Go from H to Ne one step at a time and watch Hund's rule at work in the 2p boxes (C, N, O).</li>
+        <li>Selenium: \([\mathrm{Ar}]\,4s^2\,3d^{10}\,4p^4\). Six valence electrons: the filled 3d subshell does not count.</li>
+        <li>Chromium and copper break the pattern. Compare what the filling order predicts with what is measured.</li>
+        <li>Problem set 6, question 5: Cs, Ni, Se, Cd, Pb.</li>
+      </ol>
+
+      <h3>Your turn: fill the boxes</h3>
+      <p>Click a box to cycle it through empty → ↑ → ↓ → ↑↓. Then check your diagram.</p>
+      <div class="lab" id="fill-lab">
+        <div class="btn-row" id="fill-pick" role="group" aria-label="Choose an atom"></div>
+        <p class="small muted" id="fill-task" style="margin:10px 0 0"></p>
+        <div id="fill-boxes" class="orb-boxes"></div>
+        <div class="btn-row" style="margin-top:10px">
+          <button class="btn primary" id="fill-check" type="button">Check</button>
+          <button class="btn" id="fill-clear" type="button">Clear</button>
+          <button class="btn" id="fill-show" type="button">Show answer</button>
+        </div>
+        <div class="feedback" id="fill-fb" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="trends">
+      <h2>5 · Periodic trends</h2>
+      <h3>Screening and effective nuclear charge</h3>
+      <div class="two-col">
+        <div>
+          <p>
+            A valence electron is attracted by the nucleus (charge \(+Z\)) but repelled by the inner, <em>core</em>
+            electrons. The core electrons <strong>screen</strong> the nucleus, so the valence electron feels only an
+            <strong>effective nuclear charge</strong>
+          </p>
+          \[ Z_\text{eff} = Z - S \]
+          <p>
+            where \(S\) is roughly the number of core electrons. Sodium: \(Z = 11\), 10 core electrons, so the 3s electron
+            feels about \(+1\).
+          </p>
+          <ul>
+            <li><strong>Across a period</strong> \(Z\) goes up by one each step but the core stays the same, so
+              \(Z_\text{eff}\) increases.</li>
+            <li><strong>Down a group</strong> each new shell adds as many core electrons as protons, so \(Z_\text{eff}\) stays
+              about the same (it rises slightly), but the valence electrons are in a bigger shell.</li>
+          </ul>
+        </div>
+        <figure class="figure">
+          <svg id="screen-svg" viewBox="0 0 330 240" role="img" aria-label="Sodium atom: nucleus with 11 protons, 10 core electrons screening it, one valence electron outside"></svg>
+          <figcaption class="small muted">Sodium. The 10 core electrons cancel most of the nuclear charge.</figcaption>
+        </figure>
+      </div>
+
+      <h3>The periodic table as a map</h3>
+      <p>Pick a property and click an element. Darker means larger.</p>
+      <div class="lab" id="tr-lab">
+        <div class="plot-head">
+          <div class="seg" role="group" aria-label="Property" id="tr-prop">
+            <button type="button" data-v="r" aria-pressed="true">Atomic radius</button>
+            <button type="button" data-v="ie" aria-pressed="false">1st ionization energy</button>
+            <button type="button" data-v="ea" aria-pressed="false">Electron affinity</button>
+            <button type="button" data-v="zeff" aria-pressed="false">\(Z_\text{eff}\)</button>
+          </div>
+        </div>
+        <div id="tr-table"></div>
+        <div class="callout" id="tr-note" aria-live="polite"></div>
+        <div class="plot-head" style="margin-top:14px">
+          <div class="seg" role="group" aria-label="Direction" id="tr-dir">
+            <button type="button" data-v="period" aria-pressed="true">Across its period</button>
+            <button type="button" data-v="group" aria-pressed="false">Down its group</button>
+          </div>
+        </div>
+        <canvas class="plot" id="tr-plot" role="img" aria-label="The chosen property across the period or down the group of the selected element"></canvas>
+        <p class="small muted" id="tr-source" style="margin:8px 0 0"></p>
+      </div>
+
+      <div class="card">
+        <strong>The two rules behind every trend</strong>
+        <ul class="small" style="margin:6px 0 0">
+          <li><strong>Down a group:</strong> the valence electrons are in a higher shell \(n\), further from the nucleus.
+            Atoms get bigger, and their outer electrons are easier to remove.</li>
+          <li><strong>Across a period (left to right):</strong> same shell, but larger \(Z_\text{eff}\). The electrons are
+            pulled in harder: atoms get smaller, and their electrons are harder to remove.</li>
+        </ul>
+      </div>
+
+      <h3>Ionization energy and electron affinity</h3>
+      <div class="two-col">
+        <div>
+          <p><strong>Ionization energy</strong> \(I\): the energy needed to remove an electron from a gaseous atom or ion.</p>
+          \[ \mathrm{Na}(g) \rightarrow \mathrm{Na^+}(g) + e^- \qquad I_1 = +496\ \mathrm{kJ/mol} \]
+          <p>It always costs energy, so \(I > 0\) (endothermic). Each further electron is harder to remove than the last:
+            \(I_1 < I_2 < I_3 < \dots\)</p>
+        </div>
+        <div>
+          <p><strong>Electron affinity</strong> \(EA\): the energy change when a gaseous atom takes up an electron.</p>
+          \[ \mathrm{Cl}(g) + e^- \rightarrow \mathrm{Cl^-}(g) \qquad EA = -349\ \mathrm{kJ/mol} \]
+          <p>Negative means energy is released: chlorine "likes" the extra electron. Halogens have \(EA \ll 0\). Noble gases
+            have \(EA > 0\): their next electron would have to go into a new shell.</p>
+        </div>
+      </div>
+      <p class="small muted">Sign convention: we use Brown's and the lecture's, \(EA\) = energy change. Some other books define
+        the electron affinity as the energy <em>released</em>, with the opposite sign.</p>
+
+      <p>Successive ionization energies show where the core starts. Pick an element of period 3:</p>
+      <div class="lab" id="sie-lab">
+        <div class="plot-head">
+          <div class="seg" role="group" aria-label="Element" id="sie-el"></div>
+        </div>
+        <canvas class="plot" id="sie-plot" role="img" aria-label="Successive ionization energies on a logarithmic scale"></canvas>
+        <div class="callout" id="sie-note" aria-live="polite"></div>
+        <p class="small muted" style="margin:8px 0 0">Logarithmic axis. Data: NIST Atomic Spectra Database, rounded; Brown Table 7.2 agrees to within 0.2 %.</p>
+      </div>
+
+      <h3>Ions: cations shrink, anions grow</h3>
+      <p>
+        A <strong>cation</strong> is smaller than its parent atom: it has lost electrons (often its whole outer shell), and the
+        remaining ones are pulled in harder. An <strong>anion</strong> is larger: the extra electron increases the repulsion
+        between the electrons, and the cloud spreads out. For ions with the same number of electrons
+        (an <em>isoelectronic series</em>), more protons means a smaller ion.
+      </p>
+      <div class="lab" id="ion-lab">
+        <div class="btn-row" id="ion-sets" role="group" aria-label="Choose a comparison"></div>
+        <div class="figure" style="margin-top:12px"><svg id="ion-svg" viewBox="0 0 640 220" role="img" aria-label="Atoms and ions drawn to scale"></svg></div>
+        <div class="callout" id="ion-note" aria-live="polite"></div>
+        <p class="small muted" style="margin:8px 0 0">Drawn to scale. Ionic radii in ionic solids (Brown Fig. 7.8);
+          atomic radii as in the map above.</p>
+      </div>
+
+      <h3>Your turn: compare two atoms</h3>
+      <div class="lab" id="cmp-lab">
+        <p class="q" id="cmp-q" style="font-weight:600;margin:0 0 10px"></p>
+        <div class="btn-row" id="cmp-opts"></div>
+        <div class="feedback" id="cmp-fb" aria-live="polite"></div>
+        <div class="btn-row" style="margin-top:8px"><button class="btn" id="cmp-next" type="button">Next pair</button>
+          <span class="small muted" id="cmp-score"></span></div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="check">
+      <h2>Quick self-check</h2>
+
+      <div class="card quiz">
+        <p class="q">A green laser pointer (532 nm) and a red one (650 nm) both have an output of 5 mW. Which sends out more photons per second?</p>
+        <div class="opts">
+          <button type="button" data-fb="Green photons carry more energy each (shorter wavelength). With the same power, that means fewer of them.">the green one</button>
+          <button type="button" data-correct data-fb="Each red photon carries less energy (E = hc/λ, longer λ), so the red laser needs more photons per second for the same 5 mW.">the red one</button>
+          <button type="button" data-fb="Same power means the same energy per second, but the energy per photon differs.">the same</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Which set of quantum numbers is not allowed?</p>
+        <div class="opts">
+          <button type="button" data-fb="Allowed: a 3d electron (n = 3, ℓ = 2), m_ℓ between −2 and +2.">n = 3, ℓ = 2, m_ℓ = −2</button>
+          <button type="button" data-correct data-fb="ℓ can only go up to n − 1. For n = 2 that is 1, so there is no 2d subshell.">n = 2, ℓ = 2, m_ℓ = 0</button>
+          <button type="button" data-fb="Allowed: a 4s electron.">n = 4, ℓ = 0, m_ℓ = 0</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">How many unpaired electrons does a ground-state iron atom, [Ar] 4s² 3d⁶, have?</p>
+        <div class="opts">
+          <button type="button" data-fb="That would be all six d electrons paired up three by three, which breaks Hund's rule.">0</button>
+          <button type="button" data-fb="Fill the five 3d boxes singly first (5 electrons), then pair the sixth.">2</button>
+          <button type="button" data-correct data-fb="Five electrons go singly into the five 3d boxes, the sixth pairs up with one of them: 4 unpaired.">4</button>
+          <button type="button" data-fb="Only five d boxes exist; the sixth electron has to pair.">6</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Nitrogen has a <em>higher</em> first ionization energy than oxygen, although oxygen is further right. Why?</p>
+        <div class="opts">
+          <button type="button" data-fb="Oxygen's Z_eff is actually larger. The answer lies in the 2p boxes.">N has a larger Z_eff</button>
+          <button type="button" data-correct data-fb="N has three unpaired 2p electrons (half-filled subshell). In O, the fourth 2p electron must share a box and is repelled by its partner, so it is easier to remove.">O's fourth 2p electron is paired</button>
+          <button type="button" data-fb="Both atoms are in period 2; their valence electrons are in the same shell.">O is bigger</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Put in order of size: Mg²⁺, Na⁺, F⁻.</p>
+        <div class="opts">
+          <button type="button" data-fb="All three have 10 electrons. The one with the most protons pulls them in hardest.">Mg²⁺ &gt; Na⁺ &gt; F⁻</button>
+          <button type="button" data-correct data-fb="Isoelectronic (10 electrons each): F⁻ has 9 protons, Na⁺ 11, Mg²⁺ 12. More protons, smaller ion: 119 &gt; 116 &gt; 86 pm.">F⁻ &gt; Na⁺ &gt; Mg²⁺</button>
+          <button type="button" data-fb="They have the same number of electrons, but not the same nuclear charge.">all the same</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="summary">
+      <h2>Summary</h2>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <tbody>
+            <tr><td>Light</td><td>\(c = \lambda\nu\), \(E = h\nu = hc/\lambda\)</td></tr>
+            <tr><td>Hydrogen levels</td><td>\(E_n = (-2.18\times10^{-18}\ \mathrm{J})/n^2\); photon \(E = |E_\text{f} - E_\text{i}|\)</td></tr>
+            <tr><td>Rydberg</td><td>\(1/\lambda = R_H\,(1/n_1^2 - 1/n_2^2)\), \(R_H = 1.097\times10^{7}\ \mathrm{m^{-1}}\)</td></tr>
+            <tr><td>Uncertainty</td><td>\(\Delta x \cdot \Delta(mv) \ge h/4\pi\)</td></tr>
+            <tr><td>Quantum numbers</td><td>\(n \ge 1\); \(0 \le \ell \le n-1\); \(|m_\ell| \le \ell\); \(m_s = \pm\tfrac12\)</td></tr>
+            <tr><td>Filling</td><td>Aufbau, Pauli (2 per orbital), Hund (singly and parallel first)</td></tr>
+            <tr><td>Screening</td><td>\(Z_\text{eff} = Z - S\)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Left → right across a period</th><th>Top → bottom down a group</th></tr></thead>
+          <tbody>
+            <tr><td>\(Z_\text{eff}\)</td><td>increases</td><td>about the same (slight increase)</td></tr>
+            <tr><td>Atomic radius</td><td>decreases</td><td>increases</td></tr>
+            <tr><td>1st ionization energy</td><td>increases (dips at groups 13 and 16)</td><td>decreases</td></tr>
+            <tr><td>Electron affinity</td><td>more negative towards the halogens; noble gases &gt; 0</td><td>changes little</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Not covered in the lecture this year and not on this page: Brown 7.1 (history of the periodic
+        table) and 7.6–7.8 (metals and nonmetals, group trends).</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Made by the course TA. Not official course material: if this page and the lecture disagree, the lecture wins.
+      Nothing you do on these pages is recorded.
+    </div>
+  </footer>
+
+  <script type="module" src="light.js"></script>
+  <script type="module" src="hydrogen.js"></script>
+  <script type="module" src="orbitals.js"></script>
+  <script type="module" src="config.js"></script>
+  <script type="module" src="trends.js"></script>
+  <script type="module" src="../assets/quiz.js"></script>
+</body>
+</html>

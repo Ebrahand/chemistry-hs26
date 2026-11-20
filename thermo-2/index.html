@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thermodynamics II</title>
+  <meta name="description" content="Interactive look at spontaneity, entropy and microstates, the second and third laws, and Gibbs free energy.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false})"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../">Chemistry HS26 <span>· interactive companion</span></a>
+      <nav class="crumbs"><a href="../">Topics</a> › 5 Thermodynamics II</nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Thermodynamics II: entropy and free energy</h1>
+    <p class="lede">Ice melts on a warm day although melting takes in heat. So "lower energy" cannot be the whole story of
+      why things happen. The missing piece is entropy: the number of ways the energy can be spread out.
+      Brown, Chapter 19 (sections 19.1–19.6).</p>
+
+    <div class="card">
+      <strong>After this week you should be able to</strong>
+      <ul style="margin:8px 0 0">
+        <li>say what spontaneous, nonspontaneous, reversible and irreversible mean (and what they do not mean)</li>
+        <li>calculate \(\Delta S\) for a phase change from \(\Delta S = q_\text{rev}/T\), and use the second law,
+          \(\Delta S_\text{univ} \ge 0\)</li>
+        <li>explain entropy as a count of microstates, \(S = k_B \ln W\), and predict the sign of \(\Delta S\) for a process</li>
+        <li>calculate \(\Delta S^\circ\), \(\Delta H^\circ\) and \(\Delta G^\circ\) of a reaction from tabulated values</li>
+        <li>use \(\Delta G = \Delta H - T\Delta S\) to decide whether a process is spontaneous, and at which temperatures</li>
+      </ul>
+    </div>
+
+    <nav class="module-nav" aria-label="Modules on this page">
+      <a href="#spontaneous"><strong>1 · Spontaneous processes</strong><span class="tag live">open</span></a>
+      <a href="#secondlaw"><strong>2 · Entropy and the second law</strong><span class="tag live">open</span></a>
+      <a href="#microstates"><strong>3 · Counting microstates</strong><span class="tag live">open</span></a>
+      <a href="#reactions"><strong>4 · Entropy changes in reactions</strong><span class="tag live">open</span></a>
+      <a href="#gibbs"><strong>5 · Gibbs free energy</strong><span class="tag live">open</span></a>
+      <a href="#temperature"><strong>6 · Free energy and temperature</strong><span class="tag live">open</span></a>
+    </nav>
+
+    <!-- =============================================================== -->
+    <section id="spontaneous">
+      <h2>1 · Spontaneous processes</h2>
+      <p>
+        A <strong>spontaneous</strong> process happens on its own, without outside help. A ball rolls downhill, hot coffee
+        cools down, iron rusts, a gas spreads out into an empty container. The reverse of a spontaneous process is
+        <strong>nonspontaneous</strong>: the ball does not roll back up by itself.
+      </p>
+      <p>Many spontaneous processes release heat (\(\Delta H &lt; 0\)). But not all of them: ice melts at room temperature
+        although melting takes in 6.01 kJ/mol (\(\Delta H &gt; 0\)). Something else must count too. Three warnings first:</p>
+      <div class="force-grid">
+        <div class="card force"><h4>Spontaneous ≠ fast</h4>
+          <p>It only says the process <em>can</em> run by itself, not how quickly. Diamond turning into graphite is spontaneous
+            at room temperature (\(\Delta G^\circ = -2.84\) kJ/mol), yet diamonds last for billions of years. Speed is
+            kinetics (weeks 10–11).</p></div>
+        <div class="card force"><h4>Nonspontaneous ≠ impossible</h4>
+          <p>It means "not without help". Water does not split into H₂ and O₂ on its own, but it does in an electrolyser,
+            if you keep supplying energy.</p></div>
+        <div class="card force"><h4>Conditions matter</h4>
+          <p>Ice melts spontaneously at +1 °C but not at −1 °C. Whether a process is spontaneous depends on temperature and
+            pressure.</p></div>
+      </div>
+
+      <h3>Reversible and irreversible</h3>
+      <p>
+        A <strong>reversible</strong> process can be run backwards so that the system <em>and</em> the surroundings return
+        to exactly where they started. It reverses direction after an infinitesimal change in some property of the system.
+        Heat flowing from a body at \(T + dT\) to one at \(T\) is reversible: lower the first one to \(T - dT\) and the heat
+        flows back. Heat flowing across a real temperature difference is not.
+      </p>
+      <p>
+        An <strong>irreversible</strong> process leaves the surroundings changed when you undo it. A gas that expands into
+        a vacuum does no work and absorbs no heat (\(q = w = 0\), \(\Delta E = 0\)). To push it back, the surroundings have
+        to do work on it. Reversible processes are an idealisation, infinitely slow. <strong>All real processes are
+        irreversible, and so all spontaneous processes are irreversible.</strong> Energy is conserved along the way, but it
+        spreads out and becomes less useful for doing work.
+      </p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="secondlaw">
+      <h2>2 · Entropy and the second law</h2>
+      <p>
+        <strong>Entropy</strong> \(S\) measures how much the energy of a system is spread out, which is also how much of it
+        is no longer available to do work. Loosely, it is the randomness or disorder of the system. Like \(E\) and \(H\),
+        \(S\) is a <strong>state function</strong>. For a process at constant temperature (isothermal):
+      </p>
+      \[ \Delta S = \frac{q_\text{rev}}{T} \]
+      <p>
+        \(q_\text{rev}\) is the heat that would flow along a <em>reversible</em> path, and \(T\) is the absolute temperature
+        in kelvin. Because \(S\) is a state function, you may use an imagined reversible path even when the real process is
+        irreversible. A phase change at its melting or boiling point is such a path: melt ice very slowly at
+        0 °C + \(dT\), and \(q_\text{rev} = \Delta H_\text{fus}\).
+      </p>
+      \[ \Delta S_\text{fus} = \frac{\Delta H_\text{fus}}{T_\text{m}} = \frac{6.01 \times 10^{3}\ \mathrm{J\,mol^{-1}}}{273.15\ \mathrm{K}}
+         = +22.0\ \mathrm{J\,mol^{-1}\,K^{-1}} \]
+
+      <h3>Is entropy conserved, like energy?</h3>
+      <p>No. Hold an ice cube in your hand at 37 °C. The ice (the system) melts at 0 °C and gains +22.0 J/K per mole. Your
+        hand (the surroundings) gives up the same heat, but at a <em>higher</em> temperature, so it loses less entropy:
+        \(\Delta S_\text{surr} = -q/T_\text{surr}\). The entropy of the universe goes up. Try other temperatures:</p>
+
+      <div class="lab" id="ice-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control o0">
+              <label for="ice-T"><span>Temperature of the surroundings</span> <output id="ice-T-out"></output></label>
+              <input id="ice-T" type="range" min="-20" max="40" step="0.5" value="37">
+            </div>
+            <div class="btn-row" id="ice-presets">
+              <button class="btn" type="button" data-t="37">Your hand</button>
+              <button class="btn" type="button" data-t="0">Exactly 0 °C</button>
+              <button class="btn" type="button" data-t="-18">Freezer</button>
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="ice-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <div id="ice-diagram" class="dh-diagram" role="img" aria-label="Bars of the entropy changes of the ice, the surroundings and the universe"></div>
+            <div class="callout" id="ice-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">For 1 mol of ice melting at 0 °C, \(\Delta H_\text{fus} = 6.01\) kJ/mol. The surroundings are
+        assumed big enough that their temperature does not change. The lecture rounds to 6.0 kJ/mol and gets
+        +22 − 19 = +3 J/K.</p>
+
+      <p>This is the <strong>second law of thermodynamics</strong>:</p>
+      \[ \Delta S_\text{univ} = \Delta S_\text{sys} + \Delta S_\text{surr}
+         \begin{cases} &gt; 0 &amp; \text{irreversible (every spontaneous process)} \\ = 0 &amp; \text{reversible} \end{cases} \]
+      <p><strong>The entropy of the universe increases in every spontaneous process.</strong> Entropy can be produced but
+        never destroyed. The entropy of the <em>system</em> alone can go down (water freezing in a freezer), as long as
+        the surroundings gain more. From now on, \(\Delta S\) without a label means \(\Delta S_\text{sys}\).</p>
+      <details>
+        <summary>Engineers: entropy warriors</summary>
+        <p>Making a microchip, a steel beam or a pure chemical creates a highly ordered piece of the world. That is allowed,
+          but only by increasing the disorder somewhere else by more: in the power plant, the cooling water, the waste
+          heat. A refrigerator or an air conditioner moves heat from cold to hot, the nonspontaneous direction, and pays
+          for it with electrical work, dumping even more heat outside.</p>
+      </details>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="microstates">
+      <h2>3 · Entropy on the molecular level: counting microstates</h2>
+      <p>
+        A <strong>microstate</strong> is one particular arrangement of all the molecules: every position and every speed.
+        One <em>macroscopic</em> state (a given \(T\), \(P\), \(V\)) can be realised by an enormous number \(W\) of
+        microstates. Boltzmann connected the two:
+      </p>
+      \[ S = k_B \ln W, \qquad k_B = 1.38 \times 10^{-23}\ \mathrm{J/K} \]
+      <p>
+        So \(\Delta S = k_B \ln (W_\text{final}/W_\text{initial})\). A process that increases the number of available
+        microstates increases the entropy. Nothing "pushes" the system towards high entropy: the molecules simply move at
+        random, and almost all of the arrangements they can end up in belong to the spread-out state.
+      </p>
+
+      <div class="lab" id="ms-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="ms-N"><span>Number of molecules N</span> <output id="ms-N-out"></output></label>
+              <input id="ms-N" type="range" min="2" max="60" step="1" value="6">
+            </div>
+            <div class="btn-row">
+              <button class="btn primary" type="button" id="ms-left">Start all in the left half</button>
+              <button class="btn" type="button" id="ms-pause">Pause</button>
+            </div>
+            <canvas id="ms-box" class="sim-box wide" role="img" aria-label="Molecules moving in a box divided into a left and a right half"></canvas>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="ms-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <div id="ms-bars" class="dh-diagram" role="img" aria-label="Number of microstates W for each number of molecules in the left half"></div>
+            <div class="callout" id="ms-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <ol class="try">
+        <li>With N = 6 (the marble tray below), count: 1 way to have all six on the left, 20 ways to have three on each side.</li>
+        <li>Start all in the left half and watch. How long until they spread out? Do they ever all come back?</li>
+        <li>Increase N. The bars get narrower around the middle: a 50 : 50 split becomes practically certain. For a mole of
+          gas, the chance of finding all molecules in one half is \((1/2)^{6 \times 10^{23}}\). It never happens.</li>
+      </ol>
+      <details>
+        <summary>Gas expanding into a vacuum: how big is ΔS?</summary>
+        <p>Double the volume and each molecule has twice as many places to be, so \(W\) grows by a factor \(2^N\):</p>
+        \[ \Delta S = k_B \ln \frac{W_\text{final}}{W_\text{initial}} = k_B \ln 2^{N} = N k_B \ln 2 \]
+        <p>For one mole, \(N = N_A\) and \(N_A k_B = R\): \(\Delta S = R \ln 2 = 8.314 \times 0.693 = +5.76\ \mathrm{J\,mol^{-1}\,K^{-1}}\).
+          No heat flows and \(\Delta H = 0\): this process is driven by entropy alone.</p>
+      </details>
+
+      <h3>What increases entropy?</h3>
+      <p>More microstates means more entropy. A molecule can store energy by moving through space (translation), by
+        rotating, and by vibrating. More of these motions, or more room for them, means more microstates. \(S\) increases
+        with:</p>
+      <div class="two-col">
+        <ul style="margin:0">
+          <li><strong>temperature</strong>: more energy to share out, more ways to share it</li>
+          <li><strong>volume</strong>: more places to be</li>
+          <li><strong>number of molecules</strong>, especially gas molecules</li>
+          <li><strong>complexity</strong> of the molecules: more atoms, more ways to rotate and vibrate</li>
+          <li><strong>melting</strong> and, much more, <strong>vaporizing</strong>: solid &lt; liquid ≪ gas</li>
+        </ul>
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr><th>Substance</th><th>\(S^\circ\) (J mol⁻¹ K⁻¹)</th><th style="min-width:120px"></th></tr></thead>
+            <tbody id="s-table"></tbody>
+          </table>
+          <p class="small muted" style="margin:4px 0 0">Standard molar entropies at 298 K, Brown Appendix C.</p>
+        </div>
+      </div>
+
+      <h3>The third law</h3>
+      <p>Cool a substance down and it has less energy, fewer motions and fewer microstates. <strong>A pure, perfect crystal
+        at 0 K has only one microstate, \(W = 1\), so \(S = k_B \ln 1 = 0\).</strong> That gives entropy a true zero, so
+        unlike \(H\) and \(E\), we can tabulate <em>absolute</em> entropies \(S^\circ\), not only changes. Note that
+        \(S^\circ\) of an element is <em>not</em> zero at 25 °C.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="reactions">
+      <h2>4 · Entropy changes in reactions</h2>
+      <p>Exactly like enthalpies of formation, with the standard molar entropies \(S^\circ\) from Brown Appendix C:</p>
+      \[ \Delta S^\circ = \sum_\text{products} n\,S^\circ - \sum_\text{reactants} m\,S^\circ \]
+      <p>Example from the lecture, the Haber process:</p>
+      \[ \mathrm{N_2(g)} + 3\,\mathrm{H_2(g)} \to 2\,\mathrm{NH_3(g)} \qquad
+         \Delta S^\circ = 2(192.5) - [191.50 + 3(130.58)] = -198.2\ \mathrm{J/K} \]
+      <p>Negative, as you would guess: four gas molecules become two. A quick rule: <strong>if the number of moles of gas
+        changes, it nearly always decides the sign of \(\Delta S\).</strong></p>
+
+      <h3>Predict the sign</h3>
+      <div class="lab" id="ps-lab">
+        <p style="margin:0" class="small muted">For each process, is \(\Delta S_\text{sys}\) positive, negative, or close to zero?</p>
+        <div id="ps-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:0 24px"></div>
+        <p id="ps-score" class="small muted" style="margin:8px 0 0"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="gibbs">
+      <h2>5 · Gibbs free energy</h2>
+      <p>
+        The second law gives a criterion for spontaneity, \(\Delta S_\text{univ} &gt; 0\), but it is awkward: you need the
+        surroundings too. At constant \(T\) and \(P\) the heat the system releases, \(-\Delta H\), goes into the
+        surroundings, so \(\Delta S_\text{surr} = -\Delta H/T\). Then
+      </p>
+      \[ \Delta S_\text{univ} = \Delta S - \frac{\Delta H}{T}
+         \quad\Longrightarrow\quad -T\,\Delta S_\text{univ} = \Delta H - T\Delta S \]
+      <p>The right-hand side involves only the system. It is the change of a new state function, the
+        <strong>Gibbs free energy</strong> \(G \equiv H - TS\):</p>
+      \[ \Delta G = \Delta H - T\Delta S \qquad \text{(constant } T \text{ and } P) \]
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><td>\(\Delta G &lt; 0\)</td><td>\(\Delta S_\text{univ} &gt; 0\)</td><td>spontaneous in the forward direction (irreversible)</td></tr>
+            <tr><td>\(\Delta G = 0\)</td><td>\(\Delta S_\text{univ} = 0\)</td><td>reversible: the system is at equilibrium</td></tr>
+            <tr><td>\(\Delta G &gt; 0\)</td><td>\(\Delta S_\text{univ} &lt; 0\)</td><td>nonspontaneous; the reverse reaction is spontaneous</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Why "free"?</strong> \(-\Delta G\) is the most useful work you can get out of a process at constant \(T\)
+        and \(P\): the energy that is free to be used. A battery or a fuel cell can at best deliver \(-\Delta G\) as
+        electrical work. You will meet this again in electrochemistry (week 14).</p>
+      <p>Just like \(\Delta H_f^\circ\), the <strong>standard free energy of formation</strong> \(\Delta G_f^\circ\) is the
+        free-energy change of forming 1 mol of a substance from its elements in their standard states (1 atm, 25 °C), and
+        it is zero for an element in its standard state. Then</p>
+      \[ \Delta G^\circ_\text{rxn} = \sum_\text{products} n\,\Delta G_f^\circ - \sum_\text{reactants} m\,\Delta G_f^\circ \]
+
+      <div class="lab" id="g-lab">
+        <div class="control" style="max-width:420px">
+          <label for="g-rxn" class="ctl-label">Reaction</label>
+          <select id="g-rxn"></select>
+        </div>
+        <p id="g-eq" style="margin:12px 0 0;font-size:18px"></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Species</th><th>Coef.</th><th>\(\Delta H_f^\circ\) (kJ/mol)</th><th>\(S^\circ\) (J mol⁻¹ K⁻¹)</th><th>\(\Delta G_f^\circ\) (kJ/mol)</th></tr></thead>
+            <tbody id="g-table"></tbody>
+          </table>
+        </div>
+        <div class="two-col" style="margin-top:12px">
+          <div class="table-wrap" style="margin:0">
+            <table class="data-table"><tbody id="g-readout"></tbody></table>
+          </div>
+          <div class="callout" id="g-note" aria-live="polite" style="margin:0"></div>
+        </div>
+      </div>
+      <p class="small muted">The two ways of getting \(\Delta G^\circ\) at 298 K (from \(\Delta G_f^\circ\), and from
+        \(\Delta H^\circ - T\Delta S^\circ\)) agree to within rounding of the table values. Watch the units: \(\Delta S\) is
+        in J/K, \(\Delta H\) and \(\Delta G\) in kJ. Divide \(\Delta S\) by 1000 before you combine them.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="temperature">
+      <h2>6 · Free energy and temperature</h2>
+      <p>
+        \(\Delta G = \Delta H - T\Delta S\) is a contest between two terms. \(\Delta H\) is the energy term: release heat and
+        you make the surroundings more disordered. \(-T\Delta S\) is the entropy term, and it grows with temperature. So the
+        <strong>temperature decides which one wins</strong>. In the marble picture below, the height of a valley is the energy,
+        its width is the number of states, and shaking the tray is the temperature.
+      </p>
+      <figure class="figure card" style="padding:12px;background:#fff">
+        <a href="marbles.png" title="Open the full-size figure"><img src="marbles.png" alt="Three panels. 1, Energy: a marble rolls downhill and releases its height as heat (ΔH &lt; 0). 2, Entropy: six marbles on a flat tray; 20 of the 64 arrangements have three on each side, only 1 has all six on the left (S = k ln W). 3, Both together: a deep, narrow valley (low energy, few states) next to a shallow, wide one (higher energy, many states). Cold: depth wins. Hot: width wins (ΔG = ΔH − TΔS)."
+          style="width:100%;height:auto;display:block" width="1760" height="768" loading="lazy"></a>
+        <figcaption class="small" style="margin-top:6px;color:#5c5a55">Tap the figure to open it full size.</figcaption>
+      </figure>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>\(\Delta H\)</th><th>\(\Delta S\)</th><th>\(\Delta G = \Delta H - T\Delta S\)</th><th>Lecture example</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>− (favours)</td><td>+ (favours)</td><td>always negative: spontaneous at all T</td><td>2 O₃(g) → 3 O₂(g)</td></tr>
+            <tr><td>2</td><td>+ (against)</td><td>− (against)</td><td>always positive: never spontaneous</td><td>3 O₂(g) → 2 O₃(g)</td></tr>
+            <tr><td>3</td><td>− (favours)</td><td>− (against)</td><td>negative at <strong>low</strong> T</td><td>H₂O(l) → H₂O(s)</td></tr>
+            <tr><td>4</td><td>+ (against)</td><td>+ (favours)</td><td>negative at <strong>high</strong> T</td><td>H₂O(s) → H₂O(l)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>In cases 3 and 4 the sign changes where \(\Delta G = 0\), at the crossover temperature
+        \(T = \Delta H/\Delta S\). For a phase change that is the melting or boiling point.</p>
+
+      <div class="lab" id="gt-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control">
+              <label for="gt-rxn" class="ctl-label">Process</label>
+              <select id="gt-rxn"></select>
+            </div>
+            <div id="gt-custom" class="controls" style="display:none">
+              <div class="control o0">
+                <label for="gt-dH"><span>ΔH</span> <output id="gt-dH-out"></output></label>
+                <input id="gt-dH" type="range" min="-200" max="200" step="1" value="50">
+              </div>
+              <div class="control o1">
+                <label for="gt-dS"><span>ΔS</span> <output id="gt-dS-out"></output></label>
+                <input id="gt-dS" type="range" min="-300" max="300" step="1" value="100">
+              </div>
+            </div>
+            <div class="control">
+              <label for="gt-T"><span>Temperature</span> <output id="gt-T-out"></output></label>
+              <input id="gt-T" type="range" min="0" max="1500" step="1" value="298">
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="gt-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <canvas class="plot" id="gt-plot" role="img" aria-label="ΔG against temperature"></canvas>
+            <div class="legend"><span><i style="border-color:var(--c0)"></i>ΔH</span><span><i style="border-color:var(--c1)"></i>−TΔS</span><span><i style="border-color:var(--text)"></i>ΔG = ΔH − TΔS</span></div>
+            <div class="callout" id="gt-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">The plot assumes that \(\Delta H\) and \(\Delta S\) do not change with temperature (Brown's
+        approximation in 19.6; they do change a little). That is why water comes out at 97 °C instead of 100 °C. Values
+        from Brown Appendix C; water melting with \(\Delta H_\text{fus} = 6.01\) kJ/mol and
+        \(\Delta S_\text{fus} = 22.0\) J mol⁻¹ K⁻¹.</p>
+      <details>
+        <summary>Trouton's rule: a quick estimate of boiling points</summary>
+        <p>At the normal boiling point \(\Delta G_\text{vap} = 0\), so \(T_b = \Delta H_\text{vap}/\Delta S_\text{vap}\). For many
+          liquids \(\Delta S_\text{vap}\) is about 88 J mol⁻¹ K⁻¹: going from liquid to gas opens up roughly the same number of
+          new microstates. Liquids with hydrogen bonds (water, ethanol) are more ordered as liquids and have a larger
+          \(\Delta S_\text{vap}\) (water: 109 J mol⁻¹ K⁻¹ at 100 °C).</p>
+      </details>
+      <p class="small muted">Not covered in the lecture this year and not on this page: Brown 19.7 (free energy and the
+        equilibrium constant). Equilibrium itself comes in week 12.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="check">
+      <h2>Quick self-check</h2>
+
+      <div class="card quiz">
+        <p class="q">A process is spontaneous. What do you know for sure?</p>
+        <div class="opts">
+          <button type="button" data-fb="Spontaneous says nothing about speed: diamond → graphite is spontaneous and takes forever.">it is fast</button>
+          <button type="button" data-fb="Only the universe's entropy must increase. The system's entropy can go down (water freezing below 0 °C).">ΔS_sys &gt; 0</button>
+          <button type="button" data-correct data-fb="That is the second law. How the increase is split between system and surroundings can vary.">ΔS_univ &gt; 0</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">1 mol of water freezes at 0 °C (ΔH_fus = 6.01 kJ/mol). What is ΔS of the water?</p>
+        <div class="opts">
+          <button type="button" data-fb="Freezing releases heat: q_rev = −6.01 kJ. And T must be in kelvin.">+22.0 J/K</button>
+          <button type="button" data-correct data-fb="ΔS = q_rev/T = −6010 J / 273.15 K = −22.0 J/K. The liquid becomes an ordered crystal.">−22.0 J/K</button>
+          <button type="button" data-fb="Use the absolute temperature: dividing by 0 °C does not work. T = 273.15 K.">−6.01 kJ/K</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Which has the larger standard molar entropy at 25 °C?</p>
+        <div class="opts">
+          <button type="button" data-fb="Fewer atoms, fewer ways to rotate and vibrate: S° = 186.3 J mol⁻¹ K⁻¹.">CH₄(g)</button>
+          <button type="button" data-correct data-fb="Both are gases, but propane has more atoms and more ways to move: S° = 269.9 against 186.3 J mol⁻¹ K⁻¹.">C₃H₈(g)</button>
+          <button type="button" data-fb="Molecules of the same phase differ in complexity.">the same</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">A reaction has ΔH = +50 kJ and ΔS = +100 J/K. Above which temperature is it spontaneous?</p>
+        <div class="opts">
+          <button type="button" data-fb="Check the units: ΔS = 0.100 kJ/K, not 100 kJ/K.">0.5 K</button>
+          <button type="button" data-correct data-fb="T = ΔH/ΔS = 50 000 J / 100 J/K = 500 K (227 °C). Above it, −TΔS outweighs ΔH.">500 K</button>
+          <button type="button" data-fb="ΔH > 0 and ΔS > 0: spontaneous at high temperature only (case 4).">at all temperatures</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">What is ΔG for ice melting at exactly 0 °C and 1 atm?</p>
+        <div class="opts">
+          <button type="button" data-fb="Melting is endothermic, but at 0 °C the entropy term exactly balances it.">positive</button>
+          <button type="button" data-fb="Below the melting point it is positive, above it negative. At it?">negative</button>
+          <button type="button" data-correct data-fb="ΔG = 6010 J − 273.15 K × 22.0 J/K = 0. Ice and water are at equilibrium: the process is reversible.">zero</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">A gas expands into a vacuum at constant temperature. What drives it?</p>
+        <div class="opts">
+          <button type="button" data-fb="For an ideal gas at constant T, ΔH = 0: no heat is released.">enthalpy</button>
+          <button type="button" data-correct data-fb="More volume means more places for each molecule, more microstates, higher entropy. q = w = 0 and ΔE = 0.">entropy</button>
+          <button type="button" data-fb="Into a vacuum there is nothing to push against: w = −P_ext ΔV = 0.">work</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="summary">
+      <h2>Summary</h2>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <tbody>
+            <tr><td>Entropy, isothermal</td><td>\(\Delta S = q_\text{rev}/T\)</td><td class="small">phase change: \(\Delta S = \Delta H/T\)</td></tr>
+            <tr><td>Second law</td><td>\(\Delta S_\text{univ} = \Delta S_\text{sys} + \Delta S_\text{surr} \ge 0\)</td><td class="small">&gt; 0 spontaneous, = 0 reversible</td></tr>
+            <tr><td>Boltzmann</td><td>\(S = k_B \ln W\)</td><td class="small">\(k_B\) = 1.38 × 10⁻²³ J/K</td></tr>
+            <tr><td>Third law</td><td>\(S = 0\) for a perfect crystal at 0 K</td><td class="small">absolute \(S^\circ\) can be tabulated</td></tr>
+            <tr><td>Reaction entropy</td><td>\(\Delta S^\circ = \sum n\,S^\circ(\text{prod}) - \sum m\,S^\circ(\text{react})\)</td><td class="small">units: J/K</td></tr>
+            <tr><td>Gibbs free energy</td><td>\(\Delta G = \Delta H - T\Delta S\)</td><td class="small">\(\Delta G &lt; 0\): spontaneous (const. \(T\), \(P\))</td></tr>
+            <tr><td>Standard free energy</td><td>\(\Delta G^\circ = \sum n\,\Delta G_f^\circ(\text{prod}) - \sum m\,\Delta G_f^\circ(\text{react})\)</td><td class="small">elements: \(\Delta G_f^\circ = 0\)</td></tr>
+            <tr><td>Crossover temperature</td><td>\(T = \Delta H/\Delta S\)</td><td class="small">where \(\Delta G\) changes sign</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Covered in Lecture 5: Brown 19.1–19.6. Last week's page: <a href="../thermo-1/">Thermodynamics I</a>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Made by the course TA. Not official course material: if this page and the lecture disagree, the lecture wins.
+      Nothing you do on these pages is recorded.
+    </div>
+  </footer>
+
+  <script type="module" src="secondlaw.js"></script>
+  <script type="module" src="microstates.js"></script>
+  <script type="module" src="entropy.js"></script>
+  <script type="module" src="gibbs.js"></script>
+  <script type="module" src="temperature.js"></script>
+  <script type="module" src="../assets/quiz.js"></script>
+</body>
+</html>
