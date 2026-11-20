@@ -119,13 +119,21 @@ python3 -m http.server 8642 --directory website
 
 Then open <http://localhost:8642>.
 
-## Publish (GitHub Pages)
+## Publish (ETH web hosting)
 
-1. Create a GitHub repository and push this folder to its `main` branch.
-2. In the repository: Settings → Pages → Source: "Deploy from a branch", branch `main`, folder `/ (root)`.
-3. The site appears at `https://<user>.github.io/<repo>/`. Every push to `main` updates it within a minute or two.
+The site is served by Apache on the ETH web instance `mavtchemprd`, at <https://mavtchem.ethz.ch>
+(also `mavtchemprd.ethz.ch`). GitHub (`Ebrahand/chemistry-hs26`, branch `main`) holds the source only.
 
-`.nojekyll` tells GitHub Pages to serve the files as they are.
+1. Commit and push to `main`.
+2. Connect to the ETH VPN (SSH to the server only works from the ETH network).
+3. Run `./deploy.sh` (or `./deploy.sh --dry-run` first).
+
+`deploy.sh` uploads the committed `HEAD` (via `git archive`, so uncommitted edits are never published) with rsync
+over SSH as `w3_mavtchemprd@mavtchem.ethz.ch` into `~/htdocs/`, deleting files that no longer exist.
+Server settings (PHP etc.) are in `~/conf/servers`; support: web-support@id.ethz.ch, quoting `mavtchemprd`.
+
+The old address `https://ebrahand.github.io/chemistry-hs26/` is served from the `gh-pages` branch, which holds only
+a redirect page (`index.html` = `404.html`) that forwards every old URL to the same page on mavtchem.ethz.ch.
 
 ## Adding a topic
 
