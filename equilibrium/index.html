@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chemical Equilibrium</title>
+  <meta name="description" content="Interactive look at dynamic equilibrium, the equilibrium constant, the reaction quotient, Le Châtelier's principle and the link between ΔG° and K.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false})"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../">Chemistry HS26 <span>· interactive companion</span></a>
+      <nav class="crumbs"><a href="../">Topics</a> › 12 Chemical equilibrium</nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Chemical equilibrium</h1>
+    <p class="lede">So far we treated reactions as running one way, from reactants to products. In a closed container they
+      run both ways at once, and they stop changing when the two directions balance. Where that balance lies decides how
+      much product you can get at most. Brown, Chapter 15 (sections 15.1–15.5) and section 19.7.</p>
+
+    <div class="card">
+      <strong>After this week you should be able to</strong>
+      <ul style="margin:8px 0 0">
+        <li>explain dynamic equilibrium as equal forward and reverse rates, not as equal amounts</li>
+        <li>write \(K_c\) and \(K_p\) for any balanced equation (homogeneous or heterogeneous) and convert with
+          \(K_p = K_c(RT)^{\Delta n}\)</li>
+        <li>change \(K\) when the equation is reversed, multiplied, or added to another one</li>
+        <li>compare \(Q\) with \(K\) to predict the direction of a reaction, and calculate equilibrium amounts with a table</li>
+        <li>predict with Le Châtelier's principle what a change in concentration, pressure, temperature or a catalyst does</li>
+        <li>relate \(K\) to \(\Delta G^\circ\): \(\Delta G^\circ = -RT\ln K\)</li>
+      </ul>
+    </div>
+
+    <nav class="module-nav" aria-label="Modules on this page">
+      <a href="#dynamic"><strong>1 · Dynamic equilibrium</strong><span class="tag live">open</span></a>
+      <a href="#constant"><strong>2 · The equilibrium constant</strong><span class="tag live">open</span></a>
+      <a href="#quotient"><strong>3 · Q, K and calculating equilibria</strong><span class="tag live">open</span></a>
+      <a href="#lechatelier"><strong>4 · Le Châtelier and the Haber process</strong><span class="tag live">open</span></a>
+      <a href="#gibbs"><strong>5 · Free energy and K</strong><span class="tag live">open</span></a>
+    </nav>
+
+    <!-- =============================================================== -->
+    <section id="dynamic">
+      <h2>1 · Dynamic equilibrium: both directions at once</h2>
+      <p>
+        You have met dynamic equilibrium before: in a closed bottle, water molecules leave the liquid and come back at the
+        same rate (vapour pressure, week 8); in a saturated solution, ions dissolve and crystallise at the same rate
+        (week 9). Something still happens all the time, but the two processes balance, so nothing changes on the whole.
+        A chemical reaction does the same. Take \(\mathrm{A} \rightleftharpoons \mathrm{B}\), with both directions elementary
+        steps (week 11):
+      </p>
+      \[ \text{rate}_f = k_f[\mathrm{A}] \qquad \text{rate}_r = k_r[\mathrm{B}] \]
+      <p>At equilibrium the rates are equal, \(k_f[\mathrm{A}] = k_r[\mathrm{B}]\), so</p>
+      \[ \frac{[\mathrm{B}]}{[\mathrm{A}]} = \frac{k_f}{k_r} = \text{constant} \equiv K \]
+
+      <div class="lab" id="dy-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control o0">
+              <label for="dy-kf"><span>k<sub>f</sub> (A → B)</span> <output id="dy-kf-out"></output></label>
+              <input id="dy-kf" type="range" min="0.02" max="0.5" step="0.01" value="0.30">
+            </div>
+            <div class="control o1">
+              <label for="dy-kr"><span>k<sub>r</sub> (B → A)</span> <output id="dy-kr-out"></output></label>
+              <input id="dy-kr" type="range" min="0.02" max="0.5" step="0.01" value="0.10">
+            </div>
+            <div class="btn-row">
+              <button class="btn" type="button" id="dy-allA">Start: all A</button>
+              <button class="btn" type="button" id="dy-allB">Start: all B</button>
+            </div>
+            <div class="btn-row">
+              <button class="btn" type="button" id="dy-add">Add 60 A</button>
+              <button class="btn" type="button" id="dy-remove">Remove half the B</button>
+              <label class="chip"><input type="checkbox" id="dy-cat">Catalyst</label>
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="dy-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <canvas id="dy-box" class="sim-box wide" role="img" aria-label="Molecules A and B in a box, turning into each other"></canvas>
+            <div class="plot-head" style="margin-top:10px">
+              <div class="seg" role="group" aria-label="What to plot" id="dy-view">
+                <button type="button" data-view="n" aria-pressed="true">Amounts</button>
+                <button type="button" data-view="r" aria-pressed="false">Rates</button>
+              </div>
+            </div>
+            <canvas class="plot" id="dy-plot" role="img" aria-label="Number of A and B molecules, or the forward and reverse rates, against time"></canvas>
+            <div class="legend" id="dy-legend"></div>
+            <div class="callout" id="dy-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <ol class="try">
+        <li>Start with all A, then with all B. The same ratio B : A comes out both times: the equilibrium does not care where
+          you start.</li>
+        <li>Switch to "Rates". At first the forward rate is large and the reverse rate zero; they meet, and then stay equal.
+          That, not equal amounts of A and B, is equilibrium.</li>
+        <li>Tick "Catalyst": both rate constants grow by the same factor. Equilibrium comes faster, but the ratio does not
+          change.</li>
+        <li>At equilibrium, add A or take away B. The system reacts and goes back to the same ratio (module 4).</li>
+      </ol>
+      <p class="small muted">Each molecule turns over at random with probability \(k\,\Delta t\) per time step, so the counts
+        flicker around equilibrium, as real molecules do. With 10²³ molecules instead of 200, the flicker is far too small to
+        measure.</p>
+      <p><strong>Lessons (Brown 15.1):</strong> at equilibrium the concentrations no longer change, but both reactions keep
+        running at equal rates. Equilibrium needs a closed system: nothing may escape. And at a given temperature, the same
+        equilibrium is reached from either side.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="constant">
+      <h2>2 · The equilibrium constant</h2>
+      <p>In 1864 Guldberg and Waage found by experiment the <strong>law of mass action</strong>: for any reaction</p>
+      \[ a\,\mathrm{A} + b\,\mathrm{B} \rightleftharpoons d\,\mathrm{D} + e\,\mathrm{E}
+         \qquad K_c = \frac{[\mathrm{D}]^d\,[\mathrm{E}]^e}{[\mathrm{A}]^a\,[\mathrm{B}]^b} \quad\leftarrow\ \text{products over reactants} \]
+      <p>with the equilibrium concentrations in mol/L. Brown's evidence: four sealed tubes of N₂O₄ and NO₂ at 100 °C, started
+        very differently, end with different concentrations but the same \(K_c\):</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Experiment</th><th>Initial [N₂O₄] (M)</th><th>Initial [NO₂] (M)</th><th>Equilibrium [N₂O₄] (M)</th><th>Equilibrium [NO₂] (M)</th><th>\(K_c = [\mathrm{NO_2}]^2/[\mathrm{N_2O_4}]\)</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td class="num">0.0</td><td class="num">0.0200</td><td class="num">0.00140</td><td class="num">0.0172</td><td class="num">0.211</td></tr>
+            <tr><td>2</td><td class="num">0.0</td><td class="num">0.0300</td><td class="num">0.00280</td><td class="num">0.0243</td><td class="num">0.211</td></tr>
+            <tr><td>3</td><td class="num">0.0</td><td class="num">0.0400</td><td class="num">0.00452</td><td class="num">0.0310</td><td class="num">0.213</td></tr>
+            <tr><td>4</td><td class="num">0.0200</td><td class="num">0.0</td><td class="num">0.00452</td><td class="num">0.0310</td><td class="num">0.213</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Brown Table 15.1. Experiments 3 and 4 reach the same mixture from opposite sides.</p>
+
+      <h3>Rate laws need a mechanism, K does not</h3>
+      <p>In a rate law the exponents come from experiment (week 10) unless the reaction is elementary. In \(K\) the
+        exponents are always the coefficients of the balanced equation, whatever the mechanism. Close to equilibrium, every
+        reaction behaves as if it were elementary, and thermodynamics proves the law of mass action in general (module 5).</p>
+
+      <h3>K<sub>p</sub>, units, and what the size of K tells you</h3>
+      <p>For gases you can use partial pressures instead: \(K_p = \dfrac{P_\mathrm{D}^d\,P_\mathrm{E}^e}{P_\mathrm{A}^a\,P_\mathrm{B}^b}\).
+        With \(P = [\,]\,RT\) from the ideal-gas law:</p>
+      \[ K_p = K_c\,(RT)^{\Delta n} \qquad \Delta n = (\text{moles of gaseous products}) - (\text{moles of gaseous reactants}) \]
+      <p>with pressures in bar, concentrations in mol/L and \(R = 0.08314\ \mathrm{L\,bar\,mol^{-1}\,K^{-1}}\). In general
+        \(K_c \ne K_p\); they are equal only when \(\Delta n = 0\).</p>
+      <p><strong>K has no units.</strong> Strictly, \(K\) is built from <em>activities</em>: each concentration divided by
+        1 M, each pressure divided by 1 bar. The units cancel, and for an ideal mixture the numbers do not change. Pure solids
+        and pure liquids have activity 1.</p>
+      <div class="two-col">
+        <div class="card"><strong>\(K \gg 1\)</strong>: the equilibrium lies to the right; products dominate.</div>
+        <div class="card"><strong>\(K \ll 1\)</strong>: the equilibrium lies to the left; reactants dominate.</div>
+      </div>
+      <p class="small muted">Not "reactants = products at equilibrium". What is equal is the two rates.</p>
+
+      <h3>Heterogeneous equilibria</h3>
+      <p>When the substances are in different phases, pure solids and pure liquids are left out of \(K\) (activity 1): their
+        concentration is fixed by their density, however much of them there is. For lime burning,
+        \(\mathrm{CaCO_3(s)} \rightleftharpoons \mathrm{CaO(s)} + \mathrm{CO_2(g)}\), simply \(K_p = P_\mathrm{CO_2}\): at a given
+        temperature the CO₂ pressure over the solids is fixed, as long as some of both solids is there. For a slightly
+        soluble salt in a saturated solution, e.g. \(\mathrm{PbCl_2(s)} \rightleftharpoons \mathrm{Pb^{2+}(aq)} + 2\,\mathrm{Cl^-(aq)}\),
+        \(K_c = [\mathrm{Pb^{2+}}][\mathrm{Cl^-}]^2\) has a special name, the <strong>solubility product</strong> \(K_{sp}\).</p>
+
+      <h3>Equilibrium maths</h3>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><td>Reaction written in reverse</td><td>\(K' = 1/K\)</td></tr>
+            <tr><td>Equation multiplied by \(n\)</td><td>\(K' = K^n\)</td></tr>
+            <tr><td>Two equations added</td><td>\(K_3 = K_1 \times K_2\)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>So a value of \(K\) means nothing without its balanced equation and temperature. Try it:</p>
+
+      <div class="lab" id="k-lab">
+        <div class="control" style="max-width:460px">
+          <label for="k-rxn" class="ctl-label">Reaction (at 25 °C)</label>
+          <select id="k-rxn"></select>
+        </div>
+        <div class="btn-row" style="margin-top:12px">
+          <div class="seg" role="group" aria-label="Direction" id="k-dir">
+            <button type="button" data-v="1" aria-pressed="true">As written</button>
+            <button type="button" data-v="-1" aria-pressed="false">Reversed</button>
+          </div>
+          <div class="seg" role="group" aria-label="Multiply the equation by" id="k-mult">
+            <button type="button" data-v="0.5" aria-pressed="false">× ½</button>
+            <button type="button" data-v="1" aria-pressed="true">× 1</button>
+            <button type="button" data-v="2" aria-pressed="false">× 2</button>
+          </div>
+        </div>
+        <p id="k-eq" style="margin:14px 0 4px;font-size:19px"></p>
+        <div class="two-col" style="margin-top:8px">
+          <div class="table-wrap" style="margin:0"><table class="data-table"><tbody id="k-readout"></tbody></table></div>
+          <div class="callout" id="k-note" aria-live="polite" style="margin:0"></div>
+        </div>
+      </div>
+      <p class="small muted">The values of \(K\) here are calculated from \(\Delta G^\circ\) with Brown Appendix C, as in
+        module 5. \(K_c\) from \(K_p\) uses \(T\) = 298.15 K.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="quotient">
+      <h2>3 · The reaction quotient Q, and calculating equilibria</h2>
+      <p>Put concentrations (or pressures) that are <em>not</em> at equilibrium into the same expression and you get the
+        <strong>reaction quotient</strong> \(Q\). Comparing it with \(K\) tells you which way the reaction will run:</p>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><td>\(Q &lt; K\)</td><td>too little product: the reaction runs forward (→) and \(Q\) grows</td></tr>
+            <tr><td>\(Q = K\)</td><td>at equilibrium: no net change</td></tr>
+            <tr><td>\(Q &gt; K\)</td><td>too much product: the reaction runs in reverse (←) and \(Q\) falls</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Here is a flask of brown NO₂ and colourless N₂O₄, \(\mathrm{N_2O_4(g)} \rightleftharpoons 2\,\mathrm{NO_2(g)}\),
+        \(K_p = P_\mathrm{NO_2}^2/P_\mathrm{N_2O_4}\). Choose what goes in, compare \(Q\) with \(K\), then let it react.</p>
+
+      <div class="lab" id="fl-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control o2">
+              <label for="fl-a"><span>Start: P(N₂O₄)</span> <output id="fl-a-out"></output></label>
+              <input id="fl-a" type="range" min="0" max="2" step="0.05" value="1">
+            </div>
+            <div class="control o0">
+              <label for="fl-b"><span>Start: P(NO₂)</span> <output id="fl-b-out"></output></label>
+              <input id="fl-b" type="range" min="0" max="2" step="0.05" value="0">
+            </div>
+            <div class="control o1">
+              <label for="fl-T"><span>Temperature</span> <output id="fl-T-out"></output></label>
+              <input id="fl-T" type="range" min="0" max="50" step="1" value="25">
+            </div>
+            <div class="btn-row">
+              <button class="btn primary" type="button" id="fl-go">Let it react</button>
+            </div>
+            <p class="small muted" style="margin:0">Then disturb the equilibrium:</p>
+            <div class="btn-row" id="fl-dist">
+              <button class="btn" type="button" data-d="addA">Add 0.5 bar N₂O₄</button>
+              <button class="btn" type="button" data-d="remB">Remove half the NO₂</button>
+              <button class="btn" type="button" data-d="halfV">Halve the volume</button>
+              <button class="btn" type="button" data-d="dblV">Double the volume</button>
+            </div>
+          </div>
+          <div>
+            <div id="fl-diagram" class="dh-diagram" role="img" aria-label="Flask whose brown colour shows the NO₂ pressure, and Q and K on a logarithmic scale"></div>
+            <div class="table-wrap" style="margin:8px 0 0"><table class="data-table"><tbody id="fl-readout"></tbody></table></div>
+            <div class="callout" id="fl-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>The equilibrium table (ICE)</h3>
+      <p>To calculate the equilibrium mixture, write <strong>I</strong>nitial amounts, the <strong>C</strong>hange in terms of
+        one unknown \(x\) (in the ratio of the coefficients), and the <strong>E</strong>quilibrium amounts; then put the
+        equilibrium row into \(K\) and solve for \(x\). The table for the flask above:</p>
+      <div class="lab" id="ice-lab" style="padding-bottom:8px">
+        <div class="table-wrap" style="margin:0"><table id="ice-table"></table></div>
+        <div id="ice-steps" style="margin-top:10px"></div>
+      </div>
+      <p class="small muted">\(K_p\) at 25 °C from Brown Appendix C (\(\Delta G^\circ = +5.40\) kJ, so \(K_p = 0.113\)); at other
+        temperatures estimated with \(\Delta H^\circ = +58.0\) kJ and \(\Delta S^\circ = +176.6\) J/K (Brown's approximation,
+        good near room temperature). Pressures in bar.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="lechatelier">
+      <h2>4 · Le Châtelier's principle and the Haber process</h2>
+      <div class="callout">If a system at equilibrium is disturbed by a change in temperature, pressure or concentration,
+        the system shifts its equilibrium to counteract the disturbance. <span class="small muted">(Henri Le Châtelier,
+        1884)</span></div>
+      <div class="force-grid" style="margin-top:16px">
+        <div class="card force"><h4>Concentration</h4>
+          <p>Add a substance and the reaction consumes some of it; remove one and the reaction makes more of it. \(K\) stays
+            the same: only \(Q\) was moved away from it. Industry removes NH₃ as it forms (by liquefying it) to pull the
+            Haber reaction forward.</p></div>
+        <div class="card force"><h4>Pressure (volume)</h4>
+          <p>Squeeze a gas mixture and it shifts to the side with <strong>fewer moles of gas</strong>; expand it and it shifts
+            to the side with more. No change if \(\Delta n = 0\). Adding an inert gas such as argon at constant volume
+            changes no partial pressure: no shift.</p></div>
+        <div class="card force"><h4>Temperature</h4>
+          <p>Treat heat as a reactant (endothermic) or a product (exothermic). Heating an exothermic reaction shifts it left,
+            heating an endothermic one shifts it right. <strong>This is the only change that alters \(K\) itself.</strong></p></div>
+        <div class="card force"><h4>Catalyst</h4>
+          <p>Lowers the hill for both directions equally, so \(k_f\) and \(k_r\) grow by the same factor and \(K = k_f/k_r\)
+            is unchanged. Equilibrium is reached faster, nothing more.</p></div>
+      </div>
+
+      <details>
+        <summary>Why temperature changes K: the activation energies</summary>
+        <p>\(K = k_f/k_r\), and both rate constants follow Arrhenius. For an exothermic reaction the reverse direction has the
+          bigger hill, \(E_a(\text{rev}) = E_a(\text{fwd}) - \Delta E &gt; E_a(\text{fwd})\) (week 11). A larger \(E_a\) means a
+          stronger response to temperature, so heating speeds up the reverse reaction more than the forward one, and \(K\)
+          falls. Example: \(E_a(\text{fwd}) = 50\) kJ/mol, \(\Delta E = -40\) kJ/mol, so \(E_a(\text{rev}) = 90\) kJ/mol. From
+          25 °C to 35 °C, \(k_f\) grows by a factor 1.93 but \(k_r\) by 3.25, so \(K\) drops to 0.59 of its value.</p>
+      </details>
+
+      <h3>Why Haber and Bosch needed 300 bar</h3>
+      <p>
+        Last week's story continues. \(\mathrm{N_2(g)} + 3\,\mathrm{H_2(g)} \rightleftharpoons 2\,\mathrm{NH_3(g)}\) is
+        exothermic (\(\Delta H^\circ = -92\) kJ) and has \(\Delta n = -2\). It is far too slow at room temperature, so it is run hot,
+        at 400–500 °C, even with the iron catalyst. But heat pushes this exothermic equilibrium back towards N₂ and H₂. The
+        fix is pressure: four moles of gas become two, so squeezing the mixture pushes it back towards NH₃.
+      </p>
+
+      <div class="lab" id="hb-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control o0">
+              <label for="hb-T"><span>Temperature</span> <output id="hb-T-out"></output></label>
+              <input id="hb-T" type="range" min="300" max="600" step="5" value="450">
+            </div>
+            <div class="control o1">
+              <label for="hb-P"><span>Total pressure</span> <output id="hb-P-out"></output></label>
+              <input id="hb-P" type="range" min="0" max="3" step="0.01" value="2.3">
+            </div>
+            <label class="chip"><input type="checkbox" id="hb-cat" checked>Iron catalyst</label>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="hb-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <canvas class="plot" id="hb-plot" role="img" aria-label="Percent of ammonia at equilibrium against total pressure, for several temperatures"></canvas>
+            <div class="legend" id="hb-legend"></div>
+            <div class="callout" id="hb-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">Starting from N₂ : H₂ = 1 : 3, ideal gases. \(K_p\) from Brown Table 15.2, converted to bar
+        (4.39 × 10⁻⁵ at 450 °C; Brown lists it in kPa as 4.39 × 10⁻⁹, older editions in atm as 4.51 × 10⁻⁵), interpolated as
+        \(\ln K\) against \(1/T\). The open circles are Haber's measured yields from Brown Fig. 15.9; at the highest
+        pressures real gases are no longer ideal and give somewhat more NH₃ than this model.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="gibbs">
+      <h2>5 · Free energy and the equilibrium constant</h2>
+      <p>
+        Week 5 gave the criterion for spontaneity at constant \(T\) and \(P\): \(\Delta G &lt; 0\). But which \(\Delta G\)?
+        \(\Delta G^\circ\) belongs to standard conditions (every gas at 1 bar, every solute at 1 M). For any other mixture,
+        with its reaction quotient \(Q\):
+      </p>
+      \[ \Delta G = \Delta G^\circ + RT\ln Q \qquad (R = 8.314\ \mathrm{J\,mol^{-1}\,K^{-1}}) \]
+      <p>A reaction runs as long as \(\Delta G &lt; 0\). It stops, at equilibrium, when \(\Delta G = 0\) and \(Q = K\):</p>
+      \[ 0 = \Delta G^\circ + RT\ln K \quad\Longrightarrow\quad \Delta G^\circ = -RT\ln K \qquad K = e^{-\Delta G^\circ/RT} \]
+      <p>\(\Delta G^\circ &lt; 0\) gives \(K &gt; 1\) (products favoured); \(\Delta G^\circ &gt; 0\) gives \(K &lt; 1\). Because
+        \(\Delta G^\circ\) sits in an exponent, a few kJ make a big difference: at 25 °C, every 5.7 kJ/mol is a factor of 10
+        in \(K\).</p>
+
+      <h3>Why a reaction stops in the middle: the bottom of the free-energy valley</h3>
+      <p>Take a gas reaction \(\mathrm{A(g)} \rightleftharpoons \mathrm{B(g)}\) at a total of 1 bar, and follow \(G\) of the
+        mixture as A turns into B. Without mixing, \(G\) would be a straight line from pure A to pure B, and the reaction would
+        run all the way to the lower end. But a mixture has more microstates than either pure gas (week 5), and that mixing
+        entropy bends the line into a valley. Equilibrium is its lowest point; \(\Delta G\) is the slope at the present
+        composition.</p>
+
+      <div class="lab" id="gv-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control o0">
+              <label for="gv-G"><span>ΔG° (A → B)</span> <output id="gv-G-out"></output></label>
+              <input id="gv-G" type="range" min="-20" max="20" step="0.5" value="-3">
+            </div>
+            <div class="control o1">
+              <label for="gv-T"><span>Temperature</span> <output id="gv-T-out"></output></label>
+              <input id="gv-T" type="range" min="200" max="1000" step="10" value="298">
+            </div>
+            <div class="control o2">
+              <label for="gv-x"><span>Present mixture: fraction B</span> <output id="gv-x-out"></output></label>
+              <input id="gv-x" type="range" min="0.01" max="0.99" step="0.01" value="0.2">
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="gv-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <canvas class="plot" id="gv-plot" role="img" aria-label="Free energy of the mixture against the fraction of B"></canvas>
+            <div class="legend"><span><i style="border-color:var(--c1)"></i>G of the mixture</span><span><i style="border-color:var(--text-muted);border-top-style:dashed"></i>without mixing</span><span><i style="border-color:var(--c0)"></i>slope = ΔG now</span></div>
+            <div class="callout" id="gv-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>K from Brown Appendix C</h3>
+      <p>Every \(\Delta G^\circ\) you calculated in week 5 is also an equilibrium constant. Some of them describe things you
+        already know:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Reaction (25 °C)</th><th>\(\Delta G^\circ\) (kJ)</th><th>\(K\)</th><th>What it means</th></tr></thead>
+          <tbody id="gk-table"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="check">
+      <h2>Quick self-check</h2>
+
+      <div class="card quiz">
+        <p class="q">A reaction has reached equilibrium. Which statement is true?</p>
+        <div class="opts">
+          <button type="button" data-fb="Concentrations are constant, not equal. With K = 100, there is far more product than reactant.">[reactants] = [products]</button>
+          <button type="button" data-correct data-fb="Both reactions keep running; they just cancel each other out.">the forward and reverse rates are equal</button>
+          <button type="button" data-fb="Molecules keep reacting in both directions: the equilibrium is dynamic.">the reactions have stopped</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">For A(g) ⇌ 2 B(g), K = 16. What is K for 2 B(g) ⇌ A(g), and for ½ A(g) ⇌ B(g)?</p>
+        <div class="opts">
+          <button type="button" data-fb="Reversing inverts K; halving the equation takes the square root.">−16 and 8</button>
+          <button type="button" data-correct data-fb="Reversed: 1/16 = 0.0625. Multiplied by ½: 16^½ = 4.">0.0625 and 4</button>
+          <button type="button" data-fb="Multiplying an equation by ½ raises K to the power ½: it does not halve it.">0.0625 and 8</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">A mixture has Q = 5 for a reaction with K = 0.2. What happens?</p>
+        <div class="opts">
+          <button type="button" data-fb="Q < K would run forward. Here Q is larger.">it forms more products</button>
+          <button type="button" data-correct data-fb="Q > K: too much product. The reverse reaction wins until Q has fallen to 0.2.">it forms more reactants</button>
+          <button type="button" data-fb="Only Q = K is equilibrium.">nothing, it is at equilibrium</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Methanol is made by CO(g) + 2 H₂(g) ⇌ CH₃OH(g), which is exothermic. Which conditions give the highest equilibrium yield?</p>
+        <div class="opts">
+          <button type="button" data-correct data-fb="Exothermic: low T raises K. Three moles of gas become one: high pressure shifts it right. (In practice a catalyst is needed to make it fast at the lower temperature.)">low temperature, high pressure</button>
+          <button type="button" data-fb="Heating an exothermic reaction shifts it back to the reactants.">high temperature, high pressure</button>
+          <button type="button" data-fb="Low pressure favours the side with more moles of gas: the reactants here.">low temperature, low pressure</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">You add a catalyst to a reaction mixture that is not yet at equilibrium. What changes?</p>
+        <div class="opts">
+          <button type="button" data-fb="A catalyst lowers the barrier for both directions alike: K = k_f/k_r stays the same.">K becomes larger</button>
+          <button type="button" data-fb="The final composition is set by K, which the catalyst does not change.">more product at equilibrium</button>
+          <button type="button" data-correct data-fb="Same equilibrium, reached sooner.">equilibrium is reached faster</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">A reaction has ΔG° = +10.0 kJ at 25 °C. What is K?</p>
+        <div class="opts">
+          <button type="button" data-fb="Check the sign: ΔG° > 0 must give K < 1.">57</button>
+          <button type="button" data-correct data-fb="K = e^(−10 000 / (8.314 × 298.15)) = e^(−4.03) = 0.018. Reactants are favoured, but not completely.">0.018</button>
+          <button type="button" data-fb="Use J, not kJ, with R = 8.314 J mol⁻¹ K⁻¹: e^(−10/2479) is almost 1.">0.996</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="summary">
+      <h2>Summary</h2>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <tbody>
+            <tr><td>Equilibrium</td><td>\(\text{rate}_f = \text{rate}_r\); for \(\mathrm{A} \rightleftharpoons \mathrm{B}\): \(K = k_f/k_r\)</td><td class="small">dynamic; closed system</td></tr>
+            <tr><td>Law of mass action</td><td>\(K_c = \dfrac{[\mathrm{D}]^d[\mathrm{E}]^e}{[\mathrm{A}]^a[\mathrm{B}]^b}\)</td><td class="small">exponents = coefficients, always</td></tr>
+            <tr><td>Pressures</td><td>\(K_p = K_c\,(RT)^{\Delta n}\)</td><td class="small">bar, \(R\) = 0.08314 L bar mol⁻¹ K⁻¹</td></tr>
+            <tr><td>Heterogeneous</td><td>leave out pure solids and liquids</td><td class="small">activity = 1; \(K_{sp}\) for salts</td></tr>
+            <tr><td>Equilibrium maths</td><td>reverse: \(1/K\); × \(n\): \(K^n\); add: \(K_1K_2\)</td><td class="small">always state the equation and \(T\)</td></tr>
+            <tr><td>Reaction quotient</td><td>\(Q &lt; K\): →; \(Q = K\): equilibrium; \(Q &gt; K\): ←</td><td class="small">same expression, any mixture</td></tr>
+            <tr><td>Le Châtelier</td><td>the system counteracts the disturbance</td><td class="small">only \(T\) changes \(K\); a catalyst never does</td></tr>
+            <tr><td>Free energy</td><td>\(\Delta G = \Delta G^\circ + RT\ln Q\)</td><td class="small">\(\Delta G = 0\) at equilibrium</td></tr>
+            <tr><td>\(\Delta G^\circ\) and \(K\)</td><td>\(\Delta G^\circ = -RT\ln K\), \(K = e^{-\Delta G^\circ/RT}\)</td><td class="small">\(\Delta G^\circ &lt; 0 \Leftrightarrow K &gt; 1\)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Covered in Lecture 12: Brown 15.1–15.5 and 19.7. Last week's page:
+        <a href="../kinetics-2/">Chemical kinetics II</a>. Acid–base equilibria (week 13) build directly on this.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Made by the course TA. Not official course material: if this page and the lecture disagree, the lecture wins.
+      Nothing you do on these pages is recorded.
+    </div>
+  </footer>
+
+  <script type="module" src="dynamic.js"></script>
+  <script type="module" src="constant.js"></script>
+  <script type="module" src="flask.js"></script>
+  <script type="module" src="haber.js"></script>
+  <script type="module" src="gibbs.js"></script>
+  <script type="module" src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chemical Kinetics II</title>
+  <meta name="description" content="Interactive look at why temperature speeds up reactions, activation energy and the Arrhenius equation, reaction mechanisms and catalysis.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false})"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../">Chemistry HS26 <span>· interactive companion</span></a>
+      <nav class="crumbs"><a href="../">Topics</a> › 11 Chemical kinetics II</nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Chemical kinetics II: temperature, mechanisms and catalysts</h1>
+    <p class="lede">Last week ended with a rate law, rate = k[A]<sup>m</sup>[B]<sup>n</sup>, and three open questions. Why do
+      we heat reactions? Why is one spontaneous reaction fast and another one slow? And what do the orders m and n
+      actually mean? This week answers all three. Brown, Chapter 14 (sections 14.5–14.7).</p>
+
+    <div class="card">
+      <strong>After this week you should be able to</strong>
+      <ul style="margin:8px 0 0">
+        <li>explain with the collision model why molecules must collide with enough energy and the right orientation</li>
+        <li>draw an energy profile and label the activation energy \(E_a\), the transition state and \(\Delta E\);
+          get \(E_a\) of the reverse reaction</li>
+        <li>use the Arrhenius equation \(k = A\,e^{-E_a/RT}\), and find \(E_a\) from \(\ln k\) against \(1/T\) or from two
+          rate constants</li>
+        <li>write the rate law of an elementary reaction from its molecularity, and the rate law of a mechanism with a slow
+          first step</li>
+        <li>say what a catalyst changes (the path, \(E_a\)) and what it does not change (\(\Delta E\), the overall reaction)</li>
+      </ul>
+    </div>
+
+    <nav class="module-nav" aria-label="Modules on this page">
+      <a href="#collisions"><strong>1 · The collision model</strong><span class="tag live">open</span></a>
+      <a href="#barrier"><strong>2 · Activation energy</strong><span class="tag live">open</span></a>
+      <a href="#arrhenius"><strong>3 · The Arrhenius equation</strong><span class="tag live">open</span></a>
+      <a href="#mechanisms"><strong>4 · Reaction mechanisms</strong><span class="tag live">open</span></a>
+      <a href="#catalysis"><strong>5 · Catalysis</strong><span class="tag live">open</span></a>
+    </nav>
+
+    <!-- =============================================================== -->
+    <section id="collisions">
+      <h2>1 · The collision model: why heat speeds things up</h2>
+      <p>
+        Before two molecules can react, they have to meet. So the reaction rate is proportional to the number of collisions
+        per second. More molecules per litre means more collisions: that is where the concentrations in the rate law come
+        from. Higher temperature means faster molecules (kinetic-molecular theory, week 2), so they collide more often
+        <em>and</em> harder.
+      </p>
+      <p>
+        But only a tiny fraction of collisions actually leads to a reaction. In a mixture of H₂ and I₂ at room temperature,
+        each molecule collides about 10¹⁰ times per second, yet only about one collision in 10¹³ forms HI (Brown 14.5).
+        A collision only works if two things are right:
+      </p>
+      <div class="force-grid">
+        <div class="card force"><h4>1. Enough energy</h4>
+          <p>The molecules must hit hard enough to stretch and break bonds: their collision energy must be at least the
+            <strong>activation energy</strong> \(E_a\). Gentle collisions just bounce.</p></div>
+        <div class="card force"><h4>2. The right orientation</h4>
+          <p>The atoms that are to form the new bond must actually touch. For \(\mathrm{A} + \mathrm{BC} \to \mathrm{AB} +
+            \mathrm{C}\), A has to hit the B end of BC. Hitting the C end does nothing, however hard.</p></div>
+      </div>
+
+      <div class="lab" id="col-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control o0">
+              <label for="col-T"><span>Temperature</span> <output id="col-T-out"></output></label>
+              <input id="col-T" type="range" min="150" max="900" step="10" value="300">
+            </div>
+            <div class="control o1">
+              <label for="col-Ea"><span>Activation energy E<sub>a</sub></span> <output id="col-Ea-out"></output></label>
+              <input id="col-Ea" type="range" min="0" max="20" step="0.5" value="6">
+            </div>
+            <label class="chip"><input type="checkbox" id="col-orient" checked>Orientation matters</label>
+            <div class="btn-row">
+              <button class="btn" type="button" id="col-pause">Pause</button>
+              <button class="btn" type="button" id="col-reset">Reset counters</button>
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="col-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <canvas id="col-box" class="sim-box wide" role="img" aria-label="Atoms A and molecules BC moving in a box. Collisions with enough energy flash."></canvas>
+            <div class="legend">
+              <span><i style="border-color:var(--c0)"></i>A</span>
+              <span><i style="border-color:var(--c1)"></i>B end of BC</span>
+              <span><i style="border-color:var(--cB)"></i>C end</span>
+              <span><i style="border-color:var(--good)"></i>reacts</span>
+              <span><i style="border-color:var(--c3)"></i>hard enough, wrong side</span>
+              <span>drag to rotate</span>
+            </div>
+            <div class="callout" id="col-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <ol class="try">
+        <li>Leave \(E_a\) at 6 kJ/mol and go from 300 K to 600 K. The number of collisions per second grows by only about
+          40 % (speeds grow as \(\sqrt{T}\)). The fraction of hard-enough collisions grows much more. Which factor wins?</li>
+        <li>Set \(E_a = 0\). Now every collision with the right orientation reacts. Untick "Orientation matters" and every
+          collision reacts.</li>
+        <li>Wait until a few hundred collisions are counted. The measured fraction with \(E \ge E_a\) settles near
+          \(e^{-E_a/RT}\), Brown's Eq. 14.20.</li>
+      </ol>
+      <p class="small muted">A toy model in three dimensions (hard spheres) with small activation energies, so that you can see
+        reactions happen. A hits the B end if it lands within 60° of the B–C axis: a quarter of the molecule's surface. Real \(E_a\) values of 50–200 kJ/mol would give no reaction at all in a box this size. Successful collisions
+        only flash; the molecules are kept, so that the counts stay steady.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="barrier">
+      <h2>2 · Activation energy: the hill between reactants and products</h2>
+      <p>
+        Reactants are stable, and so are products. In between, the bonds are half broken and half formed. That arrangement
+        is less stable, so it has a higher energy. The arrangement at the top of the hill is the <strong>transition
+        state</strong> (or <strong>activated complex</strong>, marked ‡). It lasts only as long as a molecular vibration
+        and can never be isolated. The <strong>activation energy</strong> \(E_a\) is the energy needed to get from the
+        reactants up to it. Think of tipping over a bottle: you first have to lift its centre of mass over the tipping point.
+      </p>
+
+      <p>
+        For the simplest case, an atom A meeting a molecule BC in a straight line, the energy depends on just two numbers: the
+        A–B distance and the B–C distance. Plot the energy as a height above those two distances and you get a landscape, the
+        <strong>potential-energy surface</strong>. The reactants sit in one valley (B–C bonded, A far away), the products in
+        another (A–B bonded, C far away). The easiest way from one to the other leads over a <strong>mountain pass</strong>:
+        the transition state. Going over the pass takes less energy than taking BC apart completely first (the high flat
+        plateau), which is why reactions go through a transition state at all.
+      </p>
+
+      <div class="lab" id="pr-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control o0">
+              <label for="pr-Ea"><span>E<sub>a</sub> (forward)</span> <output id="pr-Ea-out"></output></label>
+              <input id="pr-Ea" type="range" min="5" max="200" step="1" value="80">
+            </div>
+            <div class="control o1">
+              <label for="pr-dE"><span>ΔE of the reaction</span> <output id="pr-dE-out"></output></label>
+              <input id="pr-dE" type="range" min="-150" max="150" step="1" value="-40">
+            </div>
+            <div class="control">
+              <label for="pr-s"><span>Along the reaction path</span> <output id="pr-s-out"></output></label>
+              <input id="pr-s" type="range" min="0" max="100" step="1" value="20">
+            </div>
+            <div class="btn-row"><button class="btn" type="button" id="pr-go">Send the molecule over the pass</button></div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="pr-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <canvas id="pr-diagram" class="view3d" role="img" aria-label="Potential-energy surface of A + BC → AB + C over the A–B and B–C distances: two valleys joined by a mountain pass, the transition state. Activation energy and energy change are marked. Drag or use the arrow keys to rotate."></canvas>
+            <div class="legend"><span><i style="border-color:var(--text)"></i>reaction path</span><span><i style="border-color:var(--c3)"></i>the molecule</span><span>drag to rotate · double-click to reset</span></div>
+            <div class="callout" id="pr-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p>The energy profile in Brown (section 14.5) is this landscape seen along the path drawn on it: the height of the path,
+        unrolled into a flat graph of energy against reaction progress. That 2D profile is what you draw in exercises and in
+        the exam. Two things to take from it:</p>
+      <ul>
+        <li><strong>The rate depends on \(E_a\), not on \(\Delta E\).</strong> A larger \(E_a\) means a bigger hill and a
+          slower reaction. \(\Delta E\) decides whether the reaction gives out or takes in heat, not how fast it goes. That
+          answers last week's question: two spontaneous reactions can have very different speeds because their \(E_a\)
+          can be large or small.</li>
+        <li><strong>The reverse reaction climbs the same hill from the other side:</strong>
+          \(E_a(\text{reverse}) = E_a(\text{forward}) - \Delta E\). For an exothermic reaction (\(\Delta E &lt; 0\)) the
+          reverse reaction has the bigger hill and is slower. You will need this in week 12.</li>
+      </ul>
+
+      <h3>Why only a few molecules make it over</h3>
+      <p>
+        Molecules carry energy into a collision through their motion, and their kinetic energies are spread out over a wide
+        range (the Maxwell–Boltzmann distribution, week 2). Only the molecules in the tail with \(E \ge E_a\) can react. The
+        fraction of them is
+      </p>
+      \[ f = e^{-E_a/RT} \qquad (R = 8.314\ \mathrm{J\,mol^{-1}\,K^{-1}},\ T \text{ in kelvin}) \]
+      <p>Below, every dot is one N₂ molecule, placed by its velocity: the arrow from the centre to the dot has the
+        components \(u_x, u_y, u_z\). The sphere marks all velocities with \(\tfrac12 M u^2 = E_a\), so the molecules outside it
+        have \(E \ge E_a\). Heating makes the whole cloud bigger, and the number of dots outside the sphere grows enormously:</p>
+
+      <div class="lab" id="mb-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control o0">
+              <label for="mb-T1"><span>Lower temperature</span> <output id="mb-T1-out"></output></label>
+              <input id="mb-T1" type="range" min="200" max="800" step="5" value="300">
+            </div>
+            <div class="control o1">
+              <label for="mb-T2"><span>Higher temperature</span> <output id="mb-T2-out"></output></label>
+              <input id="mb-T2" type="range" min="200" max="1000" step="5" value="400">
+            </div>
+            <div class="control o2">
+              <label for="mb-Ea"><span>E<sub>a</sub></span> <output id="mb-Ea-out"></output></label>
+              <input id="mb-Ea" type="range" min="2" max="120" step="1" value="12">
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="mb-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <canvas class="view3d" id="mb-plot" role="img" aria-label="Velocities of 3000 gas molecules as dots in 3D velocity space at two temperatures, with a sphere marking kinetic energy equal to the activation energy. Drag or use the arrow keys to rotate."></canvas>
+            <div class="legend"><span><i style="border-color:var(--c0)"></i>lower T</span><span><i style="border-color:var(--c1)"></i>higher T</span><span><i style="border-color:var(--text)"></i>sphere E = E<sub>a</sub></span><span>drag to rotate</span></div>
+            <div class="callout" id="mb-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">The cloud is the Maxwell–Boltzmann distribution of week 2, sampled with 3000 molecules; the
+        percentages in the table are exact. Brown's \(f = e^{-E_a/RT}\) counts the energy of the collision rather than of one
+        molecule (module 1), so it is not exactly the fraction outside the sphere, but it changes with \(T\) in almost the
+        same way. Push \(E_a\) up to realistic values: no dot is left outside, yet the fraction still grows by orders of
+        magnitude.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="arrhenius">
+      <h2>3 · The Arrhenius equation</h2>
+      <p>
+        Put the pieces of the collision model together. The rate constant is the number of collisions per second, times the
+        fraction that are properly oriented, times the fraction with enough energy. The first two change only slowly with
+        temperature; Arrhenius lumped them into one constant, the <strong>frequency factor</strong> \(A\) (not to be confused
+        with a reactant called A). The third is the exponential:
+      </p>
+      \[ k = A\, e^{-E_a/RT} \]
+      <p>Take the natural log of both sides and you get a straight line:</p>
+      \[ \ln k = -\frac{E_a}{R}\left(\frac{1}{T}\right) + \ln A \qquad \longleftrightarrow \qquad y = m\,x + b \]
+      <p>Plot \(\ln k\) against \(1/T\): the slope is \(-E_a/R\) and the intercept is \(\ln A\). If you only have two rate
+        constants, subtract the two equations and \(A\) cancels:</p>
+      \[ \ln\frac{k_1}{k_2} = \frac{E_a}{R}\left(\frac{1}{T_2} - \frac{1}{T_1}\right) \]
+      <p class="small muted">Both forms assume that \(A\) and \(E_a\) do not change over the temperature range. \(E_a\) never
+        changes when you heat: heating changes how many molecules can get over the hill, not the height of the hill.</p>
+
+      <div class="lab" id="ar-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control o0">
+              <label for="ar-Ea"><span>E<sub>a</sub></span> <output id="ar-Ea-out"></output></label>
+              <input id="ar-Ea" type="range" min="10" max="200" step="1" value="50">
+            </div>
+            <div class="control o1">
+              <label for="ar-A"><span>Frequency factor A</span> <output id="ar-A-out"></output></label>
+              <input id="ar-A" type="range" min="6" max="14" step="0.5" value="10">
+            </div>
+            <div class="control o2">
+              <label for="ar-T"><span>Temperature</span> <output id="ar-T-out"></output></label>
+              <input id="ar-T" type="range" min="250" max="450" step="1" value="298">
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="ar-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <div class="plot-head">
+              <div class="seg" role="group" aria-label="What to plot" id="ar-view">
+                <button type="button" data-view="k" aria-pressed="true">k against T</button>
+                <button type="button" data-view="ln" aria-pressed="false">ln k against 1/T</button>
+              </div>
+            </div>
+            <canvas class="plot" id="ar-plot" role="img" aria-label="Rate constant against temperature"></canvas>
+            <div class="callout" id="ar-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>The +10 °C rule of thumb, and ants</h3>
+      <p>
+        Around room temperature many reactions run about twice as fast for every 10 °C. With the two-temperature form you
+        can see which activation energy that corresponds to: \(k_{308}/k_{298} = 2\) gives
+        \(E_a = R\ln 2 \,/\, (1/298 - 1/308) \approx 53\) kJ/mol, a typical value. The lecture's example: ants are cold-blooded, and
+        a century ago Shapley timed them running at different temperatures (H. Shapley, <em>PNAS</em> 6, 204, 1920). Their
+        speed roughly doubled with every +10 °C, as if the ant were one big chemical reaction with \(E_a\) of about 50 kJ/mol.
+        Move the \(E_a\) slider above and read the "+10 °C" row.
+      </p>
+
+      <h3>Virtual lab: find E<sub>a</sub> from measured rate constants</h3>
+      <div class="lab" id="fit-lab">
+        <div class="detective-grid">
+          <div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table" id="fit-table">
+                <thead><tr><th>T (K)</th><th>k (s⁻¹)</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div class="btn-row" style="margin-top:12px">
+              <button class="btn" id="fit-new" type="button">New data set</button>
+              <button class="btn" id="fit-brown" type="button">Brown's CH₃NC data</button>
+            </div>
+          </div>
+          <div>
+            <div class="plot-head">
+              <div class="seg" role="group" aria-label="What to plot" id="fit-view">
+                <button type="button" data-view="k" aria-pressed="false">k against T</button>
+                <button type="button" data-view="ln" aria-pressed="true">ln k against 1/T</button>
+              </div>
+              <label class="chip"><input type="checkbox" id="fit-line">Best straight line</label>
+            </div>
+            <canvas class="plot" id="fit-plot" role="img" aria-label="Measured rate constants"></canvas>
+            <p class="small muted" id="fit-line-note" style="margin:6px 0 0" aria-live="polite"></p>
+            <p style="margin:14px 0 6px" id="fit-q">What is the activation energy?</p>
+            <div class="answer-row">
+              <label for="fit-Ea" class="small">E<sub>a</sub> =</label>
+              <input id="fit-Ea" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g. 75">
+              <span class="small">kJ/mol</span>
+              <button class="btn" id="fit-check" type="button">Check</button>
+              <button class="btn" id="fit-show" type="button">Show answer</button>
+            </div>
+            <p class="feedback" id="fit-fb" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">The generated data sets are made up and carry about 3 % measurement scatter; an answer within
+        5 % counts. "Brown's CH₃NC data" are the four rate constants of methyl isonitrile rearranging to acetonitrile
+        (Brown, Sample Exercise 14.11).</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="mechanisms">
+      <h2>4 · Reaction mechanisms: what do the orders mean?</h2>
+      <p>
+        A balanced equation tells you what goes in and what comes out, not how it happens. Most reactions run through a
+        sequence of simple steps, the <strong>reaction mechanism</strong>. Each step is an <strong>elementary
+        reaction</strong>: one event in which typically one bond breaks or forms. The number of molecules that collide in an
+        elementary reaction is its <strong>molecularity</strong>.
+      </p>
+      <p>For an elementary reaction, and only for one, you can write the rate law straight from the equation. Twice as many
+        A molecules give twice as many collisions, so the exponents are the coefficients:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Molecularity</th><th>Elementary reaction</th><th>Rate law</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>Unimolecular</td><td>A → products</td><td>\(k[\mathrm{A}]\)</td><td class="small">common</td></tr>
+            <tr><td>Bimolecular</td><td>A + A → products</td><td>\(k[\mathrm{A}]^2\)</td><td class="small" rowspan="2">common</td></tr>
+            <tr><td>Bimolecular</td><td>A + B → products</td><td>\(k[\mathrm{A}][\mathrm{B}]\)</td></tr>
+            <tr><td>Termolecular</td><td>A + A + A → products</td><td>\(k[\mathrm{A}]^3\)</td><td class="small" rowspan="3">rare: three molecules must meet at once</td></tr>
+            <tr><td>Termolecular</td><td>A + A + B → products</td><td>\(k[\mathrm{A}]^2[\mathrm{B}]\)</td></tr>
+            <tr><td>Termolecular</td><td>A + B + C → products</td><td>\(k[\mathrm{A}][\mathrm{B}][\mathrm{C}]\)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        That is the whole list (Brown Table 14.3). A collision of four molecules practically never happens. The catch: from a
+        balanced equation alone you cannot tell whether it is elementary. Last week's statement "the orders m, n are not
+        necessarily the coefficients" comes from exactly this.
+      </p>
+
+      <h3>Multistep reactions and intermediates</h3>
+      <p>The lecture's example, ozone falling apart under UV-B light:</p>
+      \[ \begin{array}{lrcl}
+         \text{Step 1:} &amp; \mathrm{O_3(g)} &amp; \longrightarrow &amp; \mathrm{O_2(g)} + \mathrm{O(g)} \\
+         \text{Step 2:} &amp; \mathrm{O_3(g)} + \mathrm{O(g)} &amp; \longrightarrow &amp; 2\,\mathrm{O_2(g)} \\ \hline
+         \text{Sum:} &amp; 2\,\mathrm{O_3(g)} &amp; \longrightarrow &amp; 3\,\mathrm{O_2(g)}
+      \end{array} \]
+      <p>The steps must add up to the overall reaction. O(g) is formed in step 1 and used up in step 2, so it cancels: it is
+        an <strong>intermediate</strong>. Unlike a transition state, an intermediate sits in a dip of the energy profile; it
+        can live long enough to be detected, sometimes even isolated.</p>
+
+      <h3>The rate-determining step</h3>
+      <p>
+        Each step has its own rate constant. Often one step is much slower than all the others, and the reaction cannot go
+        faster than that step: it is the <strong>rate-determining</strong> (rate-limiting) step. Brown's picture is a road
+        with two toll plazas: if the first one is jammed, opening more booths at the second one does not get cars home any
+        sooner. Try it with a two-step reaction A → I → P:
+      </p>
+
+      <div class="lab" id="me-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control o0">
+              <label for="me-k1"><span>k₁ (step 1, A → I)</span> <output id="me-k1-out"></output></label>
+              <input id="me-k1" type="range" min="-2" max="1" step="0.05" value="-1">
+            </div>
+            <div class="control o1">
+              <label for="me-k2"><span>k₂ (step 2, I → P)</span> <output id="me-k2-out"></output></label>
+              <input id="me-k2" type="range" min="-2" max="1" step="0.05" value="0.5">
+            </div>
+            <div class="btn-row" id="me-presets">
+              <button class="btn" type="button" data-k1="-1" data-k2="0.5">Step 1 slow</button>
+              <button class="btn" type="button" data-k1="0.5" data-k2="-1">Step 2 slow</button>
+              <button class="btn" type="button" data-k1="-0.5" data-k2="-0.5">Equal</button>
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="me-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <canvas class="plot" id="me-plot" role="img" aria-label="Concentrations of A, the intermediate I and the product P against time"></canvas>
+            <div class="legend"><span><i style="border-color:var(--c0)"></i>[A]</span><span><i style="border-color:var(--c3)"></i>[I] intermediate</span><span><i style="border-color:var(--c2)"></i>[P]</span><span><i style="border-color:var(--text-muted);border-top-style:dashed"></i>[P] if only step 1 counted</span></div>
+            <div class="callout" id="me-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">Both steps are unimolecular, so this is a pair of first-order rate equations (week 10, module 4),
+        solved exactly. [A]₀ = 1 M.</p>
+
+      <h3>A slow first step: the rate law of the mechanism</h3>
+      <p>When the first step is rate-determining, the overall rate law is simply the rate law of step 1. Brown's example: below
+        225 °C, \(\mathrm{NO_2(g)} + \mathrm{CO(g)} \to \mathrm{NO(g)} + \mathrm{CO_2(g)}\) has the measured rate law
+        rate = \(k[\mathrm{NO_2}]^2\), with CO not in it at all (last week's table). A mechanism that fits:</p>
+      \[ \begin{array}{lrcll}
+         \text{Step 1:} &amp; \mathrm{NO_2} + \mathrm{NO_2} &amp; \xrightarrow{k_1} &amp; \mathrm{NO_3} + \mathrm{NO} &amp; \text{(slow)} \\
+         \text{Step 2:} &amp; \mathrm{NO_3} + \mathrm{CO} &amp; \xrightarrow{k_2} &amp; \mathrm{NO_2} + \mathrm{CO_2} &amp; \text{(fast)}
+      \end{array} \qquad \text{rate} = k_1[\mathrm{NO_2}]^2 \]
+      <p>CO only reacts after the bottleneck, so its concentration does not matter. This is how mechanisms are found:</p>
+      <ol>
+        <li>measure the rate law in the lab;</li>
+        <li>propose a mechanism of elementary steps that add up to the overall reaction;</li>
+        <li>derive its rate law and compare. If it disagrees, the mechanism is wrong. If it agrees, the mechanism is
+          <em>consistent</em> with the data, which is not a proof: another mechanism might fit just as well.</li>
+      </ol>
+      <p class="small muted">If a later step is the slow one, the derivation is harder: you usually assume that the fast steps
+        before it are at equilibrium. That needs week 12. Brown 14.6 has worked examples.</p>
+
+      <h3>Practice: read a mechanism</h3>
+      <div class="lab quiz" data-custom id="mx-lab">
+        <div class="control" style="max-width:420px">
+          <label for="mx-sel" class="ctl-label">Mechanism</label>
+          <select id="mx-sel"></select>
+        </div>
+        <div id="mx-steps" style="margin:12px 0 0"></div>
+        <div id="mx-qs"></div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="catalysis">
+      <h2>5 · Catalysis</h2>
+      <p>
+        A <strong>catalyst</strong> speeds up a reaction without being produced or consumed in the overall reaction. It may
+        take part in a step, but a later step gives it back. Since \(k = A\,e^{-E_a/RT}\), a catalyst can only work through
+        \(A\) or \(E_a\): it can hold the molecules in a better orientation (larger \(A\)), or, more often, it opens a
+        different path, a new mechanism, with a lower activation energy. Lowering \(E_a\) is usually the bigger effect,
+        because \(E_a\) sits in the exponent.
+      </p>
+
+      <div class="lab" id="cat-lab">
+        <div class="lab-grid">
+          <div class="controls">
+            <div class="control o0">
+              <label for="cat-Ea"><span>E<sub>a</sub> without catalyst</span> <output id="cat-Ea-out"></output></label>
+              <input id="cat-Ea" type="range" min="40" max="250" step="1" value="120">
+            </div>
+            <div class="control o2">
+              <label for="cat-low"><span>Catalyst lowers E<sub>a</sub> by</span> <output id="cat-low-out"></output></label>
+              <input id="cat-low" type="range" min="0" max="80" step="1" value="20">
+            </div>
+            <div>
+              <span class="ctl-label">Temperature</span>
+              <div class="seg" role="group" aria-label="Temperature" id="cat-T">
+                <button type="button" data-t="298.15" aria-pressed="true">25 °C</button>
+                <button type="button" data-t="773.15" aria-pressed="false">500 °C (Haber–Bosch)</button>
+              </div>
+            </div>
+            <div class="table-wrap" style="margin:0">
+              <table class="data-table"><tbody id="cat-readout"></tbody></table>
+            </div>
+          </div>
+          <div>
+            <canvas id="cat-diagram" class="view3d" role="img" aria-label="Energy landscape with two routes from reactants to products: a high pass without catalyst, and two lower passes with an intermediate between them with the catalyst. Drag or use the arrow keys to rotate."></canvas>
+            <div class="legend"><span><i style="border-color:var(--text-muted)"></i>without catalyst</span><span><i style="border-color:var(--c2)"></i>with catalyst (two steps)</span><span>drag to rotate</span></div>
+            <div class="callout" id="cat-note" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="small muted">Assumes the catalyst leaves \(A\) unchanged, so the speed-up is \(k_\text{cat}/k = e^{\Delta E_a/RT}\).
+        The landscape is schematic: the two routes are two different mechanisms, drawn side by side. The catalysed route has
+        two steps and an intermediate in the dip between them; its higher pass (the slow step) sets \(E_a\). The
+        valleys at both ends are shared, so \(\Delta E\) of the reaction is the same on both routes.</p>
+
+      <h3>Types of catalysts</h3>
+      <div class="force-grid">
+        <div class="card force"><h4>Homogeneous</h4>
+          <p>Catalyst in the same phase as the reactants. Acids (H⁺) catalyse many reactions in solution. In the
+            stratosphere, Cl atoms from old CFCs catalyse ozone destruction:
+            Cl + O₃ → ClO + O₂, then ClO + O → Cl + O₂. Cl comes back after every cycle, ready to destroy the next ozone
+            molecule.</p></div>
+        <div class="card force"><h4>Heterogeneous</h4>
+          <p>Catalyst in a different phase, usually a solid with gases flowing over it. The molecules stick to the surface,
+            where bonds are weakened. A car's catalytic converter uses Pt, Pd and Rh to turn NO<sub>x</sub> into N₂ and O₂;
+            the Haber–Bosch process uses iron.</p></div>
+        <div class="card force"><h4>Enzymes</h4>
+          <p>Nature's catalysts: large proteins that hold the reactants in exactly the right position. They often speed
+            reactions up by factors of millions or more, at body temperature.</p></div>
+      </div>
+
+      <h3>Feeding the world: nitrogen fixation</h3>
+      <p>
+        Plants need nitrogen, and around 1900 the natural fertilisers (bird guano from Peru, saltpetre NaNO₃ from Chile)
+        were running out. Making ammonia from the air, \(\mathrm{N_2} + 3\,\mathrm{H_2} \rightleftharpoons 2\,\mathrm{NH_3}\),
+        is spontaneous at room temperature (\(\Delta G^\circ = -33\) kJ, week 5) but extremely slow: the N≡N triple bond gives
+        a huge activation energy. Haber found a catalyst (osmium, 1909) and Bosch scaled the process up at BASF with cheaper
+        iron catalysts (1910–1914).
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>Haber–Bosch (industry)</th><th>Nitrogenase (enzyme in cyanobacteria)</th></tr></thead>
+          <tbody>
+            <tr><td>Catalyst</td><td>iron, heterogeneous</td><td>an enzyme</td></tr>
+            <tr><td>Temperature</td><td>about 500 °C</td><td>25 °C</td></tr>
+            <tr><td>Pressure</td><td>about 300 bar</td><td>1 bar</td></tr>
+            <tr><td>Scale</td><td>230 million tonnes of NH₃ in 2018, using 1–2 % of the world's energy</td><td>the natural route: soil bacteria and cyanobacteria</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Even with the catalyst, the reaction needs high temperature to be fast enough. But why the enormous pressure? That
+        is a question about equilibrium, and the answer is on the <a href="../equilibrium/#lechatelier">week 12 page</a>.
+        A side effect of that process worth knowing: about half of the nitrogen atoms in your body have been through a
+        Haber–Bosch reactor.</p>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="check">
+      <h2>Quick self-check</h2>
+
+      <div class="card quiz">
+        <p class="q">You warm a reaction from 20 °C to 40 °C. What happens to the activation energy?</p>
+        <div class="opts">
+          <button type="button" data-fb="Heating changes how many molecules can get over the hill, not its height.">it gets smaller</button>
+          <button type="button" data-correct data-fb="E_a is a property of the reaction path. A larger fraction of molecules now has E ≥ E_a, so k grows.">it stays the same</button>
+          <button type="button" data-fb="Nothing about the hill changes; only the energy distribution of the molecules shifts.">it gets larger</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">A reaction has E<sub>a</sub> = 60 kJ/mol and ΔE = +25 kJ/mol. What is E<sub>a</sub> of the reverse reaction?</p>
+        <div class="opts">
+          <button type="button" data-fb="That would be E_a + ΔE. The products sit 25 kJ/mol higher, so they are closer to the top.">85 kJ/mol</button>
+          <button type="button" data-correct data-fb="E_a(reverse) = E_a(forward) − ΔE = 60 − 25 = 35 kJ/mol. The reverse (exothermic) direction has the smaller hill.">35 kJ/mol</button>
+          <button type="button" data-fb="The hill is the same, but the two directions start from different heights.">60 kJ/mol</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">A plot of ln k against 1/T has a slope of −1.0 × 10⁴ K. What is E<sub>a</sub>?</p>
+        <div class="opts">
+          <button type="button" data-correct data-fb="Slope = −E_a/R, so E_a = 1.0 × 10⁴ K × 8.314 J mol⁻¹ K⁻¹ = 83 kJ/mol.">83 kJ/mol</button>
+          <button type="button" data-fb="Multiply by R, don't divide: E_a = −slope × R.">1.2 kJ/mol</button>
+          <button type="button" data-fb="The slope is −E_a/R, not −E_a. You still need R = 8.314 J mol⁻¹ K⁻¹.">10 kJ/mol</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">Suppose 2 NO(g) + Br₂(g) → 2 NOBr(g) is one elementary step. What is its rate law?</p>
+        <div class="opts">
+          <button type="button" data-fb="For an elementary step the exponents are the coefficients: NO appears twice.">rate = k[NO][Br₂]</button>
+          <button type="button" data-correct data-fb="Termolecular: two NO and one Br₂ must collide at once, so rate = k[NO]²[Br₂].">rate = k[NO]²[Br₂]</button>
+          <button type="button" data-fb="Rate laws contain the reactants, not the products.">rate = k[NOBr]²</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">In a mechanism, a species is used up in step 1 and formed again in step 2. It is</p>
+        <div class="opts">
+          <button type="button" data-fb="An intermediate is the other way round: formed first, used up later.">an intermediate</button>
+          <button type="button" data-correct data-fb="It is there at the start and at the end, and does not appear in the overall equation: a catalyst (like Cl in the ozone cycle).">a catalyst</button>
+          <button type="button" data-fb="A transition state is the top of an energy hill, not a species that appears in the steps.">a transition state</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+
+      <div class="card quiz">
+        <p class="q">A catalyst lowers E<sub>a</sub> of the forward reaction by 20 kJ/mol. What happens to the reverse reaction?</p>
+        <div class="opts">
+          <button type="button" data-fb="Both directions run over the same (new) hill.">nothing</button>
+          <button type="button" data-correct data-fb="The top of the hill comes down by 20 kJ/mol for both directions, since ΔE is unchanged. Both get faster by the same factor (week 12: K stays the same).">its E_a is also lowered by 20 kJ/mol</button>
+          <button type="button" data-fb="A catalyst lowers the barrier; it cannot raise it in one direction.">it gets slower</button>
+        </div>
+        <p class="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <section id="summary">
+      <h2>Summary</h2>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <tbody>
+            <tr><td>Collision model</td><td>collide, with \(E \ge E_a\) and the right orientation</td><td class="small">only a tiny fraction of collisions react</td></tr>
+            <tr><td>Fraction with \(E \ge E_a\)</td><td>\(f = e^{-E_a/RT}\)</td><td class="small">grows steeply with \(T\)</td></tr>
+            <tr><td>Arrhenius equation</td><td>\(k = A\,e^{-E_a/RT}\)</td><td class="small">\(A\): frequency factor (collisions × orientation)</td></tr>
+            <tr><td>Arrhenius plot</td><td>\(\ln k = -\dfrac{E_a}{R}\dfrac{1}{T} + \ln A\)</td><td class="small">slope \(-E_a/R\), intercept \(\ln A\)</td></tr>
+            <tr><td>Two temperatures</td><td>\(\ln\dfrac{k_1}{k_2} = \dfrac{E_a}{R}\left(\dfrac{1}{T_2} - \dfrac{1}{T_1}\right)\)</td><td class="small">\(R\) = 8.314 J mol⁻¹ K⁻¹, \(T\) in K</td></tr>
+            <tr><td>Reverse reaction</td><td>\(E_a(\text{rev}) = E_a(\text{fwd}) - \Delta E\)</td><td class="small">\(\Delta E\) does not set the rate</td></tr>
+            <tr><td>Elementary reaction</td><td>exponents = coefficients</td><td class="small">uni-, bi-, (rarely) termolecular</td></tr>
+            <tr><td>Slow first step</td><td>overall rate law = rate law of step 1</td><td class="small">consistent ≠ proven</td></tr>
+            <tr><td>Catalyst</td><td>new path with lower \(E_a\) (or larger \(A\))</td><td class="small">not consumed; \(\Delta E\) unchanged</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Covered in Lecture 11: Brown 14.5–14.7. Last week's page: <a href="../kinetics-1/">Chemical kinetics I</a>.
+        Next week: <a href="../equilibrium/">Chemical equilibrium</a>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Made by the course TA. Not official course material: if this page and the lecture disagree, the lecture wins.
+      Nothing you do on these pages is recorded.
+    </div>
+  </footer>
+
+  <script type="module" src="collisions.js"></script>
+  <script type="module" src="barrier.js"></script>
+  <script type="module" src="arrhenius.js"></script>
+  <script type="module" src="mechanism.js"></script>
+  <script type="module" src="catalysis.js"></script>
+  <script type="module" src="../assets/quiz.js"></script>
+</body>
+</html>

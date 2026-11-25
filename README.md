@@ -86,6 +86,20 @@ kinetics-1/           topic 10, Chemical kinetics I
   orders.js           module 3: zero/first/second order over time
   detective.js        "what order is it?" exercise
   ode.js              module 4: slope field and Euler's method
+kinetics-2/           topic 11, Chemical kinetics II (Brown 14.5–14.7)
+  view3d.js           small 3D helper: rotatable camera on a canvas, depth sorting, shaded surfaces and spheres
+  collisions.js       3D hard-sphere A + BC collisions (rotatable): energy (≥ Ea) and orientation; measured fraction vs e^(−Ea/RT)
+  barrier.js          3D potential-energy surface of A + BC with Ea, ΔE, Ea(reverse); velocity-space cloud and Ea sphere at two T
+  arrhenius.js        k against T and ln k against 1/T; "find Ea" virtual lab (random data, Brown Sample Ex. 14.11)
+  mechanism.js        A → I → P solved exactly (rate-determining step); "read a mechanism" exercise
+  catalysis.js        3D landscape with an uncatalysed and a catalysed route, speed-up e^(ΔEa/RT) and equivalent temperature
+equilibrium/          topic 12, Chemical equilibrium (Brown 15.1–15.5, 19.7)
+  eqdata.js           equilibria with K at 298 K from ΔG° (assets/thermo.js), phases, Δn
+  dynamic.js          A ⇌ B molecules turning over at random; amounts and rates; add/remove, catalyst
+  constant.js         Kc / Kp expression builder; reverse, ×½, ×2
+  flask.js            N₂O₄ ⇌ 2 NO₂ flask: Q vs K, let it react, disturbances, ICE table
+  haber.js            % NH₃ against T and P (Brown Table 15.2 in bar) with Brown Fig. 15.9 measured points
+  gibbs.js            G of an A/B mixture against composition, ΔG = ΔG° + RT ln Q; K from Appendix C
 ```
 
 Equations are rendered with KaTeX 0.16.11, loaded from cdn.jsdelivr.net.
@@ -102,6 +116,12 @@ Table 4.5. Problem-set items are left out of the practice tools (PS1 Q4 compound
 Data in `assets/thermo.js`: copied from Brown Appendix C (the polybox PDF of the textbook), checked against the
 problem-set solutions (e.g. ΔS° of the Haber reaction −198.2 J/K, propane combustion −2220 kJ). Specific heats on the
 topic 4 page: Brown Table 5.2 (Al, Fe, water) and handbook values (Cu 0.385, Au 0.129 J g⁻¹ K⁻¹).
+Data on the topic 11 and 12 pages: collision sim checked headlessly (measured fraction of collisions with E ≥ Ea agrees
+with e^(−Ea/RT) within noise). Haber Kp from Brown Table 15.2 (15th ed. lists kPa; ×10⁴ for bar, e.g. 4.39 × 10⁻⁵ at
+450 °C; older editions in atm give 4.51 × 10⁻⁵). N₂O₄/NO₂ Kp = 0.113 at 25 °C from Appendix C, other temperatures with
+ΔH° = +58.0 kJ held constant. Pressures in bar, R = 0.08314 L bar mol⁻¹ K⁻¹, as in Lecture 12. Problem-set 11 and 12
+reactions (H₂O₂/I⁻, Cl + HBr, 2 NO + Cl₂, 2 NO + O₂, H₂ + Br₂, 3 NO, PH₃BCl₃, CaCrO₄, …) are not used as examples.
+
 `assets/quiz.js` skips `.quiz[data-custom]` blocks, which run their own logic (the ΔS sign exercise).
 
 Data in `assets/chem.js`: water saturation pressure (Wagner & Pruss / IAPWS), ice melting curve (IAPWS 2011),
