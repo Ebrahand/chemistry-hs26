@@ -6,42 +6,284 @@
   <title>Chemistry HS26 Companion</title>
   <meta name="description" content="Interactive companion for the ETH Zurich D-MAVT first-year Chemistry course, HS26.">
   <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/home.css">
 </head>
-<body>
+<body class="home">
   <header class="site-header">
     <div class="wrap">
-      <a class="brand" href="./">Chemistry HS26 <span>· interactive companion</span></a>
+      <a class="brand" href="./">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M12 4h8M13.5 4v8.5L6.5 25a2.4 2.4 0 0 0 2.1 3.5h14.8a2.4 2.4 0 0 0 2.1-3.5l-7-12.5V4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.6 20h12.8l3 5.4a1.6 1.6 0 0 1-1.4 2.3H8a1.6 1.6 0 0 1-1.4-2.3z" fill="currentColor" opacity=".35"/><circle cx="14" cy="23.5" r="1.6" fill="currentColor"/><circle cx="18.5" cy="21.8" r="1.1" fill="currentColor"/></svg>
+        Chemistry HS26 <span>· interactive companion</span>
+      </a>
     </div>
   </header>
 
-  <main class="wrap">
-    <h1>Play with the ideas behind the formulas</h1>
-    <p class="lede">
-      Interactive pages for the D-MAVT first-year Chemistry course at ETH Zurich (Prof. Norris, HS26).
-      Move the sliders, break things, and see why the equations look the way they do.
-    </p>
-    <p class="muted small">
-      This site goes alongside the lecture, Brown <em>et al.</em>, <em>Chemistry: The Central Science</em>, and the weekly
-      problem sets. It does not replace them. Official course material is on Moodle.
-    </p>
+  <!-- ===== hero ===== -->
+  <section class="hero">
+    <svg class="doodles" aria-hidden="true" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice">
+      <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path class="d d1" d="M70 60l26-15 26 15v30l-26 15-26-15z M83 67l13-7.5 13 7.5"/>
+        <g class="d d2"><ellipse cx="1110" cy="430" rx="34" ry="12"/><ellipse cx="1110" cy="430" rx="34" ry="12" transform="rotate(60 1110 430)"/><ellipse cx="1110" cy="430" rx="34" ry="12" transform="rotate(-60 1110 430)"/></g>
+        <path class="d d3" d="M560 470l7-17 7 17 17 7-17 7-7 17-7-17-17-7z"/>
+        <path class="d d4" d="M1040 70l22-13 22 13v26l-22 13-22-13z"/>
+        <path class="d d5" d="M40 380h12m-6-6v12 M120 470h10m-5-5v10"/>
+        <path class="d d6" d="M640 40l5-12 5 12 12 5-12 5-5 12-5-12-12-5z"/>
+      </g>
+    </svg>
+    <div class="wrap hero-grid">
+      <div class="hero-text">
+        <p class="hero-kicker">ETH Zurich · D-MAVT · Chemistry HS26</p>
+        <h1>Chemistry you can <em>play with</em>.</h1>
+        <p class="hero-lede">
+          Interactive pages for the first-year Chemistry course (Prof. Norris).
+          Move the sliders, break things, and see why the equations look the way they do.
+        </p>
+        <div class="hero-cta">
+          <a class="btn-hero primary" href="#topics">Pick a topic <span aria-hidden="true">↓</span></a>
+          <a class="btn-hero ghost" href="equilibrium/">Newest: equilibrium <span aria-hidden="true">→</span></a>
+        </div>
+        <ul class="hero-facts">
+          <li>No sign-up</li>
+          <li>Nothing is recorded</li>
+          <li>Works on your phone</li>
+        </ul>
+      </div>
 
-    <p class="eyebrow">Topics</p>
-    <ul class="topic-list">
-      <li><a class="topic live" href="atoms/"><span class="num">1</span><span><strong>Atoms, molecules, reactions</strong> <span class="ch">· Brown 1–3</span></span><span class="tag live">open</span></a></li>
-      <li><a class="topic live" href="gases/"><span class="num">2</span><span><strong>Gases</strong> <span class="ch">· Brown 10</span></span><span class="tag live">open</span></a></li>
-      <li><a class="topic live" href="aqueous/"><span class="num">3</span><span><strong>Reactions in aqueous solutions</strong> <span class="ch">· Brown 4.1–4.5</span></span><span class="tag live">open</span></a></li>
-      <li><a class="topic live" href="thermo-1/"><span class="num">4</span><span><strong>Thermodynamics I</strong> <span class="ch">· Brown 5.1–5.7</span></span><span class="tag live">open</span></a></li>
-      <li><a class="topic live" href="thermo-2/"><span class="num">5</span><span><strong>Thermodynamics II</strong> <span class="ch">· Brown 19.1–19.6</span></span><span class="tag live">open</span></a></li>
-      <li><a class="topic live" href="electrons/"><span class="num">6</span><span><strong>Electronic structure; periodic properties</strong> <span class="ch">· Brown 6, 7.2–7.5</span></span><span class="tag live">open</span></a></li>
-      <li><a class="topic live" href="bonding/"><span class="num">7</span><span><strong>Chemical bonding; molecular geometry</strong> <span class="ch">· Brown 8, 9.1–9.2</span></span><span class="tag live">open</span></a></li>
-      <li><a class="topic live" href="liquids/"><span class="num">8</span><span><strong>Liquids and intermolecular forces</strong> <span class="ch">· Brown 11</span></span><span class="tag live">open</span></a></li>
-      <li><a class="topic live" href="solutions/"><span class="num">9</span><span><strong>Properties of solutions</strong> <span class="ch">· Brown 13</span></span><span class="tag live">open</span></a></li>
-      <li><a class="topic live" href="kinetics-1/"><span class="num">10</span><span><strong>Chemical kinetics I</strong> <span class="ch">· Brown 14</span></span><span class="tag live">open</span></a></li>
-      <li><a class="topic live" href="kinetics-2/"><span class="num">11</span><span><strong>Chemical kinetics II</strong> <span class="ch">· Brown 14.5–14.7</span></span><span class="tag live">open</span></a></li>
-      <li><a class="topic live" href="equilibrium/"><span class="num">12</span><span><strong>Chemical equilibrium</strong> <span class="ch">· Brown 15, 19.7</span></span><span class="tag live">open</span></a></li>
-      <li><div class="topic later"><span class="num">13</span><span>Acid–base equilibria <span class="ch">· Brown 16, 17.1–17.2</span></span><span class="tag">later</span></div></li>
-      <li><div class="topic later"><span class="num">14</span><span>Electrochemistry <span class="ch">· Brown 20</span></span><span class="tag">later</span></div></li>
-    </ul>
+      <figure class="toybox" aria-label="Small gas simulation: two kinds of molecules bouncing in a box">
+        <div class="toybox-top">
+          <span class="toybox-title">Try it: heat the gas</span>
+          <button class="toy-pause" type="button" aria-pressed="false" aria-label="Pause the animation"></button>
+        </div>
+        <canvas id="toy" width="480" height="300"></canvas>
+        <div class="toy-control">
+          <label for="toy-T">Temperature <output id="toy-T-out">300 K</output></label>
+          <input id="toy-T" type="range" min="50" max="1200" step="10" value="300">
+        </div>
+        <figcaption>
+          <span class="dot heavy"></span>heavy &nbsp;<span class="dot light"></span>light.
+          Same temperature, but the light ones move faster.
+          <a href="gases/#kmt">Why? Week 2 →</a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <!-- ===== how it works ===== -->
+    <section class="how" aria-labelledby="how-h">
+      <h2 id="how-h" class="sr-only">How the pages work</h2>
+      <div class="how-card" style="--h:265">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M8 14h32M8 24h32M8 34h32"/></g><g fill="currentColor"><circle cx="17" cy="14" r="5"/><circle cx="31" cy="24" r="5"/><circle cx="22" cy="34" r="5"/></g></svg>
+        <div><strong>Play</strong><p>Every topic has simulations to drag, tweak and push to the extreme.</p></div>
+      </div>
+      <div class="how-card" style="--h:70">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6a13 13 0 0 0-7.5 23.6c1.3 1 2 2.4 2 4V35h11v-1.4c0-1.6.7-3 2-4A13 13 0 0 0 24 6z"/><path d="M19 41h10"/></g><path d="M24 13v8m0 4v.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+        <div><strong>Predict</strong><p>Guess first, then check: rank boiling points, predict shapes, find the order.</p></div>
+      </div>
+      <div class="how-card" style="--h:150">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18" fill="currentColor" opacity=".2"/><path d="M15 24.5l6 6 12-13" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><strong>Check</strong><p>Each page ends with a quick self-check and a one-screen summary.</p></div>
+      </div>
+    </section>
+
+    <!-- ===== topics ===== -->
+    <section id="topics" class="topics" aria-labelledby="topics-h">
+      <div class="topics-head">
+        <div>
+          <p class="eyebrow">14 weeks, one topic each</p>
+          <h2 id="topics-h">Pick a topic</h2>
+        </div>
+        <div class="progress" aria-label="12 of 14 topics are open">
+          <span class="pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i></span>
+          <span class="small muted">12 of 14 open</span>
+        </div>
+      </div>
+
+      <ul class="tgrid">
+        <!-- 1 -->
+        <li class="tcard" style="--h:300">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2.6"><ellipse cx="32" cy="32" rx="25" ry="9.5"/><ellipse cx="32" cy="32" rx="25" ry="9.5" transform="rotate(60 32 32)"/><ellipse cx="32" cy="32" rx="25" ry="9.5" transform="rotate(-60 32 32)"/></g><circle cx="32" cy="32" r="5.5" fill="currentColor"/><circle cx="57" cy="32" r="3" fill="currentColor"/><circle cx="19.5" cy="10.4" r="3" fill="currentColor"/></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 1 · Brown 1–3</span>
+            <h3><a href="atoms/">Atoms, molecules, reactions</a></h3>
+            <ul class="tchips">
+              <li><a href="atoms/#atom">Build an atom</a></li>
+              <li><a href="atoms/#balance">Balance equations</a></li>
+              <li><a href="atoms/#limiting">Limiting reactants</a></li>
+            </ul>
+          </div>
+        </li>
+        <!-- 2 -->
+        <li class="tcard" style="--h:235">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18v36h36V18"/><path d="M32 4v14"/></g><rect x="14" y="16" width="36" height="5" rx="1.5" fill="currentColor"/><g fill="currentColor"><circle cx="22" cy="31" r="3"/><circle cx="38" cy="28" r="3"/><circle cx="30" cy="41" r="3"/><circle cx="43" cy="45" r="3"/><circle cx="20" cy="47" r="3"/></g><g stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"><path d="M25 33l3 2M41 26l3-2M33 43l3 1"/></g></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 2 · Brown 10</span>
+            <h3><a href="gases/">Gases</a></h3>
+            <ul class="tchips">
+              <li><a href="gases/#laws">Squeeze a piston</a></li>
+              <li><a href="gases/#igl">Which balloon floats?</a></li>
+              <li><a href="gases/#kmt">Molecular speeds</a></li>
+            </ul>
+          </div>
+        </li>
+        <!-- 3 -->
+        <li class="tcard" style="--h:190">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M15.5 34h33v16a4 4 0 0 1-4 4h-25a4 4 0 0 1-4-4z" fill="currentColor" opacity=".3"/><path d="M12 8h40M15.5 8v42a4 4 0 0 0 4 4h25a4 4 0 0 0 4-4V8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 42h6M24 39v6M37 46h6"/></g><circle cx="38" cy="39" r="2.4" fill="currentColor"/><circle cx="26" cy="27" r="1.8" fill="currentColor"/><circle cx="33" cy="20" r="1.4" fill="currentColor"/></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 3 · Brown 4.1–4.5</span>
+            <h3><a href="aqueous/">Reactions in aqueous solutions</a></h3>
+            <ul class="tchips">
+              <li><a href="aqueous/#electrolytes">Conductivity tester</a></li>
+              <li><a href="aqueous/#precipitation">Mix and precipitate</a></li>
+              <li><a href="aqueous/#activity">Activity series</a></li>
+            </ul>
+          </div>
+        </li>
+        <!-- 4 -->
+        <li class="tcard" style="--h:45">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M32 6c3 10 16 16 16 31a16 16 0 0 1-32 0c0-8 4-12 7-15 0 5 2 8 5 9-1-10 2-17 4-25z" fill="currentColor" opacity=".3" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M32 33c2 5 8 7 8 13a8 8 0 0 1-16 0c0-4 3-6 4-8 1 2 2 3 3 3 0-3 0-5 1-8z" fill="currentColor"/></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 4 · Brown 5.1–5.7</span>
+            <h3><a href="thermo-1/">Thermodynamics I</a></h3>
+            <ul class="tchips">
+              <li><a href="thermo-1/#enthalpy">Work from a piston</a></li>
+              <li><a href="thermo-1/#calorimetry">Coffee-cup calorimeter</a></li>
+              <li><a href="thermo-1/#hess">Hess's-law puzzles</a></li>
+            </ul>
+          </div>
+        </li>
+        <!-- 5 -->
+        <li class="tcard" style="--h:345">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M4 18c8 0 10 30 20 30s8-18 16-18 10 24 20 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><circle cx="24" cy="42.5" r="5" fill="currentColor"/><g fill="currentColor" opacity=".45"><circle cx="40" cy="24.6" r="3.2"/><circle cx="12" cy="24" r="3.2"/><circle cx="51" cy="40" r="3.2"/></g><path d="M40 16v-6m-3 3l3-3 3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".6"/></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 5 · Brown 19.1–19.6</span>
+            <h3><a href="thermo-2/">Thermodynamics II</a></h3>
+            <ul class="tchips">
+              <li><a href="thermo-2/#secondlaw">Melt ice at any T</a></li>
+              <li><a href="thermo-2/#microstates">Count microstates</a></li>
+              <li><a href="thermo-2/#temperature">ΔG against T</a></li>
+            </ul>
+          </div>
+        </li>
+        <!-- 6 -->
+        <li class="tcard" style="--h:265">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><g fill="currentColor"><path d="M32 32C22 22 20 6 32 6s10 16 0 26z" opacity=".75"/><path d="M32 32c10 10 12 26 0 26s-10-16 0-26z" opacity=".75"/><path d="M32 32C22 42 6 44 6 32s16-10 26 0z" opacity=".3"/><path d="M32 32c10-10 26-12 26 0s-16 10-26 0z" opacity=".3"/></g><circle cx="32" cy="32" r="3.2" fill="currentColor"/></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 6 · Brown 6, 7.2–7.5</span>
+            <h3><a href="electrons/">Electronic structure; periodic properties</a></h3>
+            <ul class="tchips">
+              <li><a href="electrons/#hydrogen">Hydrogen's line spectrum</a></li>
+              <li><a href="electrons/#orbitals">Orbitals in 3D</a></li>
+              <li><a href="electrons/#configurations">Fill the orbital boxes</a></li>
+            </ul>
+          </div>
+        </li>
+        <!-- 7 -->
+        <li class="tcard" style="--h:145">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><g stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M32 26L15 42M32 26l17 16"/></g><circle cx="32" cy="24" r="11" fill="currentColor"/><circle cx="13" cy="44" r="7" fill="currentColor" opacity=".45"/><circle cx="51" cy="44" r="7" fill="currentColor" opacity=".45"/><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".6"><path d="M21 52a16 16 0 0 0 22 0"/></g></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 7 · Brown 8, 9.1–9.2</span>
+            <h3><a href="bonding/">Chemical bonding; molecular geometry</a></h3>
+            <ul class="tchips">
+              <li><a href="bonding/#lewis">Lewis structures, step by step</a></li>
+              <li><a href="bonding/#vsepr">Rotate VSEPR shapes</a></li>
+              <li><a href="bonding/#polarity">Bond polarity</a></li>
+            </ul>
+          </div>
+        </li>
+        <!-- 8 -->
+        <li class="tcard" style="--h:215">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M32 6C26 18 16 28 16 40a16 16 0 0 0 32 0C48 28 38 18 32 6z" fill="currentColor" opacity=".3" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M24 40a8 8 0 0 0 6 8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><g fill="currentColor"><circle cx="37" cy="37" r="2.6"/><circle cx="31" cy="31" r="2.6"/><circle cx="38" cy="45" r="2.6"/></g></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 8 · Brown 11</span>
+            <h3><a href="liquids/">Liquids and intermolecular forces</a></h3>
+            <ul class="tchips">
+              <li><a href="liquids/#forces">Attraction against motion</a></li>
+              <li><a href="liquids/#liquid-props">Boiling on Everest</a></li>
+              <li><a href="liquids/#phase-diagrams">Phase diagrams</a></li>
+            </ul>
+          </div>
+        </li>
+        <!-- 9 -->
+        <li class="tcard" style="--h:320">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 6v52M32 14l-6-6m6 6l6-6M32 50l-6 6m6-6l6 6M9.5 19l45 26M15 15.5l-2 8m2-8l-8-2M49 48.5l2-8m-2 8l8 2M9.5 45l45-26M15 48.5l-8 2m8-2l-2-8M49 15.5l8-2m-8 2l2 8"/></g><circle cx="32" cy="32" r="4" fill="currentColor"/></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 9 · Brown 13</span>
+            <h3><a href="solutions/">Properties of solutions</a></h3>
+            <ul class="tchips">
+              <li><a href="solutions/#solubility">Henry's-law bottle</a></li>
+              <li><a href="solutions/#colligative">Why salt melts ice</a></li>
+              <li><a href="solutions/#units">Five concentration units</a></li>
+            </ul>
+          </div>
+        </li>
+        <!-- 10 -->
+        <li class="tcard" style="--h:85">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="36" r="21" fill="currentColor" opacity=".25" stroke="currentColor" stroke-width="2.6"/><path d="M27 6h10M32 6v9M49 17l4-4" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M32 36V22" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M32 36L22 29" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".7"/><circle cx="32" cy="36" r="3" fill="currentColor"/></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 10 · Brown 14</span>
+            <h3><a href="kinetics-1/">Chemical kinetics I</a></h3>
+            <ul class="tchips">
+              <li><a href="kinetics-1/#rate">Watch a reaction run</a></li>
+              <li><a href="kinetics-1/#detective">Data detective: what order?</a></li>
+              <li><a href="kinetics-1/#ode">Euler's method</a></li>
+            </ul>
+          </div>
+        </li>
+        <!-- 11 -->
+        <li class="tcard" style="--h:25">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M4 46c10 0 12-2 16-12s6-22 12-22 8 14 12 22 8 16 16 16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M4 46c10 0 12-2 16-12s6-22 12-22 8 14 12 22 8 16 16 16v8H4z" fill="currentColor" opacity=".22"/><circle cx="11" cy="41" r="4.5" fill="currentColor"/><path d="M14 30c3-6 8-10 12-11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="1 4.5"/></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 11 · Brown 14.5–14.7 <b class="new">new</b></span>
+            <h3><a href="kinetics-2/">Chemical kinetics II</a></h3>
+            <ul class="tchips">
+              <li><a href="kinetics-2/#collisions">Molecules colliding in 3D</a></li>
+              <li><a href="kinetics-2/#barrier">Climb the energy hill</a></li>
+              <li><a href="kinetics-2/#arrhenius">Find Eₐ in a virtual lab</a></li>
+            </ul>
+          </div>
+        </li>
+        <!-- 12 -->
+        <li class="tcard" style="--h:125">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 25h42l-8-8"/><path d="M54 39H12l8 8"/></g><g fill="currentColor"><circle cx="14" cy="14" r="4"/><circle cx="22" cy="14" r="4" opacity=".5"/><circle cx="46" cy="52" r="4" opacity=".5"/><circle cx="38" cy="52" r="4"/></g></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 12 · Brown 15, 19.7 <b class="new">new</b></span>
+            <h3><a href="equilibrium/">Chemical equilibrium</a></h3>
+            <ul class="tchips">
+              <li><a href="equilibrium/#dynamic">Molecules flipping both ways</a></li>
+              <li><a href="equilibrium/#quotient">Q against K in a flask</a></li>
+              <li><a href="equilibrium/#lechatelier">The Haber process</a></li>
+            </ul>
+          </div>
+        </li>
+        <!-- 13 -->
+        <li class="tcard later" style="--h:300">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="24" y="4" width="16" height="56" rx="3"/></g><rect x="24" y="36" width="16" height="24" rx="3" fill="currentColor" opacity=".45"/><path d="M24 36h16" stroke="currentColor" stroke-width="2"/><text x="32" y="27" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor" font-family="system-ui, sans-serif">pH</text></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 13 · Brown 16, 17.1–17.2</span>
+            <h3>Acid–base equilibria</h3>
+            <p class="soon">Coming soon</p>
+          </div>
+        </li>
+        <!-- 14 -->
+        <li class="tcard later" style="--h:95">
+          <div class="tart" aria-hidden="true"><svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"><rect x="6" y="18" width="46" height="28" rx="4"/><path d="M52 26h5v12h-5"/></g><rect x="10" y="22" width="24" height="20" rx="2" fill="currentColor" opacity=".45"/><path d="M38 28l-5 6h6l-5 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="tbody">
+            <span class="wk">Week 14 · Brown 20</span>
+            <h3>Electrochemistry</h3>
+            <p class="soon">Coming soon</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <aside class="note">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10h13a5 5 0 0 1 5 5v25a4 4 0 0 0-4-4H8zM40 10H29a5 5 0 0 0-5 5v25a4 4 0 0 1 4-4h12z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/></svg>
+      <p>
+        This site goes alongside the lecture, Brown <em>et al.</em>, <em>Chemistry: The Central Science</em>, and the weekly
+        problem sets. It does not replace them. Official course material is on Moodle.
+      </p>
+    </aside>
   </main>
 
   <footer class="site-footer">
@@ -50,5 +292,7 @@
       Nothing you do on these pages is recorded.
     </div>
   </footer>
+
+  <script src="assets/home.js" defer></script>
 </body>
 </html>
